@@ -15,8 +15,14 @@
     </div>
     <div class="main-panel news-panel">
       <h2>📰 최신 코인 뉴스</h2>
-        <div id="news-container">
-          <!-- fetchCryptoNews() 결과가 여기에 들어갑니다 -->
-        </div>
+      <!-- ① 검색 박스 -->
+      <div class="news-search">
+        <input type="text" id="news-search-input"
+              placeholder="키워드 입력 (예: ethereum)" />
+        <button id="news-search-btn">검색</button>
+      </div>
+      <div id="news-container">
+        <!-- fetchCryptoNews() 결과 출력 -->
+      </div>
     </div>
 </main>
