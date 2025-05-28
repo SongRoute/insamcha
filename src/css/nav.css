@@ -98,3 +98,29 @@
 #favorite-button:hover {
     background: #2f3c42;
 }
+#main-logo {
+    width: 64px; /* Explicit width to match nav-item width */
+    height: 64px; /* Explicit height to make it a square for the circular logo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border-radius is inherited from .nav-item-icon-bg which is applied to this element */
+}
+
+/* Specific styles for the main logo icon elements to make it 1.5x bigger */
+#main-logo .nav-item-icon-padding {
+    /* Original padding was 4px 16px for general nav items */
+    /* New container is 48px. Parent #main-logo is 64px. */
+    /* Padding: (64 - 48) / 2 = 8px on each side for width and height */
+    padding: 8px; 
+}
+
+#main-logo .nav-item-icon-container {
+    width: 48px;  /* Original 32px * 1.5 = 48px */
+    height: 48px; /* Original 32px * 1.5 = 48px */
+}
+
+#main-logo .nav-item-icon {
+    width: 36px;  /* Original 24px * 1.5 = 36px */
+    height: 36px; /* Original 24px * 1.5 = 36px */
+}
