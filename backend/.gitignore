@@ -1,0 +1,5 @@
+# insamcha/backend/.gitignore
+
+/node_modules
+/insamcha.db
+.env
