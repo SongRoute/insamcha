@@ -124,16 +124,20 @@
 }
 
 .nav-action-item {
-    width: 60px;
-    height: 36px;
-    padding-bottom: 4px;
-    padding-left: 2px;
-    padding-right: 2px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 4px;
     display: inline-flex;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-action-item:hover {
+    background-color: var(--Schemes-Primary-Container, #414141);
 }
 
 .nav-action-icon-wrapper {
@@ -161,4 +165,10 @@
     /* left: 2px; Not needed with centered flex content */
     /* top: 2px; Not needed with centered flex content */
     background: #F5F5F5;
-} 
+}
+
+.header-icon {
+    width: 20px;
+    height: 20px;
+    color: #F5F5F5;
+}

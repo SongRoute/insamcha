@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+    <style>
+        /* CSS rules for the chart can be added here. */
+        /* The error "at-rule or selector expected" occurs when CSS syntax is incorrect. */
+        /* Ensure that any rule starts with a valid selector (e.g., .chart-container { color: red; }) */
+        /* or an at-rule (e.g., @media screen { .chart-container { width: 100%; } }). */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .chart-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            /* You can set width and height for your chart area */
+            /* width: 800px; */
+            /* height: 600px; */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container" id="stockChart">
+        <h1>Stock Chart</h1>
+        <p>Chart visualization will be displayed here. (The image you provided shows a candlestick chart with volume.)</p>
+        <!-- You would typically use a charting library or custom SVG/Canvas drawing here -->
+        <div id="price-chart"></div>
+    </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../../js/chart.js"></script>
+</body>
+</html>

@@ -11,6 +11,7 @@ body {
     /* margin: 0; */ /* Moved to html, body rule */
     font-family: Roboto, sans-serif;
     display: flex; /* Added to help #wrapper fill height if not already doing so */
+    background-color: #282828; /* Match index.html main content background */
 }
 
 /* Utility classes */

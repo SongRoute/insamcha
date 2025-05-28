@@ -2,7 +2,7 @@ import datetime
 import random
 import json
 
-def generate_price_data(days=7, initial_price=1000.0):
+def generate_price_data(days=3, initial_price=1000.0):
     data = []
     # 시작 날짜를 2024년 1월 1일 00:00:00 UTC로 설정 (원하는 날짜로 변경 가능)
     start_time = datetime.datetime(2024, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
@@ -26,6 +26,6 @@ def generate_price_data(days=7, initial_price=1000.0):
 
 if __name__ == "__main__":
     # 한 달치 데이터 생성
-    price_data = generate_price_data(days=30)
+    price_data = generate_price_data(days=3)
     # JSON 형식으로 출력
     print(json.dumps(price_data, indent=2))
