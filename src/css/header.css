@@ -2,9 +2,9 @@
 .search-bar-wrapper {
     flex-grow: 1;
     min-width: 200px;
-    max-width: 720px;
+    max-width: 300px;
     height: 32px;
-    background: white;
+    background: rgb(0, 3, 25);
     overflow: hidden;
     border-radius: 28px;
     justify-content: flex-start;
@@ -20,7 +20,7 @@
     position: relative;
     justify-content: flex-start;
     align-items: center;
-    display: flex;
+    display: inline-flex;
 }
 
 .search-icon-container {
@@ -87,10 +87,11 @@
     line-height: 24px;
     letter-spacing: 0.50px;
     padding: 0;
+    color: white;
 }
 
 .search-input::placeholder {
-    color: var(--Schemes-On-Surface-Variant, #49454F);
+    color: var(--Schemes-On-Surface-Variant, #e8e8e8);
     opacity: 0.7;
 }
 
