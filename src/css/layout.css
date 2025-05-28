@@ -1,0 +1,58 @@
+/* Layout Styles */
+#wrapper {
+    display: flex;
+    width: 100%; /* Ensure wrapper takes full width */
+    height: 100%; /* Ensure wrapper takes full height */
+    overflow: hidden; /* Prevent wrapper from showing scrollbars */
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden; /* Prevent content-wrapper from showing scrollbars */
+}
+
+#header {
+    /* Using .navbar-container styles as it functions as the main header container */
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    background: #0B212E;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+#main-content-placeholder {
+    flex-grow: 1;            /* Allows this placeholder to grow and take available space */
+    display: flex;           /* Makes it a flex container for the loaded <main> tag */
+    flex-direction: column;  /* Ensures <main> can expand vertically if needed */
+    overflow: hidden;        /* Prevents this placeholder from causing scrollbars */
+}
+
+#main {
+    flex-grow: 1;
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    background-color: #282828;
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent main from overflowing and causing scroll */
+}
+
+/* Footer specific styles */
+#footer {
+    background-color: #0B212E; /* Example from original */
+    color: white;
+    padding: 10px 0; /* Adjust padding as needed */
+    overflow: hidden; /* Important for marquee effect */
+    flex-shrink: 0; /* Prevent footer from shrinking */
+    width: 100%;
+    box-sizing: border-box;
+} 

@@ -1,0 +1,45 @@
+/* Footer Marquee specific styles */
+.ltr-marquee-content { /* Class for the scrolling track */
+    display: flex; /* Aligns items in a row */
+    align-items: center; /* Vertically centers items in the track */
+    /* width is set dynamically by JS */
+    /* animation is set by JS */
+}
+
+.footer-item-group {
+    display: flex;
+    align-items: center; /* Vertically align label and value */
+    gap: 8px; /* Space between label and value */
+    padding: 0 15px; /* Horizontal padding for each item group */
+    white-space: nowrap; /* Prevent text wrapping within an item */
+    color: white; /* Default text color */
+}
+
+.footer-coin-label {
+    font-size: 14px;
+    font-weight: 500;
+    /* color inherited or can be set specifically */
+}
+
+.footer-coin-value {
+    font-size: 14px;
+    /* color set by JS based on change (red/blue/white) */
+}
+
+.coin-value-red {
+    color: #FF5252; /* Or your preferred red */
+}
+
+.coin-value-blue {
+    color: #448AFF; /* Or your preferred blue */
+}
+
+.coin-value-black { /* As in original, though white was used for no change */
+    color: black;
+}
+
+.footer-separator { /* Style for the separator */
+    padding: 0 10px;
+    color: #A0A0A0; /* Lighter color for separator */
+    font-size: 14px;
+} 

@@ -1,0 +1,27 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars on the body/html */
+}
+
+/* Global styles */
+body {
+    /* margin: 0; */ /* Moved to html, body rule */
+    font-family: Roboto, sans-serif;
+    display: flex; /* Added to help #wrapper fill height if not already doing so */
+}
+
+/* Utility classes */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inline-flex-center {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+} 

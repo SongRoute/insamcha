@@ -1,0 +1,92 @@
+{
+    "coin1": {
+        "name": "coin1",
+        "value": 23456789,
+        "change": 12345,
+        "change_percentage": 0.0526
+    },
+    "coin2": {
+        "name": "coin2",
+        "value": 87654321,
+        "change": -54321,
+        "change_percentage": -0.0619
+    },
+    "coin3": {
+        "name": "coin3",
+        "value": 12345678,
+        "change": 6789,
+        "change_percentage": 0.0550
+    },
+    "coin4": {
+        "name": "coin4",
+        "value": 98765432,
+        "change": -123456,
+        "change_percentage": -0.1249
+    },
+    "coin5": {
+        "name": "coin5",
+        "value": 55555555,
+        "change": 5555,
+        "change_percentage": 0.0100
+    },
+    "coin6": {
+        "name": "coin6",
+        "value": 43210987,
+        "change": -21098,
+        "change_percentage": -0.0488
+    },
+    "coin7": {
+        "name": "coin7",
+        "value": 76543210,
+        "change": 43210,
+        "change_percentage": 0.0564
+    },
+    "coin8": {
+        "name": "coin8",
+        "value": 24681357,
+        "change": -13579,
+        "change_percentage": -0.0550
+    },
+    "coin9": {
+        "name": "coin9",
+        "value": 13579246,
+        "change": 2468,
+        "change_percentage": 0.0182
+    },
+    "coin10": {
+        "name": "coin10",
+        "value": 86420975,
+        "change": -9753,
+        "change_percentage": -0.0113
+    },
+    "coin11": {
+        "name": "coin11",
+        "value": 31415926,
+        "change": 27182,
+        "change_percentage": 0.0865
+    },
+    "coin12": {
+        "name": "coin12",
+        "value": 62831853,
+        "change": -16180,
+        "change_percentage": -0.0257
+    },
+    "coin13": {
+        "name": "coin13",
+        "value": 10000000,
+        "change": 10000,
+        "change_percentage": 0.1000
+    },
+    "coin14": {
+        "name": "coin14",
+        "value": 50000000,
+        "change": -25000,
+        "change_percentage": -0.0500
+    },
+    "coin15": {
+        "name": "coin15",
+        "value": 75000000,
+        "change": 37500,
+        "change_percentage": 0.0500
+    }
+}

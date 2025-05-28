@@ -1,0 +1,85 @@
+/* Side Navigation (#nav) */
+#nav {
+    width: 76px; /* Fixed width for the nav bar */
+    height: 100%; /* Make nav full height */
+    background: #0B212E;
+    padding: 10px 4px;
+    overflow-y: auto; /* In case content exceeds height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Added to prevent shrinking */
+}
+
+.nav-item {
+    width: 64px;
+    /* height: 58px; remove fixed height for flexibility */
+    padding-bottom: 4px;
+    padding-left: 2px;
+    padding-right: 2px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+    display: flex;
+    cursor: pointer; /* Add for better UX */
+}
+
+.nav-item-icon-bg {
+    overflow: hidden;
+    border-radius: 100px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.nav-item-icon-padding {
+    padding: 4px 16px;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+}
+
+.nav-item-icon-container {
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.nav-item-icon {
+    width: 24px; /* Adjust as needed */
+    height: 24px; /* Adjust as needed */
+    background: #D9D9D9; /* Placeholder color */
+    /* For actual icons, use background-image or an icon font */
+}
+
+.nav-item-label {
+    color: #C1E8FF;
+    font-size: 11px;
+    font-family: Roboto, sans-serif;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.50px;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.nav-menu-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Adjust gap as needed */
+    width: 100%;
+}
+
+.nav-divider {
+    width: 80%; /* Or a fixed width like 48px */
+    height: 1px;
+    background: #4A6572; /* A suitable divider color */
+    margin: 12px 0; /* Adjust vertical spacing */
+} 

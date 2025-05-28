@@ -1,0 +1,59 @@
+/* Main Content Panels */
+.main-panel {
+    width: 100%;
+    background-color: #696969; /* Example background */
+    border-radius: 8px; /* Example border radius */
+    padding: 15px; /* Example padding */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Example shadow */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent individual panels from scrolling */
+}
+
+.exchange-panel { /* Was .main-panel-left */
+    flex-basis: 250px; /* Example width, adjust as needed */
+    flex-shrink: 0;
+}
+
+.center-panel { /* Was .main-panel-middle */
+    flex-grow: 1; /* Takes available vertical space in #main */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between sections */
+    overflow: hidden; /* Crucial: center-panel itself should not scroll */
+}
+
+.center-panel-section { /* Was .middle-panel-section */
+    background-color: #4d4d4d;
+    border-radius: 6px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden; /* Each section also hides its overflow */
+    display: flex; /* Allow children (like chart div) to fill height */
+    flex-direction: column; /* If section has multiple children to stack */
+}
+
+.chart-section { /* Was .middle-panel-section-1 */
+    flex-grow: 6; /* e.g., for 60% of the space */
+    flex-basis: 0; /* Distribute space based on flex-grow from zero */
+    /* overflow: hidden; is covered by .center-panel-section */
+}
+
+.position-section { /* Was .middle-panel-section-2 */
+    flex-grow: 2; /* e.g., for 20% of the space */
+    flex-basis: 0;
+    /* overflow: hidden; is covered by .center-panel-section */
+}
+
+.profit-section { /* Was .middle-panel-section-3 */
+    flex-grow: 2; /* e.g., for 20% of the space */
+    flex-basis: 0;
+    /* overflow: hidden; is covered by .center-panel-section */
+}
+
+.news-panel { /* Was .main-panel-right */
+    flex-basis: 280px; /* Example width, adjust as needed */
+    flex-shrink: 0;
+    /* overflow: hidden; is inherited from .main-panel */
+} 
