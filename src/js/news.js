@@ -1,5 +1,5 @@
 // src/js/news.js
-const API_KEY = '8423285e9b2d41e9949fc30bd555a9fd';  // newsAPI 키 설정
+const API_KEY = '';  // newsAPI 키 설정
 const ENDPOINT = 'https://newsapi.org/v2/everything';
 
 export async function fetchCryptoNews(q = 'cryptocurrency') {
