@@ -134,6 +134,7 @@
     display: inline-flex;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    position: relative;
 }
 
 .nav-action-item:hover {
@@ -171,4 +172,37 @@
     width: 20px;
     height: 20px;
     color: #F5F5F5;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Notification Dropdown Styles */
+.notifications-dropdown {
+    position: absolute;
+    top: 100%; /* Position below the header icon */
+    right: 0; /* Align to the right of the nav-action-item */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 250px; /* Adjust width as needed */
+    z-index: 1000; /* Ensure it's above other content */
+    padding: 8px 0;
+}
+
+.notification-item {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background-color: #f5f5f5;
 }
