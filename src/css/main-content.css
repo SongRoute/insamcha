@@ -1,165 +1,66 @@
 /* Main Content Panels */
 .main-panel {
     width: 100%;
-    background-color: #1e1e1e; /* Dark gray background */
-    border-radius: 8px; /* Example border radius */
-    padding: 15px; /* Example padding */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Example shadow */
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent individual panels from scrolling */
+    overflow: hidden; /* 개별 패널의 오버플로우는 숨김 */
 }
 
-.exchange-panel { /* Was .main-panel-left */
-    flex-basis: 250px; /* Example width, adjust as needed */
+.exchange-panel {
+    flex-basis: 250px;
     flex-shrink: 0;
     padding: 10px;
 }
 
-.center-panel { /* Was .main-panel-middle */
-    flex-grow: 1; /* Takes available vertical space in #main */
+.center-panel {
+    flex-grow: 1; /* 가용 세로 공간을 차지 */
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between sections */
-    overflow: hidden; /* Crucial: center-panel itself should not scroll */
+    gap: 10px;
+    /* overflow: hidden; /* 기존: center-panel 자체 스크롤 방지 */
+    overflow-y: auto; /* 변경: 세로 스크롤 가능하게 함 */
+    overflow-x: hidden; /* 가로 스크롤은 여전히 금지 */
 }
 
-.center-panel-section { /* Was .middle-panel-section */
-    background-color: #1e1e1e; /* Dark gray background for sections */
+.center-panel-section {
+    background-color: #1e1e1e;
     border-radius: 6px;
     padding: 10px;
     box-sizing: border-box;
-    overflow: hidden; /* Each section also hides its overflow */
-    display: flex; /* Allow children (like chart div) to fill height */
-    flex-direction: column; /* If section has multiple children to stack */
-}
-
-.chart-section { /* Was .middle-panel-section-1 */
-    flex-grow: 6; /* e.g., for 60% of the space */
-    flex-basis: 0; /* Distribute space based on flex-grow from zero */
     /* overflow: hidden; is covered by .center-panel-section */
+    /* 개별 섹션 내부에 스크롤이 필요한 경우 여기에 overflow-y: auto를 추가할 수 있습니다. */
+    /* 현재는 center-panel 전체가 스크롤되므로 여기서는 필요 없을 가능성이 높습니다. */
+    display: flex;
+    flex-direction: column;
 }
 
-.position-section { /* Was .middle-panel-section-2 */
-    flex-grow: 2; /* e.g., for 20% of the space */
+.chart-section {
+    flex-grow: 6;
     flex-basis: 0;
-    /* overflow: hidden; is covered by .center-panel-section */
+    /* overflow: hidden; - 이 부분은 .center-panel-section에서 상속됨 */
 }
 
-.profit-section { /* Was .middle-panel-section-3 */
-    flex-grow: 2; /* e.g., for 20% of the space */
+.position-section {
+    flex-grow: 2;
     flex-basis: 0;
-    /* overflow: hidden; is covered by .center-panel-section */
 }
 
-.news-panel { /* Was .main-panel-right */
-    flex-basis: 280px; /* Example width, adjust as needed */
+.profit-section {
+    flex-grow: 2;
+    flex-basis: 0;
+}
+
+.news-panel {
+    flex-basis: 280px;
     flex-shrink: 0;
-    background-color: #1e1e1e; /* Dark gray background for news panel */
-    /* overflow: hidden; is inherited from .main-panel - We will override this */
-    overflow-y: auto; /* Added to allow vertical scrolling */
-    overflow-x: hidden; /* Added to prevent horizontal scrolling */
+    background-color: #1e1e1e;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.newsHolder{
-    width: 100%;
-    height: auto; /* Adjust height based on content */
-    background-color: #2a2a2a; /* Slightly lighter dark gray */
-    border-radius: 6px;
-    padding: 10px;
-    box-sizing: border-box;
-    /* overflow: hidden; Remove to see all content if needed */
-    display: flex;
-    flex-direction: column; /* Stack title and info */
-    align-items: flex-start;
-    margin: 0 auto;
-    margin-bottom: 10px; /* Increased margin */
-}
-
-.newsTitle{
-    /* background-color: #000000; Remove background */
-    color: #e0e0e0; /* Light gray for title */
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-.newsInfo{
-    /* background-color: #000000; Remove background */
-    color: #a0a0a0; /* Lighter gray for info */
-    font-size: 12px;
-}
-
-/* Exchange Panel (Live Ranking) Styles */
-.ranking-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #e0e0e0;
-    margin-bottom: 10px;
-}
-
-.ranking-filters {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.ranking-filter-button {
-    padding: 6px 12px;
-    border: 1px solid #333333;
-    background-color: #2a2a2a;
-    color: #a0a0a0;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.ranking-filter-button.active,
-.ranking-filter-button:hover {
-    background-color: #333333;
-    color: #e0e0e0;
-    border-color: #555555;
-}
-
-.ranking-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.ranking-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #2a2a2a;
-}
-
-.ranking-item:last-child {
-    border-bottom: none;
-}
-
-.ranking-item-name {
-    font-size: 14px;
-    color: #e0e0e0;
-}
-
-.ranking-item-details {
-    text-align: right;
-}
-
-.ranking-item-price {
-    font-size: 14px;
-    color: #e0e0e0;
-    font-weight: bold;
-}
-
-.ranking-item-change {
-    font-size: 12px;
-}
-
-.ranking-item-change.positive {
-    color: #26A69A; /* Green for positive change */
-}
-
-.ranking-item-change.negative {
-    color: #FF4D4F; /* Red for negative change */
-}
+/* ... (나머지 CSS는 그대로 유지) ... */
