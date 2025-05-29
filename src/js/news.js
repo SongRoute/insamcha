@@ -1,8 +1,7 @@
-/**
- * 암호화폐 뉴스 가져오기 (백엔드 프록시)
- * @param {string} q 검색 키워드 (기본: cryptocurrency)
- * @returns {Promise<Array>} articles 배열
- */
+// src/js/news.js
+const API_KEY = 'YOUR_API_KEY';  // newsAPI 키 설정
+const ENDPOINT = 'https://newsapi.org/v2/everything';
+
 export async function fetchCryptoNews(q = 'cryptocurrency') {
   // 백엔드의 /api/news 엔드포인트를 호출합니다.
   const url = `/api/news?q=${encodeURIComponent(q)}`;
