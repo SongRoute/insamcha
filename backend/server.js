@@ -1,0 +1,106 @@
+import express from 'express';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import db from './db.js'; 
+import dotenv from 'dotenv';
+import fetch from 'node-fetch';
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// src/html 폴더를 정적파일 루트로 지정
+app.use('/', express.static(path.resolve(__dirname, '../src')));
+app.use('/html',express.static(path.resolve(__dirname, '../src')));
+
+// 미들웨어
+app.use(cors());
+app.use(express.json());
+
+// ── 회원가입 엔드포인트 ─────────────────────────────────
+app.post('/api/auth/signup', async (req, res) => {
+    const { username, email, password } = req.body;
+
+    // 1. DB 조회로 중복 체크
+    const exists = db.prepare(`SELECT id FROM users WHERE username = ? OR email = ?`).get(username, email);
+    if (exists) {
+        return res.status(400).json({
+        success: false,
+        message: '이미 사용 중인 사용자명 또는 이메일입니다.'
+        });
+    }
+
+    // 2) 비밀번호 해싱 & 저장
+    const hash = await bcrypt.hash(password, 10);
+    const info = db.prepare(`INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?) `).run(username, email, hash);
+    // 2. 회원가입 완료 처리 -> 사용자 저장 (DB insert)  
+    return res.json({ success: true, message: '회원가입 완료', userId: info.lastInsertRowid });
+});
+
+// ── 로그인 엔드포인트 ───────────────────────────────────
+app.post('/api/auth/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    // 1. DB에서 사용자 조회
+    const row = db.prepare(`SELECT id, password_hash FROM users WHERE username = ?`).get(username);
+    if (!row) return res.status(401).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
+
+
+    // 2. 비밀번호 검증
+    const { id, password_hash } = row;
+    const ok = await bcrypt.compare(password, password_hash);
+    if (!ok) return res.status(401).json({ success: false, message: '비밀번호가 일치하지 않습니다.' });
+
+    // 3. JWT 발급
+    const token = jwt.sign({ id, username }, JWT_SECRET, { expiresIn: '1h' });
+    return res.json({ success: true, token });
+});
+
+// ── 보호된 테스트 API ────────────────────────────────────
+app.get('/api/protected', (req, res) => {
+  const auth = req.headers.authorization?.split(' ')[1];
+  if (!auth) return res.status(401).json({ message: '토큰 필요' });
+  try {
+    const payload = jwt.verify(auth, JWT_SECRET);
+    return res.json({ message: '인증됨', user: payload });
+  } catch {
+    return res.status(401).json({ message: '토큰 만료 또는 유효하지 않음' });
+  }
+});
+
+// ── 뉴스 프록시 엔드포인트 ───────────────────────────────
+app.get('/api/news', async (req, res) => {
+  const { q = 'bitcoin' } = req.query;
+  const key = process.env.NEWS_API_KEY;
+  const params = new URLSearchParams({
+    apiKey: key,
+    q,
+    sortBy: 'publishedAt',
+    pageSize: '10'
+  });
+  params.set('language', 'en');
+  const url = `https://newsapi.org/v2/everything?${params}`;
+
+  try {
+    const apiRes = await fetch(url);
+    const json   = await apiRes.json();
+    res.json(json.articles);
+  } catch (err) {
+    console.error(err);
+    res.status(502).json({ message: '뉴스 API 호출 실패' });
+  }
+});
+
+// 서버 시작
+app.listen(PORT, () => {
+  console.log(`Backend running at http://localhost:${PORT}`);
+});

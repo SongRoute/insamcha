@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mablewide Clone</title>
+    <!-- 로그인 가드 -->
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // 토큰 없으면 로그인 페이지로
+      window.location.href = '/html/login.html';
+    }
+  </script>
     <!-- <script src="../js/script.js"></script> --> <!-- Will be replaced by main.js module -->
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/layout.css">
