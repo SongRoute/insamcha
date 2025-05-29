@@ -11,26 +11,26 @@
 #price-chart .c3-axis path,
 #price-chart .c3-axis line {
     fill: none;
-    stroke: #aaa; /* Axis line color */
+    stroke: #555555; /* Darker axis line color */
 }
 
 #price-chart .c3-axis text {
-    fill: #555; /* Axis text color */
+    fill: #a0a0a0; /* Lighter axis text color */
 }
 
 #price-chart .c3-legend-item text {
-    fill: #333; /* Legend text color */
+    fill: #a0a0a0; /* Lighter legend text color */
 }
 
 #price-chart .c3-tooltip {
-    border-color: #666;
-    background-color: #fff;
-    color: #333;
+    border-color: #444444; /* Darker border for tooltip */
+    background-color: #2a2a2a; /* Dark background for tooltip */
+    color: #e0e0e0; /* Light text color for tooltip */
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 #price-chart .c3-tooltip th {
-    background-color: #eee;
-    color: #333;
+    background-color: #383838; /* Darker header for tooltip */
+    color: #e0e0e0; /* Light text for tooltip header */
     font-weight: bold;
 } 

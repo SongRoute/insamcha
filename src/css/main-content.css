@@ -1,7 +1,7 @@
 /* Main Content Panels */
 .main-panel {
     width: 100%;
-    background-color: #696969; /* Example background */
+    background-color: #1e1e1e; /* Dark gray background */
     border-radius: 8px; /* Example border radius */
     padding: 15px; /* Example padding */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Example shadow */
@@ -14,6 +14,7 @@
 .exchange-panel { /* Was .main-panel-left */
     flex-basis: 250px; /* Example width, adjust as needed */
     flex-shrink: 0;
+    padding: 10px;
 }
 
 .center-panel { /* Was .main-panel-middle */
@@ -25,7 +26,7 @@
 }
 
 .center-panel-section { /* Was .middle-panel-section */
-    background-color: #4d4d4d;
+    background-color: #1e1e1e; /* Dark gray background for sections */
     border-radius: 6px;
     padding: 10px;
     box-sizing: border-box;
@@ -55,6 +56,7 @@
 .news-panel { /* Was .main-panel-right */
     flex-basis: 280px; /* Example width, adjust as needed */
     flex-shrink: 0;
+    background-color: #1e1e1e; /* Dark gray background for news panel */
     /* overflow: hidden; is inherited from .main-panel - We will override this */
     overflow-y: auto; /* Added to allow vertical scrolling */
     overflow-x: hidden; /* Added to prevent horizontal scrolling */
@@ -62,23 +64,102 @@
 
 .newsHolder{
     width: 100%;
-    height: 120px;
-    background-color: #4d4d4d;
+    height: auto; /* Adjust height based on content */
+    background-color: #2a2a2a; /* Slightly lighter dark gray */
     border-radius: 6px;
     padding: 10px;
     box-sizing: border-box;
-    overflow: hidden;
+    /* overflow: hidden; Remove to see all content if needed */
     display: flex;
+    flex-direction: column; /* Stack title and info */
     align-items: flex-start;
     margin: 0 auto;
-    margin-bottom: 5px;
+    margin-bottom: 10px; /* Increased margin */
 }
 
 .newsTitle{
-    background-color: #000000;
-    color: #ffffff;
+    /* background-color: #000000; Remove background */
+    color: #e0e0e0; /* Light gray for title */
+    font-weight: bold;
+    margin-bottom: 4px;
 }
 .newsInfo{
-    background-color: #000000;
-    color: #ffffff;
+    /* background-color: #000000; Remove background */
+    color: #a0a0a0; /* Lighter gray for info */
+    font-size: 12px;
+}
+
+/* Exchange Panel (Live Ranking) Styles */
+.ranking-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.ranking-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.ranking-filter-button {
+    padding: 6px 12px;
+    border: 1px solid #333333;
+    background-color: #2a2a2a;
+    color: #a0a0a0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.ranking-filter-button.active,
+.ranking-filter-button:hover {
+    background-color: #333333;
+    color: #e0e0e0;
+    border-color: #555555;
+}
+
+.ranking-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.ranking-item:last-child {
+    border-bottom: none;
+}
+
+.ranking-item-name {
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+.ranking-item-details {
+    text-align: right;
+}
+
+.ranking-item-price {
+    font-size: 14px;
+    color: #e0e0e0;
+    font-weight: bold;
+}
+
+.ranking-item-change {
+    font-size: 12px;
+}
+
+.ranking-item-change.positive {
+    color: #26A69A; /* Green for positive change */
+}
+
+.ranking-item-change.negative {
+    color: #FF4D4F; /* Red for negative change */
 }

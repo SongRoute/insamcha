@@ -41,9 +41,9 @@
           </div>
         </div>
         <div class="search-text-container">
-          <input type="text" class="search-input" placeholder="Hinted search text">
+          <input type="text" class="search-input" placeholder="주식, 키워드 검색">
         </div>
-        <img src="../../icon/search.svg" class="header-icon" alt="Search Icon">
+        <img src="../../icon/search.svg" class="header-icon search-icon-img" alt="Search Icon">
         <div class="trailing-icon-absolute-container">
           <div data-size="Small" data-style="Standard" data-type="Round" data-width="Default" class="search-icon-container">
             <div data-state="Enabled" class="search-icon-wrapper">
@@ -59,12 +59,6 @@
     </div>
     <div class="nav-actions-container">
       <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-action-item" id="bell-icon-container">
-        <div class="nav-action-icon-wrapper">
-          <div class="nav-action-icon-padding">
-            <div class="search-icon-relative">
-            </div>
-          </div>
-        </div>
         <img src="../../icon/bell.svg" class="header-icon" alt="Bell Icon">
       </div>
       <div class="notifications-dropdown">
@@ -72,44 +66,14 @@
         <div class="notification-item">친구가 게시물을 좋아합니다.</div>
         <div class="notification-item">오늘의 추천: 인삼차 효능 알아보기</div>
       </div>
-      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-action-item login-btn">
-        <div class="nav-action-icon-wrapper">
-          <div class="nav-action-icon-padding">
-            <div class="search-icon-relative">
-            </div>
-          </div>
-        </div>
-          <img src="../../icon/user.svg" class="header-icon" alt="User Icon">
+      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-action-item">
+          <img src="../../icon/apps.svg" class="header-icon" alt="Apps Icon">
       </div>
+      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-action-item">
+        <img src="../../icon/user-circle.svg" class="header-icon" alt="User Profile Icon">
+      </div>
+      <a href="login.html"><button class="header-button login-button">로그인</button></a>
+      <button class="header-button signup-button">시작하기</button>
     </div>
 </header>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const bellIconContainer = document.getElementById('bell-icon-container');
-  const notificationsDropdown = document.querySelector('.notifications-dropdown');
-
-  if (bellIconContainer && notificationsDropdown) {
-    bellIconContainer.addEventListener('click', function(event) {
-      event.stopPropagation(); // Prevents the click from bubbling up to the document listener immediately
-      notificationsDropdown.classList.toggle('active');
-    });
-
-    // Optional: Close dropdown if clicked outside
-    document.addEventListener('click', function(event) {
-      // Check if the click is outside the bell icon and outside the dropdown
-      if (!bellIconContainer.contains(event.target) && !notificationsDropdown.contains(event.target)) {
-        if (notificationsDropdown.classList.contains('active')) {
-          notificationsDropdown.classList.remove('active');
-        }
-      }
-    });
-  } else {
-    if (!bellIconContainer) {
-      console.error('Error: Bell icon container (ID "bell-icon-container") not found.');
-    }
-    if (!notificationsDropdown) {
-      console.error('Error: Notifications dropdown (class "notifications-dropdown") not found.');
-    }
-  }
-});
-</script> 
+<script src="../../js/header.js"></script> 

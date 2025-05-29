@@ -2,7 +2,7 @@
 #nav {
     width: 76px; /* Fixed width for the nav bar */
     height: 100%; /* Make nav full height */
-    background: #0B212E;
+    background: #1e1e1e; /* Darker gray for nav */
     padding: 10px 4px;
     overflow-y: auto; /* In case content exceeds height */
     display: flex;
@@ -58,7 +58,7 @@
 }
 
 .nav-item-label {
-    color: #C1E8FF;
+    color: #a0a0a0; /* Lighter gray for nav item labels */
     font-size: 11px;
     font-family: Roboto, sans-serif;
     font-weight: 500;
@@ -79,7 +79,7 @@
 .nav-divider {
     width: 80%; /* Or a fixed width like 48px */
     height: 1px;
-    background: #4A6572; /* A suitable divider color */
+    background: #333333; /* Darker gray for nav divider */
     margin: 12px 0; /* Adjust vertical spacing */
 } 
 

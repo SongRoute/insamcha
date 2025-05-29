@@ -12,7 +12,7 @@
     gap: 8px; /* Space between label and value */
     padding: 0 15px; /* Horizontal padding for each item group */
     white-space: nowrap; /* Prevent text wrapping within an item */
-    color: white; /* Default text color */
+    color: #e0e0e0; /* Default light gray text color */
 }
 
 .footer-coin-label {
@@ -27,19 +27,19 @@
 }
 
 .coin-value-red {
-    color: #FF5252; /* Or your preferred red */
+    color: #FF4D4F; /* Red for decrease */
 }
 
 .coin-value-blue {
-    color: #448AFF; /* Or your preferred blue */
+    color: #26A69A; /* Green for increase (as in image) */
 }
 
 .coin-value-black { /* As in original, though white was used for no change */
-    color: black;
+    color: #e0e0e0; /* Light gray for no change */
 }
 
 .footer-separator { /* Style for the separator */
     padding: 0 10px;
-    color: #A0A0A0; /* Lighter color for separator */
+    color: #555555; /* Darker gray for separator */
     font-size: 14px;
 } 

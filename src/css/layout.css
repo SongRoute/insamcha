@@ -20,7 +20,7 @@
     padding-right: 16px;
     padding-top: 1px;
     padding-bottom: 1px;
-    background: #0B212E;
+    background: #1e1e1e; /* Darker gray for header */
     overflow: hidden;
     justify-content: space-between;
     align-items: center;
@@ -41,14 +41,14 @@
     display: flex;
     padding: 10px;
     gap: 10px;
-    background-color: #282828;
+    background-color: #121212; /* Consistent with body background */
     box-sizing: border-box;
     overflow: hidden; /* Prevent main from overflowing and causing scroll */
 }
 
 /* Footer specific styles */
 #footer {
-    background-color: #0B212E; /* Example from original */
+    background-color: #1e1e1e; /* Darker gray for footer */
     color: white;
     padding: 10px 0; /* Adjust padding as needed */
     overflow: hidden; /* Important for marquee effect */
