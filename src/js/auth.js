@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const result   = await login(username, password);
       if (result.success) {
         localStorage.setItem('token', result.token);
-        window.location.href = '/html/index.html';
+        window.location.href = '/index.html';
       } else {
         alert('로그인 실패: ' + result.message);
       }
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await signup(username.value, email.value, password.value);
       if (result.success) {
         alert('회원가입 성공!');
-        window.location.href = '/html/login.html';
+        window.location.href = '/login.html';
       } else {
         alert('회원가입 실패: ' + result.message);
       }

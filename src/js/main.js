@@ -22,10 +22,10 @@ async function loadHTMLComponent(url, placeholderId) {
 
 document.addEventListener('DOMContentLoaded', async function() {
     // Load HTML components
-    await loadHTMLComponent('./components/nav.html', 'nav-placeholder');
-    await loadHTMLComponent('./components/header.html', 'header-placeholder');
-    await loadHTMLComponent('./components/main_content.html', 'main-content-placeholder');
-    await loadHTMLComponent('./components/footer.html', 'footer-placeholder');
+    await loadHTMLComponent('src/components/nav.html', 'nav-placeholder');
+    await loadHTMLComponent('src/components/header.html', 'header-placeholder');
+    await loadHTMLComponent('src/components/main_content.html', 'main-content-placeholder');
+    await loadHTMLComponent('src/components/footer.html', 'footer-placeholder');
 
     // Add event listener for login button after header is loaded
     const loginButton = document.querySelector('.login-btn'); // Assuming login button has class 'login-btn'
