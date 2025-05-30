@@ -28,6 +28,10 @@
     cursor: pointer; /* Add for better UX */
 }
 
+.nav-item:hover {
+    background: #2f3c42;
+}
+
 .nav-item-icon-bg {
     overflow: hidden;
     border-radius: 100px;
@@ -84,21 +88,19 @@
     margin: 12px 0; /* Adjust vertical spacing */
 } 
 
-#favorite-button {
+.favorite-button {
     background: none;
     border: none;
     padding: 0;
     margin: 0;
     cursor: pointer;
     width: 100%;
-    height: width;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.nav-item:hover {
-    background: #2f3c42;
-}
+
 #main-logo {
     width: 64px; /* Explicit width to match nav-item width */
     height: 64px; /* Explicit height to make it a square for the circular logo */

@@ -3,16 +3,16 @@
 #news-container {
   display: flex;
   flex-direction: column;
-  gap: 100000px;
+  gap: 1rem;
 }
 
 .news-card {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: #2a2a2a;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .news-card .news-img {
@@ -28,18 +28,18 @@
 .news-card h3 {
   margin: 0 0 .5rem;
   font-size: 1.1rem;
-  color: #222;
+  color: #e0e0e0;
 }
 
 .news-card p {
   margin: 0 0 .75rem;
   font-size: .9rem;
-  color: #555;
+  color: #a0a0a0;
   line-height: 1.4;
 }
 
 .news-card small {
-  color: #999;
+  color: #777777;
   font-size: .8rem;
 }
 
@@ -51,21 +51,29 @@
   flex: 1;
   padding: .5rem;
   border-radius: 4px 0 0 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #333333;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 #news-search-btn {
   padding: .5rem 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #333333;
   border-left: none;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
+  background-color: #333333;
+  color: #e0e0e0;
+}
+
+#news-search-btn:hover {
+  background-color: #444444;
 }
 
 /*타이틀 호버*/
 .news-title {
   display: block;
   margin-bottom: .75rem;
-  color: #0066cc;
+  color: #f0b90b;
   text-decoration: none;
 }
 .news-title:hover {

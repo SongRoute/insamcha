@@ -4,9 +4,9 @@
     min-width: 200px;
     max-width: 300px;
     height: 32px;
-    background: #333333; /* Darker gray for search bar */
+    background: #333333;
     overflow: hidden;
-    border-radius: 4px; /* Less rounded corners */
+    border-radius: 4px;
     justify-content: flex-start;
     align-items: center;
     gap: 4px;
@@ -55,15 +55,6 @@
     position: relative;
 }
 
-.search-icon-shape {
-    width: 18px;
-    height: 12px;
-    left: 3px;
-    top: 6px;
-    position: absolute;
-    background: var(--Schemes-On-Surface-Variant, #49454F);
-}
-
 .search-text-container {
     flex: 1 1 0;
     align-self: stretch;
@@ -80,7 +71,7 @@
     border: none;
     outline: none;
     background-color: transparent;
-    color: #e0e0e0; /* Light gray text */
+    color: #e0e0e0;
     font-size: 16px;
     font-family: Roboto, sans-serif;
     font-weight: 400;
@@ -90,14 +81,13 @@
 }
 
 .search-input::placeholder {
-    color: #a0a0a0; /* Lighter gray for placeholder */
+    color: #a0a0a0;
     opacity: 0.7;
 }
 
 .trailing-icon-absolute-container {
-    /*left: 300px; /* This will be dynamic based on input width or use flexbox */
-    position: absolute; /* Kept for original design intent, review if problematic */
-    right: 4px; /* Align to the right of search-bar-inner */
+    position: absolute;
+    right: 4px;
     top: 50%;
     transform: translateY(-50%);
     justify-content: flex-end;
@@ -108,8 +98,6 @@
 .trailing-icon-shape {
     width: 18px;
     height: 18px;
-    /* left: 3px; Redundant with absolute positioning container */
-    /* top: 3px; Redundant with absolute positioning container */
     background: var(--Schemes-On-Surface-Variant, #49454F);
 }
 
@@ -121,7 +109,7 @@
     align-items: center;
     gap: 18px;
     display: flex;
-    position: relative; /* For positioning the dropdown */
+    position: relative;
 }
 
 .nav-action-item {
@@ -139,40 +127,13 @@
 }
 
 .nav-action-item:hover {
-    background-color: #444444; /* Darker hover for nav actions */
-}
-
-.nav-action-icon-wrapper {
-    overflow: hidden;
-    border-radius: 100px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-
-.nav-action-icon-padding {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    justify-content: center;
-    align-items: center;
-    display: inline-flex;
-}
-
-.nav-action-icon-shape {
-    width: 20px;
-    height: 20px;
-    /* left: 2px; Not needed with centered flex content */
-    /* top: 2px; Not needed with centered flex content */
-    background: #F5F5F5;
+    background-color: #444444;
 }
 
 .header-icon {
     width: 20px;
     height: 20px;
-    color: #e0e0e0; /* Light gray for icons */
+    color: #e0e0e0;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -181,46 +142,45 @@
 
 /* Notification Pop-up Styles */
 .notifications-dropdown {
-    display: none; /* Hidden by default */
-    position: fixed; /* Use fixed to position relative to the viewport */
+    display: none;
+    position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%); /* Center the pop-up */
+    transform: translate(-50%, -50%);
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 8px; /* Slightly more rounded corners for a pop-up feel */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* More pronounced shadow */
-    z-index: 1001; /* Higher z-index to be on top of overlay */
-    min-width: 300px; /* Adjust width as needed */
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1001;
+    min-width: 300px;
     max-width: 90%;
-    padding: 20px; /* More padding */
-    margin-top: 0; /* Remove margin-top as it's centered */
+    padding: 20px;
+    margin-top: 0;
 }
 
 .notifications-dropdown.active {
-    display: block; /* Show when active */
+    display: block;
 }
 
-/* Overlay for pop-up */
 .notification-overlay {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    z-index: 1000; /* Below the pop-up but above everything else */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 .notification-overlay.active {
-    display: block; /* Show when pop-up is active */
+    display: block;
 }
 
 .notification-item {
     padding: 8px 10px;
     border-bottom: 1px solid #eee;
-    font-size: 14px; /* Adjust as needed */
+    font-size: 14px;
     color: #333;
 }
 
@@ -249,14 +209,14 @@
 }
 
 .signup-button {
-    background-color: #f0b90b; /* Yellow color from image */
+    background-color: #f0b90b;
     color: #121212;
 }
 
 .signup-button:hover {
-    background-color: #ffd700; /* Lighter yellow on hover */
+    background-color: #ffd700;
 }
 
 .search-icon-img {
-    left: 10px; /* Adjust to position search icon properly */
+    left: 10px;
 }
