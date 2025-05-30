@@ -1,38 +1,4 @@
-<style>
-/* CSS for notification dropdown */
-.nav-actions-container {
-  position: relative; /* For positioning the dropdown */
-}
-
-.notifications-dropdown {
-  display: none; /* Hidden by default */
-  position: absolute;
-  top: 100%; /* Position below the nav actions area, adjust as needed */
-  right: 0; /* Align to the right of nav-actions-container */
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 1000; /* Ensure it's above other content */
-  min-width: 250px; /* Adjust width as needed */
-  padding: 10px;
-  margin-top: 5px; /* Small gap from the header */
-}
-
-.notifications-dropdown.active {
-  display: block; /* Show when active */
-}
-
-.notification-item {
-  padding: 8px 10px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px; /* Adjust as needed */
-  color: #333;
-}
-.notification-item:last-child {
-  border-bottom: none;
-}
-</style>
+<link rel="stylesheet" href="../css/header.css">
 <header id="header" class="navbar-container">
     <div data-show-1st-trailing-icon="true" data-show-2nd-trailing-icon="false" data-show-avatar="False" data-show-leading-icon="true" data-state="Enabled" class="search-bar-wrapper">
       <div class="search-bar-inner">
@@ -66,14 +32,9 @@
         <div class="notification-item">친구가 게시물을 좋아합니다.</div>
         <div class="notification-item">오늘의 추천: 인삼차 효능 알아보기</div>
       </div>
-      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-action-item">
-          <img src="../../icon/apps.svg" class="header-icon" alt="Apps Icon">
-      </div>
-      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-action-item">
-        <img src="../../icon/user-circle.svg" class="header-icon" alt="User Profile Icon">
-      </div>
+      <div class="notification-overlay"></div>
       <a href="login.html"><button class="header-button login-button">로그인</button></a>
       <button class="header-button signup-button">시작하기</button>
     </div>
 </header>
-<script src="../../js/header.js"></script> 
+<script src="../js/header.js"></script> 

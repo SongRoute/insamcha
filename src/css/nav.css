@@ -15,6 +15,7 @@
 
 .nav-item {
     width: 64px;
+    height: 64px;
     /* height: 58px; remove fixed height for flexibility */
     padding-bottom: 4px;
     padding-left: 2px;
@@ -95,7 +96,7 @@
     justify-content: center;
     align-items: center;
 }
-#favorite-button:hover {
+.nav-item:hover {
     background: #2f3c42;
 }
 #main-logo {

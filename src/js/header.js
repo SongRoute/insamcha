@@ -1,28 +1,39 @@
 document.addEventListener('DOMContentLoaded', function() {
     const bellIconContainer = document.getElementById('bell-icon-container');
-    const notificationsDropdown = document.querySelector('.notifications-dropdown');
+    const notificationsPopup = document.querySelector('.notifications-dropdown');
+    const notificationOverlay = document.querySelector('.notification-overlay');
+    const mainContentPlaceholder = document.getElementById('main-content-placeholder');
 
-    if (bellIconContainer && notificationsDropdown) {
+    if (bellIconContainer && notificationsPopup && notificationOverlay && mainContentPlaceholder) {
         bellIconContainer.addEventListener('click', function(event) {
-            event.stopPropagation(); // Prevents the click from bubbling up to the document listener immediately
-            notificationsDropdown.classList.toggle('active');
+            event.stopPropagation();
+
+            // Move popup to main content area if it's not already there
+            if (notificationsPopup.parentNode !== mainContentPlaceholder) {
+                mainContentPlaceholder.appendChild(notificationsPopup);
+            }
+
+            notificationsPopup.classList.toggle('active');
+            notificationOverlay.classList.toggle('active');
         });
 
-        // Optional: Close dropdown if clicked outside
-        document.addEventListener('click', function(event) {
-            // Check if the click is outside the bell icon and outside the dropdown
-            if (!bellIconContainer.contains(event.target) && !notificationsDropdown.contains(event.target)) {
-                if (notificationsDropdown.classList.contains('active')) {
-                    notificationsDropdown.classList.remove('active');
-                }
-            }
+        notificationOverlay.addEventListener('click', function() {
+            notificationsPopup.classList.remove('active');
+            notificationOverlay.classList.remove('active');
         });
+
     } else {
         if (!bellIconContainer) {
             console.error('Error: Bell icon container (ID "bell-icon-container") not found.');
         }
-        if (!notificationsDropdown) {
-            console.error('Error: Notifications dropdown (class "notifications-dropdown") not found.');
+        if (!notificationsPopup) {
+            console.error('Error: Notifications popup (class "notifications-dropdown") not found.');
+        }
+        if (!notificationOverlay) {
+            console.error('Error: Notification overlay (class "notification-overlay") not found.');
+        }
+        if (!mainContentPlaceholder) {
+            console.error('Error: Main content placeholder (ID "main-content-placeholder") not found.');
         }
     }
 }); 

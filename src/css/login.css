@@ -6,16 +6,18 @@
 }
 
 #login-form {
-    background: #fff;
+    background: #1e1e1e; /* Darker gray from nav.css */
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px; /* Keep rounded corners, or adjust if needed */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adjusted shadow for dark bg */
     width: 320px;
+    color: #a0a0a0; /* Lighter gray for text, from nav.css */
 }
 
 #login-form h2 {
     margin-bottom: 20px;
     text-align: center;
+    color: #ffffff; /* White or very light gray for headings */
 }
 
 #login-form div {
@@ -25,33 +27,46 @@
 #login-form label {
     display: block;
     margin-bottom: 5px;
+    color: #a0a0a0; /* Lighter gray for labels */
 }
 
 #login-form input[type="text"],
 #login-form input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #333333; /* Darker border, from nav.css divider */
     border-radius: 3px;
     box-sizing: border-box;
+    background-color: #2a2a2a; /* Slightly lighter than form bg for contrast */
+    color: #e0e0e0; /* Light text color for input */
+}
+
+#login-form input[type="text"]:focus,
+#login-form input[type="password"]:focus {
+    border-color: #007bff; /* Keep a highlight color or use one from nav if available */
+    outline: none; /* Remove default focus outline */
 }
 
 #login-form button {
     width: 100%;
     padding: 10px;
-    background: #007bff;
-    color: white;
+    background: #333333; /* Button background, can be same as nav-divider or a distinct action color */
+    color: #ffffff; /* White text for buttons */
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    font-family: Roboto, sans-serif; /* Match nav font */
+    font-weight: 500; /* Match nav font weight */
+    letter-spacing: 0.50px; /* Match nav letter spacing */
 }
 
 #login-form button:hover {
-    background: #0056b3;
+    background: #2f3c42; /* Hover color from nav.css #favorite-button:hover */
 }
 #signup-link {
     font-size: 12px;
     text-align: center;
     font-style: italic;
     margin-top: 10px;
+    color: #a0a0a0; /* Consistent text color */
 }

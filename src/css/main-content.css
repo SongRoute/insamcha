@@ -57,6 +57,7 @@
 
 .news-panel {
     flex-basis: 280px;
+    padding: 10px;
     flex-shrink: 0;
     background-color: #1e1e1e;
     overflow-y: auto;

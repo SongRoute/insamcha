@@ -1,3 +1,26 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .favorite-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; /* Ensure the button takes full width of its container */
+            height: 100%; /* Ensure the button takes full height of its container */
+            padding: 0; /* Remove default padding if any */
+            border: none; /* Remove default border if any */
+            background: none; /* Remove default background if any */
+        }
+
+        .nav-item-icon-bg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
 <nav id="nav">
     <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item logo nav-item-icon-bg">
       <div id="main-logo" class="nav-item-icon-bg">
@@ -8,10 +31,14 @@
           </div>
         </div>
       </div>
+
     </div>
     <div class="nav-menu-group">
+      <div class="nav-divider"></div>
+
       <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
-        <button id="favorite-button">
+        
+        <button class="favorite-button">
         <!-- Favorite button -->
           <div class="nav-item-icon-bg">
             <div class="nav-item-icon-padding">
@@ -21,72 +48,58 @@
             </div>
           </div>
         </button>
+        
       </div>
       <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
-        <div class="nav-item-icon-bg">
-          <div class="nav-item-icon-padding">
-            <div class="nav-item-icon-container">
-              <div class="nav-item-icon"></div>
+        <button class="favorite-button">
+          <!-- Favorite button -->
+            <div class="nav-item-icon-bg">
+              <div class="nav-item-icon-padding">
+                <div class="nav-item-icon-container">
+                  <img src="../icon/heart.svg" alt="Favorite Icon" class="nav-item-icon">
+                </div>
+              </div>
             </div>
-          </div>
+          </button>      
         </div>
-        <div class="nav-item-label">나의 추천</div>
-      </div>
-      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
-        <div class="nav-item-icon-bg">
-          <div class="nav-item-icon-padding">
-            <div class="nav-item-icon-container">
-              <div class="nav-item-icon"></div>
-            </div>
-          </div>
-        </div>
-        <div class="nav-item-label">비교하기</div>
-      </div>
-      <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
-        <div class="nav-item-icon-bg">
-          <div class="nav-item-icon-padding">
-            <div class="nav-item-icon-container">
-              <div class="nav-item-icon"></div>
-            </div>
-          </div>
-        </div>
-        <div class="nav-item-label">보유자산</div>
-      </div>
-    </div>
-    <div class="nav-divider"></div>
-    <div class="nav-menu-group">
         <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
+          <button class="favorite-button">
+          <!-- Favorite button -->
             <div class="nav-item-icon-bg">
               <div class="nav-item-icon-padding">
                 <div class="nav-item-icon-container">
-                  <div class="nav-item-icon"></div>
+                  <img src="../icon/heart.svg" alt="Favorite Icon" class="nav-item-icon">
                 </div>
               </div>
             </div>
-            <div class="nav-item-label">설정</div> <!-- This was menu1 again in original, might be settings or profile -->
-          </div>
-          <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
-            <div class="nav-item-icon-bg">
-              <div class="nav-item-icon-padding">
-                <div class="nav-item-icon-container">
-                  <div class="nav-item-icon"></div>
+          </button>
+          
+        </div>
+        <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
+          <button class="favorite-button">
+            <!-- Favorite button -->
+              <div class="nav-item-icon-bg">
+                <div class="nav-item-icon-padding">
+                  <div class="nav-item-icon-container">
+                    <img src="../icon/heart.svg" alt="Favorite Icon" class="nav-item-icon">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="nav-item-label">알림설정</div>
+            </button>      
           </div>
+          <div class="nav-divider"></div>
+
     </div>
-    <div class="nav-divider"></div>
     <div class="nav-menu-group" style="margin-top: auto;"> <!-- Push this group to the bottom -->
-        <div data-badge="None" data-label="True" data-selected="False" data-state="Enabled" class="nav-item">
-            <div class="nav-item-icon-bg">
-              <div class="nav-item-icon-padding">
-                <div class="nav-item-icon-container">
-                  <div class="nav-item-icon"></div>
-                </div>
+      <button class="favorite-button">
+        <!-- Favorite button -->
+          <div class="nav-item-icon-bg">
+            <div class="nav-item-icon-padding">
+              <div class="nav-item-icon-container">
+                <img src="../icon/heart.svg" alt="Favorite Icon" class="nav-item-icon">
               </div>
             </div>
-            <div class="nav-item-label">더보기</div> <!-- This was menu1 again, likely logout or help -->
           </div>
+        </button>      
     </div>
 </nav> 

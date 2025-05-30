@@ -179,39 +179,53 @@
     transform: translate(-50%, -50%);
 }
 
-/* Notification Dropdown Styles */
+/* Notification Pop-up Styles */
 .notifications-dropdown {
     display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%; /* Position below the nav actions area, adjust as needed */
-    right: 0; /* Align to the right of nav-actions-container */
-    background-color: #2a2a2a; /* Dark background for dropdown */
-    border: 1px solid #444444; /* Darker border */
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 1000; /* Ensure it's above other content */
-    min-width: 250px; /* Adjust width as needed */
-    padding: 10px;
-    margin-top: 5px; /* Small gap from the header */
+    position: fixed; /* Use fixed to position relative to the viewport */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Center the pop-up */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly more rounded corners for a pop-up feel */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* More pronounced shadow */
+    z-index: 1001; /* Higher z-index to be on top of overlay */
+    min-width: 300px; /* Adjust width as needed */
+    max-width: 90%;
+    padding: 20px; /* More padding */
+    margin-top: 0; /* Remove margin-top as it's centered */
 }
 
 .notifications-dropdown.active {
     display: block; /* Show when active */
 }
 
+/* Overlay for pop-up */
+.notification-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 1000; /* Below the pop-up but above everything else */
+}
+
+.notification-overlay.active {
+    display: block; /* Show when pop-up is active */
+}
+
 .notification-item {
     padding: 8px 10px;
-    border-bottom: 1px solid #444444; /* Darker border for items */
+    border-bottom: 1px solid #eee;
     font-size: 14px; /* Adjust as needed */
-    color: #e0e0e0; /* Light text color */
+    color: #333;
 }
 
 .notification-item:last-child {
     border-bottom: none;
-}
-
-.notification-item:hover {
-    background-color: #383838; /* Slightly lighter dark hover */
 }
 
 /* Header Buttons */
