@@ -18,9 +18,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// src/html 폴더를 정적파일 루트로 지정
+// ── 정적 파일 서빙: src 폴더 전체를 루트(/)로 노출 ─────────────────────
 app.use('/', express.static(path.resolve(__dirname, '../src')));
-app.use('/html',express.static(path.resolve(__dirname, '../src')));
 
 // 미들웨어
 app.use(cors());
@@ -97,6 +96,22 @@ app.get('/api/news', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(502).json({ message: '뉴스 API 호출 실패' });
+  }
+});
+
+// ── 거래소 목록 프록시 엔드포인트 ───────────────────────────────
+app.get('/api/exchanges', async (req, res) => {
+  try {
+    const cgUrl  = 'https://api.coingecko.com/api/v3/exchanges?per_page=10&page=1';
+    const apiRes = await fetch(cgUrl);
+    if (!apiRes.ok) {
+      return res.status(apiRes.status).json({ message: 'CoinGecko 거래소 API 에러' });
+    }
+    const exchanges = await apiRes.json();
+    return res.json(exchanges);
+  } catch (err) {
+    console.error('Exchange proxy error:', err);
+    return res.status(502).json({ message: '거래소 정보 호출 실패' });
   }
 });
 
