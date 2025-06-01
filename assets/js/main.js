@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // 푸터 초기화
-    populateFooter();
+    // 푸터 초기화 - footer HTML 로드 후 실행
+    await populateFooter();
 
     // Binance 차트 초기화
     if (document.getElementById('priceChart')) {

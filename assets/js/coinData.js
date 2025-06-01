@@ -1,6 +1,6 @@
 async function fetchCoinData() {
     try {
-        const response = await fetch('../../data.json'); // Corrected path to root directory
+        const response = await fetch('assets/data/data.json'); // Path relative to HTML file (index.html)
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -44,14 +44,28 @@ function createCoinElement(coin) {
 }
 
 async function populateFooter() {
+    console.log("Starting populateFooter function");
+    
     const coinData = await fetchCoinData();
-    if (!coinData) return;
+    if (!coinData) {
+        console.error("No coin data received");
+        return;
+    }
+    
+    console.log("Coin data fetched successfully:", coinData);
 
     const marqueeContent = document.querySelector('#footer .ltr-marquee-content');
     if (!marqueeContent) {
         console.error("Marquee content element not found");
+        // 더 구체적인 디버깅
+        const footer = document.querySelector('#footer');
+        console.log("Footer element:", footer);
+        const footerPlaceholder = document.querySelector('#footer-placeholder');
+        console.log("Footer placeholder:", footerPlaceholder);
         return;
     }
+    
+    console.log("Marquee content element found:", marqueeContent);
     marqueeContent.innerHTML = '';
 
     const coinKeys = Object.keys(coinData);
