@@ -41,3 +41,6 @@ npm start
 - 암호화폐 뉴스 조회 및 검색  
 - 사용자 인증 (회원가입/로그인)
 - 반응형 UI/UX
+
+## 중간 발표
+https://www.canva.com/design/DAGpHWI4Swg/Oda3vEd-tXk-JDopab3Q3w/edit
