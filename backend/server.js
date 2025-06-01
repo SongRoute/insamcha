@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import db from './db.js'; 
+import db from './db.js';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 
@@ -10,7 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -33,15 +33,15 @@ app.post('/api/auth/signup', async (req, res) => {
     const exists = db.prepare(`SELECT id FROM users WHERE username = ? OR email = ?`).get(username, email);
     if (exists) {
         return res.status(400).json({
-        success: false,
-        message: '이미 사용 중인 사용자명 또는 이메일입니다.'
+            success: false,
+            message: '이미 사용 중인 사용자명 또는 이메일입니다.'
         });
     }
 
     // 2) 비밀번호 해싱 & 저장
     const hash = await bcrypt.hash(password, 10);
     const info = db.prepare(`INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?) `).run(username, email, hash);
-    // 2. 회원가입 완료 처리 -> 사용자 저장 (DB insert)  
+    // 2. 회원가입 완료 처리 -> 사용자 저장 (DB insert)
     return res.json({ success: true, message: '회원가입 완료', userId: info.lastInsertRowid });
 });
 
@@ -52,7 +52,6 @@ app.post('/api/auth/login', async (req, res) => {
     // 1. DB에서 사용자 조회
     const row = db.prepare(`SELECT id, password_hash FROM users WHERE username = ?`).get(username);
     if (!row) return res.status(401).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
-
 
     // 2. 비밀번호 검증
     const { id, password_hash } = row;
@@ -66,56 +65,97 @@ app.post('/api/auth/login', async (req, res) => {
 
 // ── 보호된 테스트 API ────────────────────────────────────
 app.get('/api/protected', (req, res) => {
-  const auth = req.headers.authorization?.split(' ')[1];
-  if (!auth) return res.status(401).json({ message: '토큰 필요' });
-  try {
-    const payload = jwt.verify(auth, JWT_SECRET);
-    return res.json({ message: '인증됨', user: payload });
-  } catch {
-    return res.status(401).json({ message: '토큰 만료 또는 유효하지 않음' });
-  }
+    const auth = req.headers.authorization?.split(' ')[1];
+    if (!auth) return res.status(401).json({ message: '토큰 필요' });
+    try {
+        const payload = jwt.verify(auth, JWT_SECRET);
+        return res.json({ message: '인증됨', user: payload });
+    } catch {
+        return res.status(401).json({ message: '토큰 만료 또는 유효하지 않음' });
+    }
 });
 
 // ── 뉴스 프록시 엔드포인트 ───────────────────────────────
 app.get('/api/news', async (req, res) => {
-  const { q = 'bitcoin' } = req.query;
-  const key = process.env.NEWS_API_KEY;
-  const params = new URLSearchParams({
-    apiKey: key,
-    q,
-    sortBy: 'publishedAt',
-    pageSize: '10'
-  });
-  params.set('language', 'en');
-  const url = `https://newsapi.org/v2/everything?${params}`;
+    const { q = 'bitcoin' } = req.query;
+    const key = process.env.NEWS_API_KEY;
+    const params = new URLSearchParams({
+        apiKey: key,
+        q,
+        sortBy: 'publishedAt',
+        pageSize: '10'
+    });
+    params.set('language', 'en');
+    const url = `https://newsapi.org/v2/everything?${params}`;
 
-  try {
-    const apiRes = await fetch(url);
-    const json   = await apiRes.json();
-    res.json(json.articles);
-  } catch (err) {
-    console.error(err);
-    res.status(502).json({ message: '뉴스 API 호출 실패' });
-  }
+    try {
+        const apiRes = await fetch(url);
+        const json = await apiRes.json();
+        res.json(json.articles);
+    } catch (err) {
+        console.error(err);
+        res.status(502).json({ message: '뉴스 API 호출 실패' });
+    }
 });
 
 // ── 거래소 목록 프록시 엔드포인트 ───────────────────────────────
 app.get('/api/exchanges', async (req, res) => {
-  try {
-    const cgUrl  = 'https://api.coingecko.com/api/v3/exchanges?per_page=100&page=1';
-    const apiRes = await fetch(cgUrl);
-    if (!apiRes.ok) {
-      return res.status(apiRes.status).json({ message: 'CoinGecko 거래소 API 에러' });
+    try {
+        const cgUrl = 'https://api.coingecko.com/api/v3/exchanges?per_page=100&page=1';
+        const apiRes = await fetch(cgUrl);
+        if (!apiRes.ok) {
+            return res.status(apiRes.status).json({ message: 'CoinGecko 거래소 API 에러' });
+        }
+        const exchanges = await apiRes.json();
+        return res.json(exchanges);
+    } catch (err) {
+        console.error('Exchange proxy error:', err);
+        return res.status(502).json({ message: '거래소 정보 호출 실패' });
     }
-    const exchanges = await apiRes.json();
-    return res.json(exchanges);
-  } catch (err) {
-    console.error('Exchange proxy error:', err);
-    return res.status(502).json({ message: '거래소 정보 호출 실패' });
-  }
+});
+
+// ── Binance Klines 데이터 프록시 엔드포인트 추가 ────────────────
+app.get('/api/klines', async (req, res) => {
+    const { symbol, interval, startTime, endTime, limit = 500 } = req.query; // limit 기본값 500
+
+    if (!symbol || !interval) {
+        return res.status(400).json({ message: 'Symbol and interval are required.' });
+    }
+
+    const binanceApiUrl = `https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=${limit}${startTime ? `&startTime=${startTime}` : ''}${endTime ? `&endTime=${endTime}` : ''}`;
+
+    try {
+        const apiRes = await fetch(binanceApiUrl);
+        if (!apiRes.ok) {
+            const errorText = await apiRes.text();
+            console.error(`Binance Klines API error: ${apiRes.status} - ${errorText}`);
+            return res.status(apiRes.status).json({ message: `Failed to fetch Klines from Binance: ${errorText}` });
+        }
+        const klinesData = await apiRes.json();
+        // Klines 데이터 형식: [
+        //   [
+        //     1499040000000,      // Open time
+        //     "0.00000100",     // Open
+        //     "0.00000100",     // High
+        //     "0.00000100",     // Low
+        //     "0.00000100",     // Close
+        //     "0.00000000",     // Volume
+        //     1499644799999,      // Close time
+        //     "0.00000000",     // Quote asset volume
+        //     0,                // Number of trades
+        //     "0.00000000",     // Taker buy base asset volume
+        //     "0.00000000",     // Taker buy quote asset volume
+        //     "0"               // Ignore
+        //   ]
+        // ]
+        res.json(klinesData);
+    } catch (err) {
+        console.error('Binance Klines proxy error:', err);
+        res.status(500).json({ message: 'Failed to fetch Klines data.' });
+    }
 });
 
 // 서버 시작
 app.listen(PORT, () => {
-  console.log(`Backend running at http://localhost:${PORT}`);
+    console.log(`Backend running at http://localhost:${PORT}`);
 });
