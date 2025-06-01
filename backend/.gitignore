@@ -3,3 +3,4 @@
 /node_modules
 /insamcha.db
 .env
+.DS_Store 

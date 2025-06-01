@@ -38,7 +38,7 @@ export function renderExchanges(exchanges) {
         <div class="exchange-text">
           <div class="exchange-name">${ex.name}</div>
           <div class="exchange-volume">24h 거래량: ${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</div>
-          <div class="exchange-score">신뢰 점수: ${ex.trust_score}위</div>
+          <div class="exchange-score">신뢰 점수: ${ex.trust_score_rank}위</div>
         </div>
       </a>
     `;
