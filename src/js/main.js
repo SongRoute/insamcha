@@ -1,6 +1,12 @@
+// src/js/main.js
+
 import { populateFooter } from './coinData.js';
-import BinanceChart from './binanceChart.js'; // NEW: 새 BinanceChart 클래스 가져오기
-import { fetchCryptoNews } from './news.js';
+import BinanceChart from './binanceChart.js'; // Binance Chart 클래스
+import { fetchChartData } from './chart.js';
+import { renderNews, fetchCryptoNews } from './news.js';
+import { renderExchanges, fetchExchanges } from './exchanges.js';
+
+let allExchanges = []; // 전체 거래소 정보를 저장해 둘 전역 변수
 
 async function loadHTMLComponent(url, placeholderId) {
     try {
@@ -28,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadHTMLComponent('src/components/footer.html', 'footer-placeholder');
 
     // 헤더 로드 후 로그인 버튼에 이벤트 리스너 추가
-    const loginButton = document.querySelector('.login-btn'); // 로그인 버튼이 'login-btn' 클래스를 가진다고 가정
+    const loginButton = document.querySelector('.login-btn');
     if (loginButton) {
         loginButton.addEventListener('click', () => {
             window.location.href = 'login.html';
@@ -36,22 +42,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     // 네비게이션 로드 후 로고에 이벤트 리스너 추가
-    const logo = document.querySelector('.logo'); // 로고가 'logo' 클래스를 가진다고 가정
+    const logo = document.querySelector('.logo');
     if (logo) {
         logo.addEventListener('click', () => {
             window.location.href = 'index.html';
         });
     }
 
-    // 모든 컴포넌트, 특히 푸터와 메인 콘텐츠(차트용) 로드 후
-    // 관련 요소를 채우거나 이벤트 리스너를 첨부하는 함수를 호출합니다.
-    // 관련 HTML이 DOM에 로드된 후에 이러한 함수가 호출되는지 확인합니다.
+    // 푸터와 차트 초기화
     populateFooter();
+    fetchChartData();
 
-    // NEW: main_content가 로드된 후 바이낸스 차트 초기화
-    if (document.getElementById('priceChart')) { // 캔버스 요소가 존재하는지 확인
+    // Binance 차트 초기화
+    if (document.getElementById('priceChart')) {
         const binanceChart = new BinanceChart();
-        // 페이지 언로드 시 정리 확인
         window.addEventListener('beforeunload', () => {
             binanceChart.disconnect();
         });
@@ -59,63 +63,67 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error("main_content.html 로드 후 ID 'priceChart'를 가진 캔버스를 찾을 수 없습니다. 바이낸스 차트가 초기화되지 않습니다.");
     }
 
+    // 뉴스 렌더링 및 검색 기능
     renderNews();
-    const searchBtn   = document.getElementById('news-search-btn');
-    const searchInput = document.getElementById('news-search-input');
+    const newsSearchInput = document.getElementById('news-search-input');
+    if (newsSearchInput) {
+        newsSearchInput.addEventListener('input', () => {
+            const keyword = newsSearchInput.value.trim();
+            if (keyword === '') {
+                renderNews(); // 빈 칸 시 기본값 사용
+            } else {
+                renderNews(keyword);
+            }
+        });
+    }
 
-    if (searchBtn) { // searchBtn에 대한 검사 추가
+    // 뉴스 검색 버튼 기능
+    const searchBtn = document.getElementById('news-search-btn');
+    if (searchBtn) {
         searchBtn.addEventListener('click', () => {
-            const keyword = searchInput.value.trim();
+            const keyword = newsSearchInput.value.trim();
             if (keyword) {
-            renderNews(keyword);
+                renderNews(keyword);
             }
         });
     }
 
     // Enter 키로도 검색
-    if (searchInput) { // searchInput에 대한 검사 추가
-        searchInput.addEventListener('keyup', e => {
-            if (e.key === 'Enter' && searchInput.value.trim()) {
-            renderNews(searchInput.value.trim());
+    if (newsSearchInput) {
+        newsSearchInput.addEventListener('keyup', e => {
+            if (e.key === 'Enter' && newsSearchInput.value.trim()) {
+                renderNews(newsSearchInput.value.trim());
             }
         });
     }
+
+    // 거래소 정보 가져와서 렌더 + 검색 필터 연결
+    try {
+        allExchanges = await fetchExchanges(); // 전체 배열 저장
+        renderExchanges(allExchanges);
+
+        // 거래소 검색창 요소
+        const exchangeSearchInput = document.getElementById('exchange-search-input');
+        if (exchangeSearchInput) {
+            exchangeSearchInput.addEventListener('input', () => {
+                const query = exchangeSearchInput.value.trim().toLowerCase();
+                if (!query) {
+                    // 입력값이 비어 있으면 전체 목록 렌더
+                    renderExchanges(allExchanges);
+                } else {
+                    // 이름에 검색어 포함된 항목만 필터링
+                    const filtered = allExchanges.filter(ex =>
+                        ex.name.toLowerCase().includes(query)
+                    );
+                    renderExchanges(filtered);
+                }
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        const exchContainer = document.getElementById('exchange-container');
+        if (exchContainer) {
+            exchContainer.textContent = '거래소 정보를 불러오는 중 오류가 발생했습니다.';
+        }
+    }
 });
-
-/**
- * 뉴스 렌더링: query 키워드를 받아서 제목만 출력
- * @param {string} query 검색 키워드
- */
-async function renderNews(query = 'bitcoin') {
-  const container = document.getElementById('news-container');
-  if (!container) { // 컨테이너에 대한 검사 추가
-      console.error("뉴스 컨테이너를 찾을 수 없습니다.");
-      return;
-  }
-  container.innerHTML = '';      // 이전 결과 초기화
-
-  let articles;
-  try {
-    articles = await fetchCryptoNews(query);
-  } catch (e) {
-    container.textContent = '❌ 뉴스를 불러오는 중 오류가 발생했습니다.';
-    return;
-  }
-
-  if (!articles || articles.length === 0) {
-    container.textContent = '🔍 관련 뉴스가 없습니다.';
-    return;
-  }
-
-  articles.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'news-card';
-    card.innerHTML = `
-      <div class="news-content">
-        <a href="${a.url}" target="_blank">
-          <h3>${a.title}</h3>
-        </a>
-      </div>`;
-    container.appendChild(card);
-  });
-}
