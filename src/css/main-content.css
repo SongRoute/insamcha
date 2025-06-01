@@ -17,6 +17,13 @@
     padding: 10px;
 }
 
+.exchange-panel h2 {
+    color: #f0b90b;
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
 .center-panel {
     flex-grow: 1; /* 가용 세로 공간을 차지 */
     display: flex;
@@ -62,6 +69,13 @@
     background-color: #1e1e1e;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.news-panel h2 {
+    color: #f0b90b;
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    text-align: center;
 }
 
 /* ... (나머지 CSS는 그대로 유지) ... */
