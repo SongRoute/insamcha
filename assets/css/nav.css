@@ -2,7 +2,7 @@
 #nav {
     width: 76px; /* Fixed width for the nav bar */
     height: 100%; /* Make nav full height */
-    background: #1e1e1e; /* Darker gray for nav */
+    background: var(--bg-secondary); /* Darker gray for nav */
     padding: 10px 4px;
     overflow-y: auto; /* In case content exceeds height */
     display: flex;
@@ -11,6 +11,7 @@
     gap: 36px;
     box-sizing: border-box;
     flex-shrink: 0; /* Added to prevent shrinking */
+    transition: background-color 0.3s ease;
 }
 
 .favorite-button {
@@ -23,6 +24,7 @@
     border: none; /* Remove default border if any */
     background: none; /* Remove default background if any */
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .nav-item-icon-bg {
@@ -32,6 +34,7 @@
     overflow: hidden;
     border-radius: 100px;
     flex-direction: column;
+    transition: background-color 0.3s ease;
 }
 
 /* Make nav-items square and compact */
@@ -44,10 +47,11 @@
     margin: 0;
     padding: 0;
     cursor: pointer; /* Add for better UX */
+    transition: background-color 0.3s ease;
 }
 
 .nav-item:hover {
-    background: #2f3c42;
+    background: var(--bg-tertiary);
 }
 
 .nav-item-icon-padding {
@@ -68,10 +72,21 @@
 .nav-item-icon {
     width: 24px;
     height: 24px;
+    transition: filter 0.3s ease;
+}
+
+/* Icon filter for light theme */
+:root .nav-item-icon {
+    filter: brightness(0) saturate(100%) invert(13%) sepia(7%) saturate(1134%) hue-rotate(170deg) brightness(95%) contrast(85%);
+}
+
+/* Icon filter for dark theme */
+[data-theme="dark"] .nav-item-icon {
+    filter: brightness(0) saturate(100%) invert(88%) sepia(6%) saturate(346%) hue-rotate(169deg) brightness(96%) contrast(91%);
 }
 
 .nav-item-label {
-    color: #a0a0a0; /* Lighter gray for nav item labels */
+    color: var(--text-secondary); /* Lighter gray for nav item labels */
     font-size: 11px;
     font-family: Roboto, sans-serif;
     font-weight: 500;
@@ -79,6 +94,7 @@
     letter-spacing: 0.50px;
     word-wrap: break-word;
     text-align: center;
+    transition: color 0.3s ease;
 }
 
 /* Make nav-divider span full nav width */
@@ -87,7 +103,8 @@
     height: 1px;
     margin: 0;
     padding: 0;
-    background: #333333; /* Darker gray for nav divider */
+    background: var(--border-color); /* Darker gray for nav divider */
+    transition: background-color 0.3s ease;
 }
 
 .nav-menu-group {

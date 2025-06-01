@@ -11,27 +11,27 @@
 #price-chart .c3-axis path,
 #price-chart .c3-axis line {
     fill: none;
-    stroke: #555555; /* Darker axis line color */
+    stroke: var(--border-color); /* Darker axis line color */
 }
 
 #price-chart .c3-axis text {
-    fill: #a0a0a0; /* Lighter axis text color */
+    fill: var(--text-secondary); /* Lighter axis text color */
 }
 
 #price-chart .c3-legend-item text {
-    fill: #a0a0a0; /* Lighter legend text color */
+    fill: var(--text-secondary); /* Lighter legend text color */
 }
 
 #price-chart .c3-tooltip {
-    border-color: #444444; /* Darker border for tooltip */
-    background-color: #2a2a2a; /* Dark background for tooltip */
-    color: #e0e0e0; /* Light text color for tooltip */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border-color: var(--border-color); /* Darker border for tooltip */
+    background-color: var(--bg-tertiary); /* Dark background for tooltip */
+    color: var(--text-primary); /* Light text color for tooltip */
+    box-shadow: 0 1px 3px var(--shadow);
 }
 
 #price-chart .c3-tooltip th {
-    background-color: #383838; /* Darker header for tooltip */
-    color: #e0e0e0; /* Light text for tooltip header */
+    background-color: var(--bg-secondary); /* Darker header for tooltip */
+    color: var(--text-primary); /* Light text for tooltip header */
     font-weight: bold;
 }
 
@@ -61,11 +61,12 @@
 .controls select,
 .controls button {
     padding: 8px 12px;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: #2a2a2a;
-    color: #e0e0e0;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
     font-size: 0.9rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .controls button {
@@ -74,7 +75,7 @@
 }
 
 .controls button:hover {
-    background-color: #333;
+    background-color: var(--bg-secondary);
 }
 
 .status {
@@ -101,9 +102,10 @@
 .chart-canvas-container {
     flex: 1;
     min-height: 300px;
-    background-color: #1a1a1a;
+    background-color: var(--bg-primary);
     border-radius: 6px;
     padding: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .price-info {
@@ -114,22 +116,25 @@
 }
 
 .price-card {
-    background-color: #2a2a2a;
+    background-color: var(--bg-tertiary);
     border-radius: 6px;
     padding: 10px;
     text-align: center;
+    transition: background-color 0.3s ease;
 }
 
 .price-label {
-    color: #a0a0a0;
+    color: var(--text-secondary);
     font-size: 0.8rem;
     margin-bottom: 5px;
+    transition: color 0.3s ease;
 }
 
 .price-value {
-    color: #e0e0e0;
+    color: var(--text-primary);
     font-size: 1.1rem;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .price-value.price-up {

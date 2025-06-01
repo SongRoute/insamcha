@@ -1,3 +1,75 @@
+/* CSS Variables for Theme */
+:root {
+    /* Light theme */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-tertiary: #adb5bd;
+    --border-color: #dee2e6;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --card-bg: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Default to dark theme if user prefers dark color scheme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark theme */
+        --bg-primary: #121212;
+        --bg-secondary: #1e1e1e;
+        --bg-tertiary: #2a2a2a;
+        --text-primary: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --text-tertiary: #6c757d;
+        --border-color: #333333;
+        --input-bg: #2a2a2a;
+        --input-border: #333333;
+        --button-bg: #333333;
+        --button-hover: #2f3c42;
+        --card-bg: #1e1e1e;
+        --shadow: rgba(0, 0, 0, 0.5);
+    }
+}
+
+[data-theme="dark"] {
+    /* Dark theme */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2a2a2a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --text-tertiary: #6c757d;
+    --border-color: #333333;
+    --input-bg: #2a2a2a;
+    --input-border: #333333;
+    --button-bg: #333333;
+    --button-hover: #2f3c42;
+    --card-bg: #1e1e1e;
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] {
+    /* Force light theme */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-tertiary: #adb5bd;
+    --border-color: #dee2e6;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --card-bg: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
 html, body {
     height: 100%;
     width: 100%;
@@ -10,8 +82,9 @@ html, body {
 body {
     font-family: Roboto, sans-serif;
     display: flex; /* Added to help #wrapper fill height if not already doing so */
-    background-color: #121212; /* Match index.html main content background */
-    color: #e0e0e0; /* Default text color for dark theme */
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Utility classes */
@@ -36,18 +109,19 @@ body {
 }
 
 #login-form, #signup-form {
-    background: #1e1e1e;
+    background: var(--card-bg);
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px var(--shadow);
     width: 320px;
-    color: #a0a0a0;
+    color: var(--text-secondary);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #login-form h2, #signup-form h2 {
     margin-bottom: 20px;
     text-align: center;
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 #login-form div, #signup-form div {
@@ -57,7 +131,7 @@ body {
 #login-form label, #signup-form label {
     display: block;
     margin-bottom: 5px;
-    color: #a0a0a0;
+    color: var(--text-secondary);
 }
 
 #login-form input[type="text"],
@@ -68,11 +142,12 @@ body {
 #signup-form input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #333333;
+    border: 1px solid var(--input-border);
     border-radius: 3px;
     box-sizing: border-box;
-    background-color: #2a2a2a;
-    color: #e0e0e0;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 #login-form input[type="text"]:focus,
@@ -88,18 +163,19 @@ body {
 #login-form button, #signup-form button {
     width: 100%;
     padding: 10px;
-    background: #333333;
-    color: #ffffff;
+    background: var(--button-bg);
+    color: var(--text-primary);
     border: none;
     border-radius: 3px;
     cursor: pointer;
     font-family: Roboto, sans-serif;
     font-weight: 500;
     letter-spacing: 0.50px;
+    transition: background-color 0.3s ease;
 }
 
 #login-form button:hover, #signup-form button:hover {
-    background: #2f3c42;
+    background: var(--button-hover);
 }
 
 #signup-link {
@@ -107,5 +183,5 @@ body {
     text-align: center;
     font-style: italic;
     margin-top: 10px;
-    color: #a0a0a0;
+    color: var(--text-secondary);
 } 

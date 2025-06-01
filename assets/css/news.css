@@ -7,10 +7,11 @@
 .news-card {
   display: flex;
   flex-direction: column;
-  background: #2a2a2a;
+  background: var(--bg-tertiary);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .news-card .news-img {
@@ -26,19 +27,22 @@
 .news-card h3 {
   margin: 0 0 .5rem;
   font-size: 1.1rem;
-  color: #e0e0e0;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .news-card p {
   margin: 0 0 .75rem;
   font-size: .9rem;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   line-height: 1.4;
+  transition: color 0.3s ease;
 }
 
 .news-card small {
-  color: #777777;
+  color: var(--text-tertiary);
   font-size: .8rem;
+  transition: color 0.3s ease;
 }
 
 .news-search {
@@ -50,17 +54,17 @@
   width: 100%;
   padding: 0.5rem 0.75rem;
   font-size: 0.8rem;
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   outline: none;
   box-sizing: border-box;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
 }
 
 #news-search-btn:hover {
-  background-color: #444444;
+  background-color: var(--bg-tertiary);
 }
 
 /*타이틀 호버*/

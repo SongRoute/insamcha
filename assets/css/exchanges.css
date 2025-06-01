@@ -10,17 +10,17 @@
 }
 
 .exchange-card {
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  transition: transform 0.1s, box-shadow 0.2s;
-  border: 1px solid #333;
+  box-shadow: 0 2px 4px var(--shadow);
+  transition: transform 0.1s, box-shadow 0.2s, background-color 0.3s ease, border-color 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
 .exchange-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-  border-color: #555;
+  box-shadow: 0 4px 8px var(--shadow);
+  border-color: var(--text-tertiary);
 }
 
 .exchange-link {
@@ -54,15 +54,17 @@
 .exchange-name {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #e0e0e0;
+  color: var(--text-primary);
   margin-bottom: 0.4rem;
+  transition: color 0.3s ease;
 }
 
 .exchange-volume,
 .exchange-score {
   font-size: 0.9rem;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 /* 검색창 래퍼 스타일 */
@@ -75,13 +77,13 @@
   width: 100%;
   padding: 0.5rem 0.75rem;
   font-size: 0.8rem;
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   outline: none;
   box-sizing: border-box;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
 }
 
 #exchange-search-input:focus {
@@ -90,5 +92,5 @@
 }
 
 #exchange-search-input::placeholder {
-  color: #777;
+  color: var(--text-tertiary);
 }

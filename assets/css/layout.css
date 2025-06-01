@@ -20,13 +20,14 @@
     padding-right: 16px;
     padding-top: 1px;
     padding-bottom: 1px;
-    background: #1e1e1e; /* Darker gray for header */
+    background: var(--bg-secondary); /* Darker gray for header */
     overflow: hidden;
     justify-content: space-between;
     align-items: center;
     display: flex;
     box-sizing: border-box;
     flex-shrink: 0; /* Prevent header from shrinking */
+    transition: background-color 0.3s ease;
 }
 
 #main-content-placeholder {
@@ -41,18 +42,20 @@
     display: flex;
     padding: 10px;
     gap: 10px;
-    background-color: #121212; /* Consistent with body background */
+    background-color: var(--bg-primary); /* Consistent with body background */
     box-sizing: border-box;
     overflow: hidden; /* Prevent main from overflowing and causing scroll */
+    transition: background-color 0.3s ease;
 }
 
 /* Footer specific styles */
 #footer {
-    background-color: #1e1e1e; /* Darker gray for footer */
-    color: white;
+    background-color: var(--bg-primary); /* Darker gray for footer */
+    color: var(--text-primary);
     padding: 10px 0; /* Adjust padding as needed */
     overflow: hidden; /* Important for marquee effect */
     flex-shrink: 0; /* Prevent footer from shrinking */
     width: 100%;
     box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
 } 

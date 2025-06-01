@@ -4,6 +4,7 @@ import { populateFooter } from './coinData.js';
 import BinanceChart from './binanceChart.js'; // Binance Chart 클래스
 import { renderNews, fetchCryptoNews } from './news.js';
 import { renderExchanges, fetchExchanges } from './exchanges.js';
+import './nav.js'; // Navigation script including dark mode toggle
 
 let allExchanges = []; // 전체 거래소 정보를 저장해 둘 전역 변수
 
@@ -31,6 +32,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadHTMLComponent('assets/components/header.html', 'header-placeholder');
     await loadHTMLComponent('assets/components/main_content.html', 'main-content-placeholder');
     await loadHTMLComponent('assets/components/footer.html', 'footer-placeholder');
+
+    // Nav 컴포넌트 로드 후 nav.js 스크립트 실행을 위한 이벤트 발생
+    const navLoadedEvent = new Event('navLoaded');
+    document.dispatchEvent(navLoadedEvent);
 
     // 헤더 로드 후 로그인 버튼에 이벤트 리스너 추가
     const loginButton = document.querySelector('.login-btn');

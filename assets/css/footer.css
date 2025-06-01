@@ -12,7 +12,8 @@
     gap: 8px; /* Space between label and value */
     padding: 0 15px; /* Horizontal padding for each item group */
     white-space: nowrap; /* Prevent text wrapping within an item */
-    color: #e0e0e0; /* Default light gray text color */
+    color: var(--text-primary); /* Default light gray text color */
+    transition: color 0.3s ease;
 }
 
 .footer-coin-label {
@@ -35,11 +36,13 @@
 }
 
 .coin-value-black { /* As in original, though white was used for no change */
-    color: #e0e0e0; /* Light gray for no change */
+    color: var(--text-primary); /* Light gray for no change */
+    transition: color 0.3s ease;
 }
 
 .footer-separator { /* Style for the separator */
     padding: 0 10px;
-    color: #555555; /* Darker gray for separator */
+    color: var(--text-tertiary); /* Darker gray for separator */
     font-size: 14px;
+    transition: color 0.3s ease;
 } 
