@@ -1,7 +1,17 @@
 <main id="main">
     <div class="main-panel exchange-panel">
-      거래소정보
+      <h2>🪙 거래소 정보</h2>
+
+      <!-- 검색창 추가 -->
+    <div class="exchange-search">
+      <input type="text" id="exchange-search-input" 
+      placeholder="거래소 검색 (예: Binance)"/>
     </div>
+      <div id="exchange-container">
+        <!-- exchanges.js가 여기로 거래소 카드를 렌더링합니다 -->
+      </div>
+    </div>
+
     <div class="main-panel center-panel">
       <div id="price-chart" class="center-panel-section chart-section">
         차트
@@ -19,7 +29,6 @@
       <div class="news-search">
         <input type="text" id="news-search-input"
               placeholder="키워드 입력 (예: ethereum)" />
-        <button id="news-search-btn">검색</button>
       </div>
       <div id="news-container">
         <!-- fetchCryptoNews() 결과 출력 -->
