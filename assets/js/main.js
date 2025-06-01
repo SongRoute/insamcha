@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 뉴스 검색 버튼 기능
     const searchBtn = document.getElementById('news-search-btn');
     if (searchBtn) {
-        searchBtn.addEventListener('click', () => {
+        searchBtn.addEventListener('input', () => {
             const keyword = newsSearchInput.value.trim();
             if (keyword) {
                 renderNews(keyword);

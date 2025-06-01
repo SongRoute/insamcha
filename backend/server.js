@@ -102,7 +102,7 @@ app.get('/api/news', async (req, res) => {
 // ── 거래소 목록 프록시 엔드포인트 ───────────────────────────────
 app.get('/api/exchanges', async (req, res) => {
   try {
-    const cgUrl  = 'https://api.coingecko.com/api/v3/exchanges?per_page=10&page=1';
+    const cgUrl  = 'https://api.coingecko.com/api/v3/exchanges?per_page=100&page=1';
     const apiRes = await fetch(cgUrl);
     if (!apiRes.ok) {
       return res.status(apiRes.status).json({ message: 'CoinGecko 거래소 API 에러' });

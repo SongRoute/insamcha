@@ -47,25 +47,16 @@
 }
 
 #news-search-input {
-  flex: 1;
-  padding: .5rem .75rem;
-  border-radius: 4px 0 0 4px;
-  border: 1px solid #333333;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  font-size: 0.9rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  border: 1px solid #333;
+  border-radius: 4px;
   outline: none;
   box-sizing: border-box;
-}
-
-#news-search-btn {
-  padding: .5rem 1rem;
-  border: 1px solid #333333;
-  border-left: none;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  background-color: #333333;
+  background-color: #2a2a2a;
   color: #e0e0e0;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 #news-search-btn:hover {
