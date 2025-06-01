@@ -1,8 +1,7 @@
-// src/js/main.js
+// assets/js/main.js
 
 import { populateFooter } from './coinData.js';
 import BinanceChart from './binanceChart.js'; // Binance Chart 클래스
-import { fetchChartData } from './chart.js';
 import { renderNews, fetchCryptoNews } from './news.js';
 import { renderExchanges, fetchExchanges } from './exchanges.js';
 
@@ -28,10 +27,10 @@ async function loadHTMLComponent(url, placeholderId) {
 
 document.addEventListener('DOMContentLoaded', async function() {
     // Load HTML components
-    await loadHTMLComponent('src/components/nav.html', 'nav-placeholder');
-    await loadHTMLComponent('src/components/header.html', 'header-placeholder');
-    await loadHTMLComponent('src/components/main_content.html', 'main-content-placeholder');
-    await loadHTMLComponent('src/components/footer.html', 'footer-placeholder');
+    await loadHTMLComponent('assets/components/nav.html', 'nav-placeholder');
+    await loadHTMLComponent('assets/components/header.html', 'header-placeholder');
+    await loadHTMLComponent('assets/components/main_content.html', 'main-content-placeholder');
+    await loadHTMLComponent('assets/components/footer.html', 'footer-placeholder');
 
     // 헤더 로드 후 로그인 버튼에 이벤트 리스너 추가
     const loginButton = document.querySelector('.login-btn');
@@ -49,9 +48,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // 푸터와 차트 초기화
+    // 푸터 초기화
     populateFooter();
-    fetchChartData();
 
     // Binance 차트 초기화
     if (document.getElementById('priceChart')) {

@@ -18,8 +18,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// ── 정적 파일 서빙: src 폴더 전체를 루트(/)로 노출 ─────────────────────
-app.use('/', express.static(path.resolve(__dirname, '../src')));
+// ── 정적 파일 서빙: 프로젝트 루트 전체를 노출 ─────────────────────
+app.use('/', express.static(path.resolve(__dirname, '../')));
 
 // 미들웨어
 app.use(cors());
