@@ -21,4 +21,15 @@ db.prepare(`
   )
 `).run();
 
+// favorites 테이블 생성
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS favorites (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id     INTEGER NOT NULL,
+    exchange_id TEXT    NOT NULL,
+    UNIQUE(user_id, exchange_id),
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+  )
+`).run();
+
 export default db;

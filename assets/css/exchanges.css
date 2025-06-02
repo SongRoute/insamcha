@@ -94,3 +94,34 @@
 #exchange-search-input::placeholder {
   color: var(--text-tertiary);
 }
+
+
+.favorite-btn{
+    position: absolute; 
+    top: 0.5rem; 
+    right: 0.5rem;
+}
+
+/* 별 버튼(★/☆) 기본 상태 */
+.favorite-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: #ccc;       /* 비활성화(☆) 시 회색 */
+  transition: color 0.2s;
+  outline: none;
+}
+
+/* 즐겨찾기된 상태(★) */
+.favorite-btn.favorited {
+  color: #f5c518;    /* 노란색(골드) */
+}
+
+/* 호버 시 강조 */
+.favorite-btn:hover {
+  color: #e0a800;
+}
