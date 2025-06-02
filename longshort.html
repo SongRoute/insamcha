@@ -63,12 +63,18 @@
                 <div class="longshort-container">
                     <div class="longshort-header">
                         <h1>📊 롱/숏 포지션 비율</h1>
-                        <p class="longshort-subtitle">Binance Futures 글로벌 계정 비율 (최근 10개 데이터)</p>
+                        <p class="longshort-subtitle">Bybit Futures 계정 비율 데이터 (최근 10개 데이터)</p>
                         
                         <div class="controls">
                             <select id="symbol-select" class="symbol-selector">
                                 <option value="BTCUSDT">BTC/USDT</option>
                                 <option value="ETHUSDT">ETH/USDT</option>
+                                <option value="SOLUSDT">SOL/USDT</option>
+                                <option value="ADAUSDT">ADA/USDT</option>
+                                <option value="DOGEUSDT">DOGE/USDT</option>
+                                <option value="XRPUSDT">XRP/USDT</option>
+                                <option value="AVAXUSDT">AVAX/USDT</option>
+                                <option value="DOTUSDT">DOT/USDT</option>
                             </select>
                             <button id="refresh-btn" class="refresh-button">🔄 실시간 데이터</button>
                             <button id="demo-btn" class="demo-button">📋 샘플 데이터</button>
@@ -93,7 +99,7 @@
                     </div>
                     
                     <div class="info-notice">
-                        <p>💡 <strong>실시간 데이터</strong>: 백엔드 프록시 서버를 통해 Binance API에서 실제 데이터를 가져옵니다.</p>
+                        <p>💡 <strong>실시간 데이터</strong>: 백엔드 프록시 서버를 통해 Bybit API에서 실제 데이터를 가져옵니다.</p>
                         <p>📋 <strong>샘플 데이터</strong>: 시연용 가상 데이터를 사용합니다.</p>
                         <p>🚀 백엔드 서버가 실행 중이어야 실시간 데이터를 사용할 수 있습니다.</p>
                     </div>
@@ -144,7 +150,7 @@
                 loadingElement.style.display = 'block';
                 errorElement.style.display = 'none';
                 
-                const response = await fetch(`${API_BASE_URL}/api/binance/longshort?symbol=${symbol}&limit=10`);
+                const response = await fetch(`${API_BASE_URL}/api/bybit/longshort?symbol=${symbol}&limit=10`);
                 
                 if (!response.ok) {
                     throw new Error(`서버 응답 오류: ${response.status}`);

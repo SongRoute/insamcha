@@ -102,31 +102,46 @@ app.get('/api/protected', (req, res) => {
     }
 });
 
-// ── Binance Futures 롱/숏 비율 API 프록시 엔드포인트 ───────────────────
-app.get('/api/binance/longshort', async (req, res) => {
+// ── Bybit Long/Short Ratio API 프록시 엔드포인트 ───────────────────
+app.get('/api/bybit/longshort', async (req, res) => {
     try {
-        const { symbol = 'BTCUSDT', limit = 10 } = req.query;
+        const { symbol = 'BTCUSDT', limit = 10, period = '1h' } = req.query;
         
-        const binanceUrl = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${symbol}&limit=${limit}`;
+        // Bybit API 엔드포인트
+        const bybitUrl = `https://api.bybit.com/v5/market/account-ratio?category=linear&symbol=${symbol}&period=${period}&limit=${limit}`;
         
-        console.log(`Fetching data from Binance API: ${binanceUrl}`);
+        console.log(`Fetching data from Bybit API: ${bybitUrl}`);
         
-        const response = await fetch(binanceUrl);
+        const response = await fetch(bybitUrl);
         
         if (!response.ok) {
-            throw new Error(`Binance API returned ${response.status}: ${response.statusText}`);
+            throw new Error(`Bybit API returned ${response.status}: ${response.statusText}`);
         }
         
         const data = await response.json();
         
-        console.log(`Successfully fetched ${data.length} records for ${symbol}`);
+        // Bybit API 응답 구조에 맞게 데이터 변환
+        if (data.retCode !== 0) {
+            throw new Error(`Bybit API error: ${data.retMsg}`);
+        }
         
-        res.json(data);
+        // 데이터 포맷을 기존 구조와 호환되도록 변환
+        const transformedData = data.result.list.map(item => ({
+            symbol: item.symbol,
+            longShortRatio: (parseFloat(item.buyRatio) / parseFloat(item.sellRatio)).toFixed(4),
+            longAccount: item.buyRatio,
+            shortAccount: item.sellRatio,
+            timestamp: parseInt(item.timestamp)
+        }));
+        
+        console.log(`Successfully fetched ${transformedData.length} records for ${symbol} from Bybit`);
+        
+        res.json(transformedData);
         
     } catch (error) {
-        console.error('Error fetching Binance data:', error);
+        console.error('Error fetching Bybit data:', error);
         res.status(500).json({ 
-            error: 'Failed to fetch data from Binance API',
+            error: 'Failed to fetch data from Bybit API',
             message: error.message 
         });
     }
@@ -205,44 +220,106 @@ app.get('/api/exchanges', async (req, res) => {
     }
 });
 
-// ── Binance Klines 데이터 프록시 엔드포인트 추가 ────────────────
+ // ── Bybit Klines 데이터 프록시 엔드포인트 ────────────────
 app.get('/api/klines', async (req, res) => {
-    const { symbol, interval, startTime, endTime, limit = 500 } = req.query; // limit 기본값 500
+    const { symbol, interval, startTime, endTime, limit = 500 } = req.query;
 
     if (!symbol || !interval) {
         return res.status(400).json({ message: 'Symbol and interval are required.' });
     }
 
-    const binanceApiUrl = `https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=${limit}${startTime ? `&startTime=${startTime}` : ''}${endTime ? `&endTime=${endTime}` : ''}`;
+    // Bybit interval 형식 변환 (Binance -> Bybit)
+    const intervalMapping = {
+        '1m': '1',
+        '3m': '3',
+        '5m': '5',
+        '15m': '15',
+        '30m': '30',
+        '1h': '60',
+        '2h': '120',
+        '4h': '240',
+        '6h': '360',
+        '12h': '720',
+        '1d': 'D',
+        '1w': 'W',
+        '1M': 'M'
+    };
+
+    const bybitInterval = intervalMapping[interval] || interval;
+    
+    // Bybit API URL 구성
+    let bybitApiUrl = `https://api.bybit.com/v5/market/kline?category=linear&symbol=${symbol.toUpperCase()}&interval=${bybitInterval}&limit=${limit}`;
+    
+    if (startTime) {
+        bybitApiUrl += `&start=${startTime}`;
+    }
+    if (endTime) {
+        bybitApiUrl += `&end=${endTime}`;
+    }
 
     try {
-        const apiRes = await fetch(binanceApiUrl);
+        console.log(`Fetching Klines from Bybit API: ${bybitApiUrl}`);
+        
+        const apiRes = await fetch(bybitApiUrl);
         if (!apiRes.ok) {
             const errorText = await apiRes.text();
-            console.error(`Binance Klines API error: ${apiRes.status} - ${errorText}`);
-            return res.status(apiRes.status).json({ message: `Failed to fetch Klines from Binance: ${errorText}` });
+            console.error(`Bybit Klines API error: ${apiRes.status} - ${errorText}`);
+            return res.status(apiRes.status).json({ message: `Failed to fetch Klines from Bybit: ${errorText}` });
         }
-        const klinesData = await apiRes.json();
-        // Klines 데이터 형식: [
-        //   [
-        //     1499040000000,      // Open time
-        //     "0.00000100",     // Open
-        //     "0.00000100",     // High
-        //     "0.00000100",     // Low
-        //     "0.00000100",     // Close
-        //     "0.00000000",     // Volume
-        //     1499644799999,      // Close time
-        //     "0.00000000",     // Quote asset volume
-        //     0,                // Number of trades
-        //     "0.00000000",     // Taker buy base asset volume
-        //     "0.00000000",     // Taker buy quote asset volume
-        //     "0"               // Ignore
-        //   ]
-        // ]
-        res.json(klinesData);
+        
+        const data = await apiRes.json();
+        
+        // Bybit API 응답 처리
+        if (data.retCode !== 0) {
+            throw new Error(`Bybit API error: ${data.retMsg}`);
+        }
+        
+        // Bybit 응답 형식을 Binance 형식으로 변환
+        // Bybit: [startTime, openPrice, highPrice, lowPrice, closePrice, volume, turnover]
+        // Binance: [openTime, open, high, low, close, volume, closeTime, quoteVolume, count, takerBuyBaseVolume, takerBuyQuoteVolume, ignore]
+        
+        // interval에 따른 closeTime 계산
+        const getCloseTime = (startTime, interval) => {
+            const start = parseInt(startTime);
+            const intervalMs = {
+                '1': 60000,      // 1분
+                '3': 180000,     // 3분
+                '5': 300000,     // 5분
+                '15': 900000,    // 15분
+                '30': 1800000,   // 30분
+                '60': 3600000,   // 1시간
+                '120': 7200000,  // 2시간
+                '240': 14400000, // 4시간
+                '360': 21600000, // 6시간
+                '720': 43200000, // 12시간
+                'D': 86400000,   // 1일
+                'W': 604800000,  // 1주
+                'M': 2592000000  // 1개월 (30일)
+            };
+            return start + (intervalMs[bybitInterval] || 60000) - 1;
+        };
+        
+        const transformedData = data.result.list.map(item => [
+            item[0], // openTime (startTime)
+            item[1], // open (openPrice)
+            item[2], // high (highPrice)
+            item[3], // low (lowPrice)
+            item[4], // close (closePrice)
+            item[5], // volume
+            getCloseTime(item[0], bybitInterval), // closeTime (계산된 값)
+            item[6], // quoteVolume (turnover)
+            0,       // count (임시값)
+            "0",     // takerBuyBaseVolume (임시값)
+            "0",     // takerBuyQuoteVolume (임시값)
+            "0"      // ignore
+        ]);
+        
+        console.log(`Successfully fetched ${transformedData.length} Klines records for ${symbol} from Bybit`);
+        res.json(transformedData);
+        
     } catch (err) {
-        console.error('Binance Klines proxy error:', err);
-        res.status(500).json({ message: 'Failed to fetch Klines data.' });
+        console.error('Bybit Klines proxy error:', err);
+        res.status(500).json({ message: 'Failed to fetch Klines data from Bybit.' });
     }
 });
 
@@ -319,7 +396,7 @@ app.delete('/api/favorites', authenticateJWT, (req, res) => {
 // 서버 시작
 app.listen(PORT, () => {
     console.log(`🚀 Backend running on port ${PORT}`);
-    console.log(`📊 Binance proxy available at: http://localhost:${PORT}/api/binance/longshort`);
+    console.log(`📊 Bybit proxy available at: http://localhost:${PORT}/api/bybit/longshort`);
     console.log(`🔧 Sample data available at: http://localhost:${PORT}/api/sample/longshort`);
     console.log(`💻 Frontend available at: http://localhost:${PORT}`);
 });
