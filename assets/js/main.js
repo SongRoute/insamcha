@@ -4,6 +4,7 @@ import { populateFooter } from './coinData.js';
 import BinanceChart from './binanceChart.js'; // Binance Chart 클래스
 import { renderNews, fetchCryptoNews } from './news.js';
 import { renderExchanges, fetchExchanges } from './exchanges.js';
+import { initializeProfitCalculator } from './profitCalculator.js'; // 새로 추가된 import
 import './nav.js'; // Navigation script including dark mode toggle
 
 let allExchanges = []; // 전체 거래소 정보를 저장해 둘 전역 변수
@@ -129,4 +130,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             exchContainer.textContent = '거래소 정보를 불러오는 중 오류가 발생했습니다.';
         }
     }
+
+    // ✨ 새로 추가된 부분: 손익 계산기 초기화
+    initializeProfitCalculator();
 });
