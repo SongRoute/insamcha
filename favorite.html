@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mablewide Clone - 즐겨찾기</title>
     
-    <!-- Prevent FOUC (Flash of Unstyled Content) for dark mode -->
     <script>
         (function() {
             // Check for saved theme preference or default to system preference
@@ -19,6 +18,14 @@
             }
         })();
     </script>
+
+    <script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // 토큰 없으면 웰컴 페이지로
+      window.location.href = '/welcome.html';
+    }
+  </script>
     
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/layout.css">
