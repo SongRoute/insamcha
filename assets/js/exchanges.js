@@ -118,6 +118,16 @@ export async function renderExchanges(exchanges) {
 
     const exchangeId = btn.dataset.id;
     const isNowFavorited = btn.classList.contains('favorited');
+
+    // ⭐ 클릭 즉시 UI 반영
+  if (isNowFavorited) {
+    btn.classList.remove('favorited');
+    btn.textContent = '☆';
+  } else {
+    btn.classList.add('favorited');
+    btn.textContent = '★';
+  }
+  
     const success = await toggleFavorite(exchangeId, isNowFavorited);
     if (!success) return;
 
@@ -126,8 +136,6 @@ export async function renderExchanges(exchanges) {
     const allExchanges = await fetchExchanges();
 
     if (favOnly) {
-      const favorites = await fetchFavorites();
-      const filtered = allExchanges.filter(ex => favorites.includes(ex.id));
       await applyFilters(); 
     } else {
       await renderExchanges(allExchanges);

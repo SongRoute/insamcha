@@ -18,6 +18,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// JWT 인증 미들웨어
+function authenticateJWT(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: '토큰 필요' });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;  // 사용자 정보 요청 객체에 저장
+    next();
+  } catch (err) {
+    return res.status(403).json({ message: '유효하지 않은 토큰' });
+  }
+}
+
 // ── 정적 파일 서빙: 프로젝트 루트 전체를 노출 ─────────────────────
 app.use('/', express.static(path.resolve(__dirname, '../')));
 
@@ -155,50 +169,26 @@ app.get('/api/klines', async (req, res) => {
     }
 });
 
-// JWT 인증 미들웨어
-function authenticateJWT(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: '인증 토큰 필요' });
-
-  try {
-    const user = jwt.verify(token, JWT_SECRET);
-    req.user = user;
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: '토큰이 유효하지 않음' });
-  }
-}
-
 // 즐겨찾기 목록 조회
 app.get('/api/favorites', authenticateJWT, (req, res) => {
   const userId = req.user.id;
   const rows = db.prepare('SELECT exchange_id FROM favorites WHERE user_id = ?').all(userId);
-  const favorites = rows.map(r => r.exchange_id);
+  const favorites = rows.map(row => row.exchange_id);
   res.json({ favorites });
 });
 
-// 즐겨찾기 추가
 app.post('/api/favorites', authenticateJWT, (req, res) => {
   const userId = req.user.id;
   const { exchangeId } = req.body;
-  try {
-    db.prepare('INSERT OR IGNORE INTO favorites (user_id, exchange_id) VALUES (?, ?)').run(userId, exchangeId);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+  db.prepare('INSERT OR IGNORE INTO favorites (user_id, exchange_id) VALUES (?, ?)').run(userId, exchangeId);
+  res.json({ success: true });
 });
 
-// 즐겨찾기 삭제
 app.delete('/api/favorites', authenticateJWT, (req, res) => {
   const userId = req.user.id;
   const { exchangeId } = req.body;
-  try {
-    db.prepare('DELETE FROM favorites WHERE user_id = ? AND exchange_id = ?').run(userId, exchangeId);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+  db.prepare('DELETE FROM favorites WHERE user_id = ? AND exchange_id = ?').run(userId, exchangeId);
+  res.json({ success: true });
 });
 
 // 서버 시작
