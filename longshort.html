@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>롱/숏 포지션 비율 - Mablewide Clone</title>
+    
+    <!-- Prevent FOUC (Flash of Unstyled Content) for dark mode -->
+    <script>
+        (function() {
+            // Check for saved theme preference or default to system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    
+    <!-- 로그인 가드 -->
+    <script>
+        // 토큰 검증 로직을 auth.js에서 처리하도록 단순화
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // 토큰 없으면 웰컴 페이지로
+            window.location.href = '/welcome.html';
+        }
+    </script>
+    
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="assets/css/longshort.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Apply saved theme on page load (backup for DOMContentLoaded)
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (currentTheme === 'dark' || (!currentTheme && systemPrefersDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+            } else if (currentTheme === 'light') {
+                document.body.setAttribute('data-theme', 'light');
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="nav-placeholder"></div>
+        <div class="content-wrapper">
+            <div id="header-placeholder"></div>
+            <main id="longshort-content">
+                <div class="longshort-container">
+                    <div class="longshort-header">
+                        <h1>📊 롱/숏 포지션 비율</h1>
+                        <p class="longshort-subtitle">Binance Futures 글로벌 계정 비율 (최근 10개 데이터)</p>
+                        
+                        <div class="controls">
+                            <select id="symbol-select" class="symbol-selector">
+                                <option value="BTCUSDT">BTC/USDT</option>
+                                <option value="ETHUSDT">ETH/USDT</option>
+                            </select>
+                            <button id="refresh-btn" class="refresh-button">🔄 실시간 데이터</button>
+                            <button id="demo-btn" class="demo-button">📋 샘플 데이터</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <div id="loading" class="loading-indicator">데이터를 불러오는 중...</div>
+                        <div id="error" class="error-message" style="display: none;"></div>
+                        <canvas id="longShortChart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-color long"></span>
+                            <span>롱 포지션 (Long)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color short"></span>
+                            <span>숏 포지션 (Short)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-notice">
+                        <p>💡 <strong>실시간 데이터</strong>: 백엔드 프록시 서버를 통해 Binance API에서 실제 데이터를 가져옵니다.</p>
+                        <p>📋 <strong>샘플 데이터</strong>: 시연용 가상 데이터를 사용합니다.</p>
+                        <p>🚀 백엔드 서버가 실행 중이어야 실시간 데이터를 사용할 수 있습니다.</p>
+                    </div>
+                </div>
+            </main>
+            <div id="footer-placeholder"></div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script>
+        let chart = null;
+        
+        // 현재 환경 감지
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_BASE_URL = isLocalhost ? 'http://localhost:3000' : '';
+        
+        // 샘플 데이터 생성 함수
+        function generateSampleData(symbol) {
+            const data = [];
+            const now = Date.now();
+            
+            for (let i = 9; i >= 0; i--) {
+                const timestamp = now - (i * 5 * 60 * 1000); // 5분 간격
+                // 롱/숏 비율을 현실적으로 시뮬레이션 (합계가 1이 되도록)
+                const longRatio = 0.45 + Math.random() * 0.2; // 45-65% 범위
+                const shortRatio = 1 - longRatio;
+                
+                data.push({
+                    symbol: symbol,
+                    longShortRatio: (longRatio / shortRatio).toFixed(4),
+                    longAccount: longRatio.toFixed(4),
+                    shortAccount: shortRatio.toFixed(4),
+                    timestamp: timestamp
+                });
+            }
+            
+            return data;
+        }
+        
+        // 백엔드 API에서 실시간 데이터 가져오기
+        async function fetchRealTimeData(symbol) {
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error');
+            
+            try {
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                
+                const response = await fetch(`${API_BASE_URL}/api/binance/longshort?symbol=${symbol}&limit=10`);
+                
+                if (!response.ok) {
+                    throw new Error(`서버 응답 오류: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                loadingElement.style.display = 'none';
+                
+                console.log(`실시간 데이터 로드 성공: ${symbol}`);
+                return data;
+                
+            } catch (error) {
+                loadingElement.style.display = 'none';
+                console.error('실시간 데이터 로드 실패:', error);
+                
+                // 백엔드 서버 연결 실패시 샘플 데이터로 폴백
+                errorElement.style.display = 'block';
+                errorElement.innerHTML = `
+                    <strong>백엔드 서버 연결 실패</strong><br>
+                    실시간 데이터를 가져올 수 없습니다. 샘플 데이터를 사용합니다.<br>
+                    <small>백엔드 서버를 시작하려면: npm run dev (backend 폴더에서)</small>
+                `;
+                
+                return generateSampleData(symbol);
+            }
+        }
+        
+        // 샘플 데이터 가져오기
+        async function fetchSampleData(symbol) {
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error');
+            
+            try {
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                
+                // 먼저 백엔드 샘플 API 시도
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/sample/longshort?symbol=${symbol}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        loadingElement.style.display = 'none';
+                        console.log(`백엔드 샘플 데이터 로드 성공: ${symbol}`);
+                        return data;
+                    }
+                } catch (e) {
+                    console.log('백엔드 샘플 API 실패, 로컬 생성 사용');
+                }
+                
+                // 백엔드 실패시 로컬 생성
+                const data = generateSampleData(symbol);
+                loadingElement.style.display = 'none';
+                console.log(`로컬 샘플 데이터 생성: ${symbol}`);
+                return data;
+                
+            } catch (error) {
+                loadingElement.style.display = 'none';
+                console.error('샘플 데이터 생성 실패:', error);
+                return generateSampleData(symbol);
+            }
+        }
+        
+        // 타임스탬프를 MM/DD HH:mm 형식으로 변환
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${month}/${day} ${hours}:${minutes}`;
+        }
+        
+        // Chart.js로 막대그래프 생성
+        function createChart(data, symbol) {
+            const ctx = document.getElementById('longShortChart').getContext('2d');
+            
+            // 기존 차트가 있으면 제거
+            if (chart) {
+                chart.destroy();
+            }
+            
+            // 데이터를 시간순으로 정렬 (오래된 것부터)
+            data.sort((a, b) => a.timestamp - b.timestamp);
+            
+            const labels = data.map(item => formatTimestamp(item.timestamp));
+            const longData = data.map(item => (parseFloat(item.longAccount) * 100).toFixed(1));
+            const shortData = data.map(item => (parseFloat(item.shortAccount) * 100).toFixed(1));
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '롱 포지션 (%)',
+                            data: longData,
+                            backgroundColor: '#10b981', // 초록색
+                            borderColor: '#059669',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '숏 포지션 (%)',
+                            data: shortData,
+                            backgroundColor: '#ef4444', // 빨간색
+                            borderColor: '#dc2626',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `${symbol} 롱/숏 포지션 비율`,
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '시간'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '비율 (%)'
+                            },
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+        
+        // 실시간 데이터로 차트 업데이트
+        async function updateRealTimeChart() {
+            const symbol = document.getElementById('symbol-select').value;
+            const data = await fetchRealTimeData(symbol);
+            
+            if (data && data.length > 0) {
+                createChart(data, symbol);
+            }
+        }
+        
+        // 샘플 데이터로 차트 생성
+        async function showSampleData() {
+            const symbol = document.getElementById('symbol-select').value;
+            const sampleData = await fetchSampleData(symbol);
+            createChart(sampleData, symbol);
+            
+            // 에러 메시지 숨김
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        // 페이지 로드시 초기 차트 생성
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 초기 차트 로드 (샘플 데이터)
+            await showSampleData();
+            
+            // 심볼 선택 이벤트 리스너
+            document.getElementById('symbol-select').addEventListener('change', showSampleData);
+            
+            // 실시간 데이터 버튼 이벤트 리스너
+            document.getElementById('refresh-btn').addEventListener('click', updateRealTimeChart);
+            
+            // 샘플 데이터 버튼 이벤트 리스너
+            document.getElementById('demo-btn').addEventListener('click', showSampleData);
+        });
+    </script>
+</body>
+</html> 

@@ -102,6 +102,70 @@ app.get('/api/protected', (req, res) => {
     }
 });
 
+// ── Binance Futures 롱/숏 비율 API 프록시 엔드포인트 ───────────────────
+app.get('/api/binance/longshort', async (req, res) => {
+    try {
+        const { symbol = 'BTCUSDT', limit = 10 } = req.query;
+        
+        const binanceUrl = `https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${symbol}&limit=${limit}`;
+        
+        console.log(`Fetching data from Binance API: ${binanceUrl}`);
+        
+        const response = await fetch(binanceUrl);
+        
+        if (!response.ok) {
+            throw new Error(`Binance API returned ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        console.log(`Successfully fetched ${data.length} records for ${symbol}`);
+        
+        res.json(data);
+        
+    } catch (error) {
+        console.error('Error fetching Binance data:', error);
+        res.status(500).json({ 
+            error: 'Failed to fetch data from Binance API',
+            message: error.message 
+        });
+    }
+});
+
+// ── 샘플 데이터 생성 엔드포인트 (백업용) ──────────────────────────
+app.get('/api/sample/longshort', (req, res) => {
+    const { symbol = 'BTCUSDT' } = req.query;
+    
+    const data = [];
+    const now = Date.now();
+    
+    for (let i = 9; i >= 0; i--) {
+        const timestamp = now - (i * 5 * 60 * 1000); // 5분 간격
+        const longRatio = 0.45 + Math.random() * 0.2; // 45-65% 범위
+        const shortRatio = 1 - longRatio;
+        
+        data.push({
+            symbol: symbol,
+            longShortRatio: (longRatio / shortRatio).toFixed(4),
+            longAccount: longRatio.toFixed(4),
+            shortAccount: shortRatio.toFixed(4),
+            timestamp: timestamp
+        });
+    }
+    
+    console.log(`Generated sample data for ${symbol}`);
+    res.json(data);
+});
+
+// ── 헬스 체크 엔드포인트 ─────────────────────────────────
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        status: 'ok', 
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+    });
+});
+
 // ── 뉴스 프록시 엔드포인트 ───────────────────────────────
 app.get('/api/news', async (req, res) => {
     const { q = 'bitcoin' } = req.query;
@@ -254,5 +318,8 @@ app.delete('/api/favorites', authenticateJWT, (req, res) => {
 
 // 서버 시작
 app.listen(PORT, () => {
-    console.log(`Backend running at http://localhost:${PORT}`);
+    console.log(`🚀 Backend running on port ${PORT}`);
+    console.log(`📊 Binance proxy available at: http://localhost:${PORT}/api/binance/longshort`);
+    console.log(`🔧 Sample data available at: http://localhost:${PORT}/api/sample/longshort`);
+    console.log(`💻 Frontend available at: http://localhost:${PORT}`);
 });
