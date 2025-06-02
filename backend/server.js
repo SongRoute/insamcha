@@ -21,14 +21,20 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // JWT 인증 미들웨어
 function authenticateJWT(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: '토큰 필요' });
+  if (!token) return res.status(401).json({ message: '토큰 필요', code: 'NO_TOKEN' });
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;  // 사용자 정보 요청 객체에 저장
     next();
   } catch (err) {
-    return res.status(403).json({ message: '유효하지 않은 토큰' });
+    if (err.name === 'TokenExpiredError') {
+      return res.status(403).json({ message: '토큰이 만료되었습니다', code: 'TOKEN_EXPIRED' });
+    } else if (err.name === 'JsonWebTokenError') {
+      return res.status(403).json({ message: '유효하지 않은 토큰', code: 'INVALID_TOKEN' });
+    } else {
+      return res.status(403).json({ message: '토큰 검증 실패', code: 'TOKEN_ERROR' });
+    }
   }
 }
 
@@ -75,6 +81,13 @@ app.post('/api/auth/login', async (req, res) => {
     // 3. JWT 발급
     const token = jwt.sign({ id, username }, JWT_SECRET, { expiresIn: '1h' });
     return res.json({ success: true, token });
+});
+
+// ── 로그아웃 엔드포인트 ───────────────────────────────────
+app.post('/api/auth/logout', (req, res) => {
+    // 클라이언트 사이드에서 토큰을 제거하는 것이 주된 로그아웃 처리
+    // 서버에서는 블랙리스트를 관리할 수도 있지만, 간단한 구현에서는 성공 응답만 반환
+    return res.json({ success: true, message: '로그아웃 되었습니다.' });
 });
 
 // ── 보호된 테스트 API ────────────────────────────────────
@@ -166,6 +179,54 @@ app.get('/api/klines', async (req, res) => {
     } catch (err) {
         console.error('Binance Klines proxy error:', err);
         res.status(500).json({ message: 'Failed to fetch Klines data.' });
+    }
+});
+
+// ── CoinMarketCap 암호화폐 가격 프록시 엔드포인트 ───────────────────
+app.get('/api/crypto/prices', async (req, res) => {
+    const cmcApiKey = process.env.CMC_API_KEY;
+    
+    if (!cmcApiKey) {
+        return res.status(500).json({ 
+            error: 'CoinMarketCap API key is not configured',
+            message: 'CMC_API_KEY 환경 변수를 설정해주세요.'
+        });
+    }
+
+    const cmcUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+    const params = new URLSearchParams({
+        start: '1',
+        limit: '20',
+        convert: 'KRW',
+        sort: 'market_cap',
+        sort_dir: 'desc'
+    });
+
+    try {
+        const apiRes = await fetch(`${cmcUrl}?${params}`, {
+            headers: {
+                'X-CMC_PRO_API_KEY': cmcApiKey,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!apiRes.ok) {
+            const errorText = await apiRes.text();
+            console.error(`CoinMarketCap API error: ${apiRes.status} - ${errorText}`);
+            return res.status(apiRes.status).json({ 
+                error: 'Failed to fetch crypto prices',
+                message: 'CoinMarketCap API 호출 실패'
+            });
+        }
+        
+        const data = await apiRes.json();
+        return res.json(data);
+    } catch (err) {
+        console.error('CoinMarketCap proxy error:', err);
+        return res.status(502).json({ 
+            error: 'Internal server error',
+            message: '암호화폐 가격 정보 호출 실패'
+        });
     }
 });
 

@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>인삼차 - 암호화폐 정보의 모든 것</title>
+    
+    <!-- 로그인된 사용자 리다이렉트 -->
+    <script>
+        const token = localStorage.getItem('token');
+        if (token) {
+            // 토큰이 있으면 index.html로 (이미 로그인된 상태)
+            window.location.href = '/index.html';
+        }
+    </script>
+    
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/welcome.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
