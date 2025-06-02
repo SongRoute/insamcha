@@ -6,6 +6,11 @@
     <title>Mablewide Clone</title>
     
     <script>
+        const token = localStorage.getItem('token');
+        if (token) {
+            // 토큰이 있으면 index.html로 (이미 로그인된 상태)
+            window.location.href = '/index.html';
+        }
         (function() {
             // Check for saved theme preference or default to system preference
             const savedTheme = localStorage.getItem('theme');

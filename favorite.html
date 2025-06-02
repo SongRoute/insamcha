@@ -6,6 +6,11 @@
     <title>Mablewide Clone - 즐겨찾기</title>
     
     <script>
+         const token = localStorage.getItem('token');
+        if (!token) {
+            // 토큰 없으면 웰컴 페이지로
+            window.location.href = '/welcome.html';
+        }
         (function() {
             // Check for saved theme preference or default to system preference
             const savedTheme = localStorage.getItem('theme');
