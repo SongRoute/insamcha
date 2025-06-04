@@ -3,132 +3,190 @@
     width: 100%;
     background-color: var(--bg-secondary);
     border-radius: 8px;
-    padding: 15px;
+    padding: 20px;
     box-shadow: 0 2px 4px var(--shadow);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* 개별 패널의 오버플로우는 숨김 */
+    overflow: hidden;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* 즐겨찾기 패널 (암호화폐 + 거래소) */
+/* 패널 비율 조정: 3:4:3 */
 .favorites-panel {
-    flex-basis: 500px; /* exchange-panel보다 높이 증가 */
-    flex-shrink: 0;
-    padding: 10px;
+    flex: 3;
+    min-width: 300px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* 두 섹션 사이 간격 */
+    gap: 20px;
+    height: 100%;
 }
 
-.favorites-section {
-    flex: 1; /* 두 섹션이 동일한 높이를 가지도록 */
+.center-panel {
+    flex: 4;
+    min-width: 400px;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-tertiary);
+    gap: 15px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.news-panel {
+    flex: 3;
+    min-width: 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* 통일된 제목 스타일 - price.css 스타일 적용 */
+.panel-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    text-align: left;
+    padding: 12px 16px;
     border-radius: 6px;
-    padding: 15px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+/* 각 패널별 제목 색상 - 단순화 */
+.crypto-title,
+.exchange-title {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.chart-title,
+.position-title,
+.profit-title {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.news-title {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+/* 섹션 컨테이너 스타일 통일 */
+.favorites-section,
+.center-panel-section,
+.news-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0;
     box-sizing: border-box;
     overflow: hidden;
     transition: background-color 0.3s ease;
-}
-
-.favorites-section h2 {
-    color: #f0b90b;
-    font-size: 1.2rem;
-    margin: 0 0 15px 0;
-    text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-/* 암호화폐 즐겨찾기 섹션 */
-.crypto-favorites {
-    border-left: 3px solid #f7931a; /* 비트코인 오렌지 색상 */
-}
-
-.crypto-favorites h2 {
-    color: #f7931a;
-}
-
-/* 거래소 즐겨찾기 섹션 */
-.exchange-favorites {
-    border-left: 3px solid #f0b90b; /* 바이낸스 옐로우 색상 */
-}
-
-.exchange-favorites h2 {
-    color: #f0b90b;
+    border: 1px solid var(--border-color);
 }
 
 /* 검색 입력 스타일 */
 .crypto-search,
-.exchange-search {
-    margin-bottom: 15px;
+.exchange-search,
+.news-search {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
 }
 
 .crypto-search input,
-.exchange-search input {
+.exchange-search input,
+.news-search input {
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    background-color: var(--input-bg);
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-size: 0.9rem;
+    font-size: 14px;
     box-sizing: border-box;
-    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .crypto-search input:focus,
-.exchange-search input:focus {
-    border-color: #f0b90b;
+.exchange-search input:focus,
+.news-search input:focus {
+    border-color: #4a90e2;
     outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-/* 컨테이너 스타일 */
+/* 컨테이너 스타일 - 스크롤 가능하도록 수정 */
 #crypto-favorites-container,
-#exchange-container {
+#exchange-container,
+#news-container {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-right: 5px; /* 스크롤바를 위한 여백 */
+    padding: 16px;
+    background-color: var(--bg-secondary);
+}
+
+/* 스크롤바 스타일 */
+#crypto-favorites-container::-webkit-scrollbar,
+#exchange-container::-webkit-scrollbar,
+#news-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#crypto-favorites-container::-webkit-scrollbar-track,
+#exchange-container::-webkit-scrollbar-track,
+#news-container::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+}
+
+#crypto-favorites-container::-webkit-scrollbar-thumb,
+#exchange-container::-webkit-scrollbar-thumb,
+#news-container::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+#crypto-favorites-container::-webkit-scrollbar-thumb:hover,
+#exchange-container::-webkit-scrollbar-thumb:hover,
+#news-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
 }
 
 /* 즐겨찾기 리스트 스타일 */
 .favorites-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .favorite-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 15px;
+    padding: 16px;
     background-color: var(--bg-primary);
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+    transition: all 0.2s ease;
 }
 
 .favorite-item:hover {
-    background-color: var(--bg-secondary);
-    border-color: #f0b90b;
+    background-color: var(--bg-tertiary);
+    border-color: #4a90e2;
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 /* 암호화폐 아이템 스타일 */
-.crypto-item {
-    border-left: 3px solid #f7931a;
-}
-
-.crypto-item:hover {
-    border-left-color: #f7931a;
-    box-shadow: 0 2px 8px rgba(247, 147, 26, 0.2);
-}
-
 .crypto-info {
     display: flex;
     align-items: center;
@@ -138,15 +196,16 @@
 .crypto-icon {
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, #f7931a, #ff6b35);
-    color: white;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 0.8rem;
+    font-weight: 600;
+    font-size: 12px;
     flex-shrink: 0;
+    border: 1px solid var(--border-color);
 }
 
 .crypto-details {
@@ -157,11 +216,12 @@
 .crypto-name {
     font-weight: 600;
     color: var(--text-primary);
-    font-size: 0.95rem;
+    font-size: 14px;
+    line-height: 1.2;
 }
 
 .crypto-symbol {
-    font-size: 0.8rem;
+    font-size: 12px;
     color: var(--text-secondary);
     margin-top: 2px;
 }
@@ -174,20 +234,20 @@
 
 .view-btn,
 .favorite-btn {
-    padding: 6px 12px;
+    padding: 8px 12px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
-    font-size: 0.8rem;
+    font-size: 12px;
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .view-btn:hover {
-    background-color: #f0b90b;
-    border-color: #f0b90b;
-    color: #000;
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    color: white;
 }
 
 .favorite-btn:hover {
@@ -197,211 +257,191 @@
 }
 
 .favorite-btn.favorited {
-    background-color: #f0b90b;
-    border-color: #f0b90b;
-    color: #000;
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    color: white;
 }
 
 /* 상태 메시지 스타일 */
 .no-data,
 .error-message {
     text-align: center;
-    padding: 20px;
+    padding: 24px;
     color: var(--text-secondary);
     font-style: italic;
+    border-radius: 8px;
 }
 
 .error-message {
-    color: var(--danger);
-    background-color: rgba(255, 0, 0, 0.1);
-    border-radius: 4px;
-    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
 .no-data {
     background-color: var(--bg-tertiary);
-    border-radius: 4px;
     border: 1px dashed var(--border-color);
 }
 
-/* 거래소 아이템 특별 스타일 (exchange-info.js에서 렌더링되는 항목들과 구분) */
-.favorite-item.exchange-item {
-    border-left: 3px solid #f0b90b;
-}
-
+/* 거래소 아이템 특별 스타일 */
 .favorite-item.exchange-item:hover {
-    border-left-color: #f0b90b;
-    box-shadow: 0 2px 8px rgba(240, 185, 11, 0.2);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
-/* 기존 exchange-panel 스타일 (하위 호환성을 위해 유지하되 숨김 처리) */
+/* 기존 exchange-panel 스타일 제거 */
 .exchange-panel {
-    display: none; /* 새로운 구조로 대체되었으므로 숨김 */
+    display: none;
 }
 
-.center-panel {
-    flex-grow: 1; /* 가용 세로 공간을 차지 */
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    /* overflow: hidden; /* 기존: center-panel 자체 스크롤 방지 */
-    overflow-y: auto; /* 변경: 세로 스크롤 가능하게 함 */
-    overflow-x: hidden; /* 가로 스크롤은 여전히 금지 */
-}
-
+/* 중앙 패널 섹션 스타일 */
 .center-panel-section {
     background-color: var(--bg-secondary);
-    border-radius: 6px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 0;
     box-sizing: border-box;
-    /* overflow: hidden; is covered by .center-panel-section */
-    /* 개별 섹션 내부에 스크롤이 필요한 경우 여기에 overflow-y: auto를 추가할 수 있습니다. */
-    /* 현재는 center-panel 전체가 스크롤되므로 여기서는 필요 없을 가능성이 높습니다. */
     display: flex;
     flex-direction: column;
     transition: background-color 0.3s ease;
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.center-panel-section:last-child {
+    margin-bottom: 0;
 }
 
 .chart-section {
     flex-grow: 6;
     flex-basis: 0;
-    /* overflow: hidden; - 이 부분은 .center-panel-section에서 상속됨 */
+    min-height: 400px;
+}
+
+.chart-section .panel-title {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chart-section > div:not(.panel-title) {
+    flex: 1;
+    overflow: hidden;
+    padding: 16px;
 }
 
 .position-section {
     flex-grow: 2;
     flex-basis: 0;
+    min-height: 200px;
 }
 
 .profit-section {
     flex-grow: 2;
     flex-basis: 0;
+    min-height: 300px;
 }
 
-.news-panel {
-    flex-basis: 280px;
-    padding: 10px;
-    flex-shrink: 0;
-    background-color: var(--bg-secondary);
+/* 포지션 섹션 스타일 */
+.position-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px;
     overflow-y: auto;
-    overflow-x: hidden;
-    transition: background-color 0.3s ease;
 }
 
-.news-panel h2 {
-    color: #f0b90b;
-    font-size: 1.3rem;
-    margin: 0 0 15px 0;
-    text-align: center;
+/* 기존 binance-chart-container-wrapper h1 스타일 제거 */
+.binance-chart-container-wrapper h1 {
+    display: none;
 }
 
-/* ... (나머지 CSS는 그대로 유지) ... */
 /* 손익 계산기 관련 스타일 개선 */
-.profit-section {
-    flex-grow: 2;
-    flex-basis: 0;
-    padding: 20px; /* 전체 패널 패딩 증가 */
-}
-
-.profit-section h2 {
-    color: #f0b90b; /* 바이낸스 강조색 유지 */
-    font-size: 1.5rem; /* 제목 크기 키우기 */
-    margin-bottom: 25px; /* 제목과 컨트롤 사이 간격 증가 */
-    text-align: center;
-    border-bottom: 2px solid var(--border-color); /* 제목 아래 구분선 추가 */
-    padding-bottom: 15px; /* 구분선과 제목 사이 패딩 */
-}
-
 .profit-calculator-controls {
-    display: grid; /* Flexbox 대신 Grid 사용 */
-    grid-template-columns: 1fr 1fr; /* 두 개의 컬럼으로 나눔 */
-    gap: 15px 20px; /* 행과 열 간격 조정 */
-    margin-bottom: 20px; /* 컨트롤과 결과 사이 간격 증가 */
-    padding: 20px; /* 컨트롤 그룹 패딩 증가 */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 20px;
     border: 1px solid var(--border-color);
-    border-radius: 10px; /* 모서리 둥글게 */
-    background-color: var(--bg-tertiary); /* 배경색 유지 */
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.1); /* 내부 그림자 추가 */
+    border-radius: 8px;
+    background-color: var(--bg-tertiary);
 }
 
 .profit-calculator-controls .input-group {
     display: flex;
     flex-direction: column;
-    /* grid-column: span 2; /* 특정 input-group을 두 컬럼 차지하게 할 경우 */
 }
 
 .profit-calculator-controls label {
-    font-size: 0.95rem; /* 라벨 폰트 크기 미세 조정 */
+    font-size: 14px;
     color: var(--text-secondary);
-    margin-bottom: 7px; /* 라벨과 입력 필드 사이 간격 */
-    font-weight: 500; /* 라벨 굵기 추가 */
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
 .profit-calculator-controls select,
 .profit-calculator-controls input[type="datetime-local"],
 .profit-calculator-controls input[type="number"] {
     width: 100%;
-    padding: 10px 12px; /* 패딩 증가 */
-    border: 1px solid var(--input-border);
-    border-radius: 5px; /* 모서리 둥글게 */
-    background-color: var(--input-bg);
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-size: 1rem; /* 폰트 크기 키우기 */
+    font-size: 14px;
     box-sizing: border-box;
-    transition: border-color 0.2s, background-color 0.3s, color 0.3s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .profit-calculator-controls select:focus,
 .profit-calculator-controls input[type="datetime-local"]:focus,
 .profit-calculator-controls input[type="number"]:focus {
-    border-color: #f0b90b;
+    border-color: #4a90e2;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.3); /* 포커스 시 그림자 강조 */
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-/* datetime-local input의 달력 아이콘 및 글자색 조정 */
 .profit-calculator-controls input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(var(--theme-invert-filter, 0)); /* 테마에 따라 아이콘 색상 반전 */
+    filter: invert(var(--theme-invert-filter, 0));
     cursor: pointer;
 }
-[data-theme="dark"] .profit-calculator-controls input[type="datetime-local"] {
-    color-scheme: dark; /* 다크 모드일 때 달력/시계 UI도 다크 모드로 */
-}
 
+[data-theme="dark"] .profit-calculator-controls input[type="datetime-local"] {
+    color-scheme: dark;
+}
 
 .profit-calculator-controls .position-radio-group {
     display: flex;
-    gap: 25px; /* 라디오 버튼 간격 증가 */
+    gap: 24px;
     align-items: center;
-    justify-content: center; /* 중앙 정렬 */
-    margin-top: 10px; /* 위쪽 간격 증가 */
-    grid-column: span 2; /* 두 컬럼 모두 차지 */
+    justify-content: center;
+    margin-top: 12px;
+    grid-column: span 2;
 }
 
 .profit-calculator-controls .position-radio-group input[type="radio"] {
-    appearance: none; /* 기본 라디오 버튼 스타일 제거 */
-    width: 20px; /* 크기 키우기 */
-    height: 20px;
+    appearance: none;
+    width: 18px;
+    height: 18px;
     border: 2px solid var(--border-color);
     border-radius: 50%;
-    background-color: var(--input-bg);
+    background-color: var(--bg-primary);
     display: inline-block;
     position: relative;
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .profit-calculator-controls .position-radio-group input[type="radio"]:checked {
-    border-color: #f0b90b; /* 체크 시 바이낸스 강조색 테두리 */
-    background-color: #f0b90b; /* 체크 시 배경색 */
+    border-color: #4a90e2;
+    background-color: #4a90e2;
 }
 
 .profit-calculator-controls .position-radio-group input[type="radio"]:checked::before {
     content: '';
     display: block;
-    width: 10px; /* 내부 점 크기 */
-    height: 10px;
-    background-color: var(--text-primary); /* 내부 점 색상 */
+    width: 8px;
+    height: 8px;
+    background-color: white;
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -410,142 +450,141 @@
 }
 
 .profit-calculator-controls .position-radio-group label {
-    font-size: 1rem;
-    color: var(--text-primary); /* 텍스트 색상 강조 */
+    font-size: 14px;
+    color: var(--text-primary);
     cursor: pointer;
-    margin-bottom: 0; /* 기본 마진 제거 */
-    font-weight: normal; /* 라벨 굵기 일반으로 */
+    margin-bottom: 0;
+    font-weight: 500;
 }
 
 #calculate-profit-btn {
-    grid-column: span 2; /* 버튼이 두 컬럼 모두 차지 */
-    padding: 12px 15px; /* 패딩 증가 */
-    background-color: #f0b90b;
-    color: #121212;
+    grid-column: span 2;
+    padding: 12px 16px;
+    background-color: #4a90e2;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1.1rem; /* 폰트 크기 키우기 */
-    font-weight: bold;
-    transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* 버튼 그림자 추가 */
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 #calculate-profit-btn:hover {
-    background-color: #ffd700;
-    transform: translateY(-2px); /* 호버 시 약간 위로 뜨는 효과 */
+    background-color: #357ABD;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px var(--shadow);
 }
 
 .profit-result {
     padding: 20px;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: var(--bg-tertiary);
     text-align: center;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.1); /* 내부 그림자 추가 */
 }
 
 .profit-result h3 {
-    font-size: 1.2rem;
+    font-size: 16px;
     color: var(--text-primary);
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    font-weight: 600;
 }
 
 .profit-result p {
-    margin: 8px 0; /* 간격 증가 */
-    font-size: 1.05rem; /* 폰트 크기 미세 조정 */
-    color: var(--text-secondary); /* 기본 텍스트 색상 */
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .profit-result span {
-    font-weight: bold;
-    font-size: 1.5rem; /* 결과 값 폰트 크기 키우기 */
-    color: var(--text-primary); /* 기본 텍스트 색상 */
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: 'Roboto Mono', monospace;
 }
 
-/* 시작 가격과 종료 가격에 특별한 스타일 추가 */
 #start-price {
-    color: #3498db; /* 파란색 - 시작을 의미 */
-    background-color: rgba(52, 152, 219, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(52, 152, 219, 0.3);
+    color: #16c784;
+    background-color: rgba(22, 199, 132, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(22, 199, 132, 0.3);
 }
 
 #end-price {
-    color: #e74c3c; /* 빨간색 - 종료를 의미 */
-    background-color: rgba(231, 76, 60, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
-/* 총 손익과 수익률도 스타일 개선 */
 #total-profit-loss {
-    background-color: rgba(240, 185, 11, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(240, 185, 11, 0.3);
+    background-color: var(--bg-primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
 }
 
 #profit-loss-percentage {
-    background-color: rgba(240, 185, 11, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(240, 185, 11, 0.3);
+    background-color: var(--bg-primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
 }
 
 .status-message {
-    margin-top: 15px; /* 위쪽 간격 증가 */
-    padding: 10px; /* 패딩 증가 */
-    border-radius: 6px; /* 모서리 둥글게 */
-    font-size: 1rem; /* 폰트 크기 미세 조정 */
-    font-weight: bold;
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
     text-align: center;
-    opacity: 0.9; /* 약간 투명하게 */
 }
 
 .status-message.error {
-    background-color: rgba(255, 71, 87, 0.25);
-    color: #ff4757;
-    border: 1px solid #ff4757;
+    background-color: rgba(234, 57, 67, 0.1);
+    color: #ea3943;
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
 .status-message.info {
-    background-color: rgba(0, 123, 255, 0.25);
-    color: #007bff;
-    border: 1px solid #007bff;
+    background-color: rgba(74, 144, 226, 0.1);
+    color: #4a90e2;
+    border: 1px solid rgba(74, 144, 226, 0.3);
 }
 
 .status-message.profit {
-    background-color: rgba(0, 255, 136, 0.25);
-    color: #00ff88;
-    border: 1px solid #00ff88;
+    background-color: rgba(22, 199, 132, 0.1);
+    color: #16c784;
+    border: 1px solid rgba(22, 199, 132, 0.3);
 }
 
 .status-message.loss {
-    background-color: rgba(255, 71, 87, 0.25);
-    color: #ff4757;
-    border: 1px solid #ff4757;
+    background-color: rgba(234, 57, 67, 0.1);
+    color: #ea3943;
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
 /* 다크 모드 특화 필터 변수 */
 :root {
-    --theme-invert-filter: 0; /* Light theme: no invert */
+    --theme-invert-filter: 0;
 }
 
 [data-theme="dark"] {
-    --theme-invert-filter: 1; /* Dark theme: invert */
+    --theme-invert-filter: 1;
 }
 
 /* 즐겨찾기 없음 메시지 스타일 */
 .no-favorites-message {
     text-align: center;
-    padding: 30px 20px;
+    padding: 32px 20px;
     background-color: var(--bg-tertiary);
     border-radius: 8px;
     border: 1px dashed var(--border-color);
@@ -555,12 +594,13 @@
     margin: 8px 0;
     color: var(--text-secondary);
     line-height: 1.5;
+    font-size: 14px;
 }
 
 .no-favorites-message p:first-child {
     font-weight: 600;
     color: var(--text-primary);
-    font-size: 1.1rem;
+    font-size: 16px;
 }
 
 /* 액션 버튼들 스타일 */
@@ -568,42 +608,42 @@
 .go-to-exchanges-btn,
 .login-prompt-btn,
 .view-all-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #f0b90b, #ffd700);
-    color: #000;
+    margin-top: 16px;
+    padding: 12px 20px;
+    background-color: #4a90e2;
+    color: white;
     border: none;
     border-radius: 6px;
-    font-size: 0.95rem;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(240, 185, 11, 0.3);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 .go-to-price-btn:hover,
 .go-to-exchanges-btn:hover,
 .login-prompt-btn:hover,
 .view-all-btn:hover {
-    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    background-color: #357ABD;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(240, 185, 11, 0.4);
+    box-shadow: 0 4px 8px var(--shadow);
 }
 
 /* 제거 버튼 스타일 */
 .remove-btn {
-    padding: 6px 12px;
-    border: 1px solid #ff6b6b;
+    padding: 8px 12px;
+    border: 1px solid #ea3943;
     border-radius: 4px;
     background-color: transparent;
-    color: #ff6b6b;
-    font-size: 0.8rem;
+    color: #ea3943;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .remove-btn:hover {
-    background-color: #ff6b6b;
+    background-color: #ea3943;
     color: white;
     transform: scale(1.05);
 }
@@ -611,42 +651,43 @@
 /* 더 보기 항목 스타일 */
 .more-items {
     text-align: center;
-    padding: 15px;
-    background-color: var(--bg-secondary);
-    border-radius: 6px;
+    padding: 20px;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
     border: 1px dashed var(--border-color);
 }
 
 .more-items p {
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
     color: var(--text-secondary);
     font-style: italic;
+    font-size: 14px;
 }
 
 .more-items .view-all-btn {
     margin-top: 8px;
-    padding: 8px 16px;
-    font-size: 0.85rem;
+    padding: 10px 16px;
+    font-size: 12px;
 }
 
-/* Exchange card 스타일 (exchanges.js에서 사용) */
+/* Exchange card 스타일 */
 .exchange-card {
     margin-bottom: 12px;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
     border: 1px solid var(--border-color);
 }
 
 .exchange-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 .exchange-link {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 16px;
     text-decoration: none;
     color: inherit;
     background-color: var(--bg-primary);
@@ -654,20 +695,20 @@
 }
 
 .exchange-link:hover {
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-tertiary);
 }
 
 .exchange-logo-wrapper {
     flex-shrink: 0;
-    margin-right: 15px;
+    margin-right: 12px;
 }
 
 .exchange-logo {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
 }
 
 .exchange-text {
@@ -676,14 +717,15 @@
 
 .exchange-name {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 14px;
     color: var(--text-primary);
     margin-bottom: 4px;
+    line-height: 1.2;
 }
 
 .exchange-volume,
 .exchange-score {
-    font-size: 0.85rem;
+    font-size: 12px;
     color: var(--text-secondary);
     margin-bottom: 2px;
 }
@@ -701,5 +743,83 @@
     to {
         transform: translateX(0);
         opacity: 1;
+    }
+}
+
+/* 기존 favorites-title 클래스 제거 */
+.favorites-title {
+    display: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .main-panel {
+        padding: 16px;
+    }
+    
+    .favorites-panel,
+    .news-panel {
+        min-width: 280px;
+    }
+    
+    .center-panel {
+        min-width: 350px;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-panel {
+        padding: 12px;
+    }
+    
+    .panel-title {
+        font-size: 16px;
+        padding: 10px 12px;
+    }
+    
+    .chart-section {
+        min-height: 300px;
+    }
+    
+    .position-section,
+    .profit-section {
+        min-height: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-panel {
+        padding: 8px;
+    }
+    
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 250px;
+    }
+    
+    .crypto-search input,
+    .exchange-search input,
+    .news-search input {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .favorite-item {
+        padding: 12px;
+    }
+    
+    .crypto-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+    }
+    
+    .crypto-name {
+        font-size: 13px;
+    }
+    
+    .crypto-symbol {
+        font-size: 11px;
     }
 }
