@@ -512,7 +512,7 @@
     display: none;
 }
 
-/* 손익 계산기 관련 스타일 개선 - 즐겨찾기 스타일에 맞게 조정 */
+/* 손익 계산기 관련 스타일 개선 */
 .profit-wrapper {
     background: var(--bg-secondary);
     border-radius: 6px;
@@ -547,6 +547,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     min-height: 0;
+    max-width: 50%;
 }
 
 .profit-result {
@@ -557,43 +558,66 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     min-height: 0;
+    max-width: 50%;
 }
 
-.input-group {
-    margin-bottom: 4px;
+/* Ensure all child elements respect container boundaries */
+.profit-calculator-controls *,
+.profit-result * {
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-.profit-calculator-controls label {
-    font-size: 11px;
-    color: var(--text-secondary);
-    margin-bottom: 2px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
+/* Make inputs and selects more compact */
 .profit-calculator-controls select,
 .profit-calculator-controls input[type="datetime-local"],
 .profit-calculator-controls input[type="number"] {
     padding: 6px 8px;
     height: 28px;
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.profit-calculator-controls select:focus,
+.profit-calculator-controls input[type="datetime-local"]:focus,
+.profit-calculator-controls input[type="number"]:focus {
+    border-color: var(--button-bg);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* Ensure radio groups don't overflow */
 .profit-calculator-controls .position-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-top: 4px;
-    gap: 12px;
 }
 
+/* Make result items more compact */
 .result-item {
     margin-bottom: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border-radius: 4px;
     background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
 }
 
 .result-item.highlight {
     background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
+}
+
+.result-item.profit {
+    border-left: 4px solid #16c784;
+}
+
+.result-item.loss {
+    border-left: 4px solid #ea3943;
 }
 
 .price-value {
@@ -603,24 +627,16 @@
 
 .price-value.profit {
     color: #16c784;
-    background-color: rgba(22, 199, 132, 0.1);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid rgba(22, 199, 132, 0.3);
 }
 
 .price-value.loss {
     color: #ea3943;
-    background-color: rgba(234, 57, 67, 0.1);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
 #calculate-profit-btn {
     padding: 6px 12px;
-    background-color: #444444;
-    color: #ffd700;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     border: none;
     border-radius: 4px;
     font-size: 11px;
@@ -631,7 +647,7 @@
 }
 
 #calculate-profit-btn:hover {
-    background-color: #357ABD;
+    background-color: var(--button-hover);
     transform: translateY(-1px);
 }
 
@@ -641,17 +657,38 @@
     border-radius: 4px;
     text-align: center;
     font-weight: 500;
+    border: 1px solid var(--border-color);
 }
 
 #profit-status.profit {
     background-color: rgba(22, 199, 132, 0.1);
     color: #16c784;
-    border: 1px solid rgba(22, 199, 132, 0.3);
+    border-color: rgba(22, 199, 132, 0.3);
 }
 
 #profit-status.loss {
     background-color: rgba(234, 57, 67, 0.1);
     color: #ea3943;
+    border-color: rgba(234, 57, 67, 0.3);
+}
+
+/* 수익률 표시 스타일 */
+.profit-rate {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.profit-rate.positive {
+    color: #16c784;
+    background-color: rgba(22, 199, 132, 0.1);
+    border: 1px solid rgba(22, 199, 132, 0.3);
+}
+
+.profit-rate.negative {
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
     border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
@@ -996,4 +1033,19 @@
     overflow: hidden;
     transition: background-color 0.3s ease;
     padding-bottom: 30px;
+}
+
+.profit-loss-value.profit {
+    color: #00c853;
+    font-weight: bold;
+}
+
+.profit-loss-value.loss {
+    color: #ff3d00;
+    font-weight: bold;
+}
+
+.profit-loss-value.neutral {
+    color: #757575;
+    font-weight: bold;
 }

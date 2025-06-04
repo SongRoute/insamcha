@@ -12,6 +12,7 @@
     box-sizing: border-box;
     flex-shrink: 0; /* Added to prevent shrinking */
     transition: background-color 0.3s ease;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .favorite-button {
