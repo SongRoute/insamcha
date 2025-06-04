@@ -63,14 +63,14 @@ function initializeHeader() {
   if (pageTitleElement) {
     // 페이지별 제목 매핑
     const pageTitles = {
-      'longshort.html': '📊 롱/숏 포지션 비율',
-      'price.html': '💰 암호화폐 실시간 시세',
-      'index.html': '🏠 홈',
-      'login.html': '🔐 로그인',
+      'longshort.html': 'Position Information',
+      'price.html': 'Crypto Price',
+      'index.html': 'Insamcha',
+      'login.html': 'login',
       'welcome.html': '👋 환영합니다',
       'favorite.html': '⭐ 즐겨찾기',
       'signup.html': '📝 회원가입',
-      'ex.html': '🪙 거래소 정보',
+      'ex.html': 'Exchange Information',
       // 필요에 따라 더 추가 가능
     };
     

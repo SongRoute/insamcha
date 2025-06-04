@@ -3,7 +3,7 @@
     width: 100%;
     background-color: var(--bg-secondary);
     border-radius: 8px;
-    padding: 12px;
+    padding: 1px;
     box-shadow: 0 2px 4px var(--shadow);
     box-sizing: border-box;
     display: flex;
@@ -20,9 +20,9 @@
     max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0px;
     height: 100%;
-    padding: 8px;
+    padding: 0px;
     overflow: hidden;
     min-height: 0;
 }
@@ -32,10 +32,16 @@
     min-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
     height: 100%;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: px;
+    box-shadow: 0 2px 4px var(--shadow);
+    box-sizing: border-box;
     overflow: hidden;
     min-height: 0;
+    border: 1px solid var(--border-color);
 }
 
 .news-panel {
@@ -51,7 +57,7 @@
 
 /* 섹션 제목 스타일 - price.css 테이블 헤더 참고 */
 .section-title {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
@@ -613,8 +619,8 @@
 
 #calculate-profit-btn {
     padding: 6px 12px;
-    background-color: #4a90e2;
-    color: white;
+    background-color: #444444;
+    color: #ffd700;
     border: none;
     border-radius: 4px;
     font-size: 11px;
@@ -686,6 +692,14 @@
 
 /* 반응형 디자인 */
 @media (max-width: 1200px) {
+    .main-panel,
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 0;
+        min-height: 0;
+    }
+    
     .main-panel {
         padding: 16px;
     }
@@ -701,6 +715,14 @@
 }
 
 @media (max-width: 992px) {
+    .main-panel,
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 0;
+        min-height: 0;
+    }
+    
     .main-panel {
         padding: 12px;
     }
@@ -720,6 +742,14 @@
 }
 
 @media (max-width: 768px) {
+    .main-panel,
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 0;
+        min-height: 0;
+    }
+    
     .main-panel {
         padding: 8px;
     }
@@ -882,4 +912,88 @@
     background-color: rgba(234, 57, 67, 0.1);
     color: #ea3943;
     border: 1px solid rgba(234, 57, 67, 0.3);
+}
+
+.chart-favorites, .position-favorites {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    min-height: 0;
+}
+
+.chart-section, .position-section {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    overflow: auto;
+    box-shadow: 0 1px 3px var(--shadow);
+    border: 1px solid var(--border-color);
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.position-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* 내부 flex/grid 컨테이너의 오버플로우 방지 */
+.binance-chart-container-wrapper,
+.price-info,
+.price-card,
+.favorites-table-wrapper,
+.chart-section,
+.position-section,
+.profit-wrapper,
+.profit-calculator-container,
+.profit-calculator-controls,
+.profit-result,
+.position-content {
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.section-title.chart-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.section-title.chart-title .controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+.section-title.chart-title .controls select,
+.section-title.chart-title .controls button {
+    font-size: 0.95em;
+    padding: 4px 10px;
+    height: 32px;
+}
+
+#main {
+    flex-grow: 1;
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    background-color: var(--bg-primary);
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    padding-bottom: 30px;
 }

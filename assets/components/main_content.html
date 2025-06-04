@@ -26,61 +26,68 @@
     </div>
     
     <div class="main-panel center-panel">
-      <h2 class="panel-title chart-title">바이낸스 실시간 차트</h2>
-      <div id="price-chart" class="center-panel-section chart-section">
-        <div class="binance-chart-container-wrapper">
+      <div class="favorites-section chart-favorites">
+        <h2 class="section-title chart-title">
+          Crypto Chart
           <div class="controls">
-              <select id="symbolSelect">
-                  <option value="btcusdt">BTC/USDT</option>
-                  <option value="ethusdt">ETH/USDT</option>
-                  <option value="adausdt">ADA/USDT</option>
-                  <option value="dogeusdt">DOGE/USDT</option>
-                  <option value="solusdt">SOL/USDT</option>
-              </select>
-
-              <button id="connectBtn">연결</button>
-              <button id="disconnectBtn">연결 해제</button>
-              <button id="clearBtn">차트 초기화</button>
+            <select id="symbolSelect">
+                <option value="btcusdt">BTC/USDT</option>
+                <option value="ethusdt">ETH/USDT</option>
+                <option value="adausdt">ADA/USDT</option>
+                <option value="dogeusdt">DOGE/USDT</option>
+                <option value="solusdt">SOL/USDT</option>
+            </select>
+            <button id="connectBtn">연결</button>
+            <button id="disconnectBtn">연결 해제</button>
+            <button id="clearBtn">차트 초기화</button>
           </div>
+        </h2>
+        
 
-          <div id="status" class="status disconnected">연결되지 않음</div>
+        <div id="price-chart" class="favorites-table-wrapper chart-section">
+          <div class="binance-chart-container-wrapper">
 
-          <div class="chart-canvas-container">
-            <canvas id="priceChart"></canvas>
-          </div>
+            <div class="chart-canvas-container">
+              <canvas id="priceChart"></canvas>
+            </div>
 
-          <div class="price-info">
-              <div class="price-card">
-                  <div class="price-label">현재 가격</div>
-                  <div id="currentPrice" class="price-value">-</div>
+            <div class="price-info">
+                <div class="price-card">
+                    <div class="price-label">현재 가격</div>
+                    <div id="currentPrice" class="price-value">-</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-label">24시간 변화율</div>
+                    <div id="priceChange" class="price-value">-</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-label">24시간 거래량</div>
+                    <div id="volume" class="price-value">-</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-label">24시간 최고가</div>
+                    <div id="highPrice" class="price-value">-</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-label">24시간 최저가</div>
+                    <div id="lowPrice" class="price-value">-</div>
+                </div>
+                <div class="price-card">
+                  <div class="price-label"></div>
+                  <div id="lowPrice" class="price-value"></div>
               </div>
-              <div class="price-card">
-                  <div class="price-label">24시간 변화율</div>
-                  <div id="priceChange" class="price-value">-</div>
-              </div>
-              <div class="price-card">
-                  <div class="price-label">24시간 거래량</div>
-                  <div id="volume" class="price-value">-</div>
-              </div>
-              <div class="price-card">
-                  <div class="price-label">24시간 최고가</div>
-                  <div id="highPrice" class="price-value">-</div>
-              </div>
-              <div class="price-card">
-                  <div class="price-label">24시간 최저가</div>
-                  <div id="lowPrice" class="price-value">-</div>
-              </div>
+
+            </div>
           </div>
         </div>
       </div>
-      
     </div>
     
     <div class="main-panel news-panel">
       <!-- 수익률 계산기 섹션 (중앙패널에서 이동) -->
       <div class="favorites-section profit-favorites">
         <h2 class="section-title profit-title">
-          💰 손익 계산기
+          Profit Calculator
           <button id="calculate-profit-btn">손익 계산</button>
         </h2>
         <div class="favorites-table-wrapper profit-wrapper">
@@ -151,7 +158,7 @@
 
       <!-- 뉴스 섹션 -->
       <div class="favorites-section news-favorites">
-        <h2 class="section-title news-title">📰 최신 코인 뉴스</h2>
+        <h2 class="section-title news-title">News</h2>
         <div class="favorites-table-wrapper">
           <table class="favorites-table news-table">
             <tbody id="news-container">
