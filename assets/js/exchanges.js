@@ -112,11 +112,7 @@ export async function fetchExchanges() {
     return exchangeCache;
   }
 
-  const res = await fetch('/api/exchanges', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  });
+  const res = await fetch('/api/exchanges');
 
   if (!res.ok) {
     throw new Error(`거래소 정보를 가져오지 못했습니다. (status: ${res.status})`);
@@ -129,7 +125,7 @@ export async function fetchExchanges() {
 }
 
 /**
- * 거래소 정보를 카드 형태로 렌더링
+ * 거래소 정보를 카드 형태로 렌더링 (즐겨찾기만 표시)
  * @param {Array} exchanges CoinGecko에서 받아온 거래소 배열
  */
 export async function renderExchanges(exchanges) {
@@ -137,15 +133,40 @@ export async function renderExchanges(exchanges) {
   if (!container) return;
 
   const token = localStorage.getItem('token');
-  const favorites = token ? await fetchFavorites() : [];
+  
+  // 로그인하지 않은 경우 안내 메시지 표시
+  if (!token) {
+    container.innerHTML = `
+      <div class="no-favorites-message">
+        <p>즐겨찾기 거래소를 보려면 로그인이 필요합니다.</p>
+        <button onclick="window.location.href='/login.html'" class="login-prompt-btn">로그인하기</button>
+      </div>
+    `;
+    return;
+  }
+
+  const favorites = await fetchFavorites();
+  
+  // 즐겨찾기된 거래소만 필터링
+  const favoritedExchanges = exchanges.filter(ex => favorites.includes(ex.id));
 
   container.innerHTML = ''; // 초기화
 
-  exchanges.forEach(ex => {
-    const isFavorited = favorites.includes(ex.id);
+  // 즐겨찾기가 없는 경우
+  if (favoritedExchanges.length === 0) {
+    container.innerHTML = `
+      <div class="no-favorites-message">
+        <p>아직 즐겨찾기에 추가된 거래소가 없습니다.</p>
+        <p>거래소 정보 페이지에서 관심있는 거래소를 즐겨찾기에 추가해보세요.</p>
+        <button onclick="window.location.href='/ex.html'" class="go-to-exchanges-btn">거래소 정보 보기</button>
+      </div>
+    `;
+    return;
+  }
+
+  favoritedExchanges.forEach(ex => {
     const card = document.createElement('div');
     card.className = 'exchange-card';
-    card.style.position = 'relative';
 
     card.innerHTML = `
       <a href="${ex.url}" target="_blank" class="exchange-link">
@@ -158,57 +179,8 @@ export async function renderExchanges(exchanges) {
           <div class="exchange-score">신뢰 점수: ${ex.trust_score_rank}위</div>
         </div>
       </a>
-      <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" data-id="${ex.id}" title="즐겨찾기">
-        ${isFavorited ? '★' : '☆'}
-      </button>
     `;
 
     container.appendChild(card);
-  });
-
-  // 이벤트 등록
-  document.querySelectorAll('.favorite-btn').forEach(btn => {
-   btn.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('즐겨찾기는 로그인 후 이용 가능합니다.');
-      return;
-    }
-
-    const exchangeId = btn.dataset.id;
-    const isNowFavorited = btn.classList.contains('favorited');
-
-    let success;
-    if (isNowFavorited) {
-      success = await removeFavorite(exchangeId);
-      if (success) {
-        btn.classList.remove('favorited');
-        btn.textContent = '☆';
-      }
-    } else {
-      success = await addFavorite(exchangeId);
-      if (success) {
-        btn.classList.add('favorited');
-        btn.textContent = '★';
-      }
-    }
-
-    if (!success) return;
-
-    // ✅ 필터 체크 여부를 기준으로 목록 다시 표시
-    const favOnly = document.getElementById('show-favorites-only')?.checked;
-    
-    if (favOnly) {
-      // main.js의 applyFilters 함수 호출
-      if (window.applyFilters) {
-        await window.applyFilters(); 
-      }
-    } else {
-      const allExchanges = await fetchExchanges();
-      await renderExchanges(allExchanges);
-    }
-  });
   });
 }

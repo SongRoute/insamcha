@@ -119,7 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('token', result.token);
         // 사용자 정보 로드
         await authManager.checkAuth();
-        window.location.href = '/index.html';
+        
+        // Check for returnUrl parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('returnUrl');
+        
+        if (returnUrl) {
+          // Redirect to the original page
+          window.location.href = decodeURIComponent(returnUrl);
+        } else {
+          // Default redirect to index
+          window.location.href = '/index.html';
+        }
       } else {
         alert('로그인 실패: ' + result.message);
       }

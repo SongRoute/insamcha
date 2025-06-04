@@ -3,7 +3,7 @@
     width: 76px; /* Fixed width for the nav bar */
     height: 100%; /* Make nav full height */
     background: var(--bg-secondary); /* Darker gray for nav */
-    padding: 10px 4px;
+    padding: 10px 4px 50px 4px; /* Added bottom padding to account for footer */
     overflow-y: auto; /* In case content exceeds height */
     display: flex;
     flex-direction: column;

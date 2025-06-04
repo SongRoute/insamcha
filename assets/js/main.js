@@ -69,6 +69,7 @@ function initializeHeader() {
       'welcome.html': '👋 환영합니다',
       'favorite.html': '⭐ 즐겨찾기',
       'signup.html': '📝 회원가입',
+      'ex.html': '🪙 거래소 정보',
       // 필요에 따라 더 추가 가능
     };
     
@@ -81,29 +82,26 @@ function initializeHeader() {
   }
 }
 
-// ✅ 검색 & 즐겨찾기 통합 필터 함수
+// ✅ 검색 필터 함수 (즐겨찾기 전용)
 export async function applyFilters() {
   const searchInput = document.getElementById('exchange-search-input');
-  const favOnlyCheckbox = document.getElementById('show-favorites-only');
 
   let filtered = allExchanges;
   const query = searchInput?.value.trim().toLowerCase() || '';
 
   if (query) {
-    filtered = filtered.filter(ex => ex.name.toLowerCase().includes(query));
-  }
-
-  if (favOnlyCheckbox?.checked) {
-    if (!authManager.isAuthenticated) {
-      alert('즐겨찾기는 로그인 후 이용 가능합니다.');
-      favOnlyCheckbox.checked = false;
-      return renderExchanges(allExchanges);
+    // 먼저 즐겨찾기된 거래소들을 가져오기
+    const token = localStorage.getItem('token');
+    if (token) {
+      const favorites = await fetchFavorites();
+      const favoritedExchanges = allExchanges.filter(ex => favorites.includes(ex.id));
+      filtered = favoritedExchanges.filter(ex => ex.name.toLowerCase().includes(query));
+    } else {
+      filtered = [];
     }
-    const favorites = await fetchFavorites();
-    filtered = filtered.filter(ex => favorites.includes(ex.id));
   }
 
-  await renderExchanges(filtered);
+  await renderExchanges(filtered.length > 0 || !query ? filtered : allExchanges);
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -168,10 +166,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     await renderExchanges(allExchanges);
 
     const searchInput = document.getElementById('exchange-search-input');
-    const favOnlyCheckbox = document.getElementById('show-favorites-only');
 
     searchInput?.addEventListener('input', applyFilters);
-    favOnlyCheckbox?.addEventListener('change', applyFilters);
 
   } catch (err) {
     console.error(err);

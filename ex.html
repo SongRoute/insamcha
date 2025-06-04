@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>암호화폐 실시간 시세 - Mablewide Clone</title>
+    <title>Exchange Information - Mablewide Clone</title>
     
-    <!-- Prevent FOUC (Flash of Unstyled Content) for dark mode -->
     <script>
         (function() {
-            // Check for saved theme preference or default to system preference
             const savedTheme = localStorage.getItem('theme');
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             
@@ -22,10 +20,8 @@
     
     <!-- 로그인 가드 -->
     <script>
-        // 토큰 검증 로직을 auth.js에서 처리하도록 단순화
         const token = localStorage.getItem('token');
         if (!token) {
-            // 토큰 없으면 웰컴 페이지로
             window.location.href = '/welcome.html';
         }
     </script>
@@ -36,20 +32,7 @@
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/footer.css">
     <link rel="stylesheet" href="assets/css/price.css">
-    
-    <script>
-        // Apply saved theme on page load (backup for DOMContentLoaded)
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            if (currentTheme === 'dark' || (!currentTheme && systemPrefersDark)) {
-                document.body.setAttribute('data-theme', 'dark');
-            } else if (currentTheme === 'light') {
-                document.body.setAttribute('data-theme', 'light');
-            }
-        });
-    </script>
+    <link rel="stylesheet" href="assets/css/exchanges.css">
 </head>
 <body>
     <div id="wrapper">
@@ -57,26 +40,34 @@
         <div class="content-wrapper">
             <div id="header-placeholder"></div>
             <main id="price-content">
-                <div class="price-container">                    
+                <div class="price-container">
+                    
+                    <div class="exchange-search-wrapper">
+                        <div class="exchange-filter">
+                            <label>
+                                <input type="checkbox" id="show-favorites-only" />
+                                ⭐ 즐겨찾기만 보기
+                            </label>
+                        </div>
+                        <input type="text" id="exchange-search-input" placeholder="거래소 검색 (예: Binance)"/>
+                    </div>
+                    
                     <div class="price-table-wrapper">
                         <table class="price-table">
                             <thead>
                                 <tr>
                                     <th class="rank">#</th>
-                                    <th class="name">이름</th>
-                                    <th class="price">가격</th>
-                                    <th class="change-24h">24시간</th>
-                                    <th class="change-7d">7일</th>
-                                    <th class="change-30d">30일</th>
+                                    <th class="name">거래소</th>
                                     <th class="volume-24h">24시간 거래량</th>
-                                    <th class="market-cap">시가총액</th>
-                                    <th class="actions">차트</th>
+                                    <th class="trust-score">신뢰점수</th>
+                                    <th class="country">국가</th>
+                                    <th class="year">설립년도</th>
+                                    <th class="actions">즐겨찾기</th>
                                 </tr>
                             </thead>
-                            <tbody id="crypto-tbody">
-                                <!-- 데이터는 JavaScript로 동적으로 추가됩니다 -->
+                            <tbody id="exchange-tbody">
                                 <tr class="loading">
-                                    <td colspan="9">데이터를 불러오는 중...</td>
+                                    <td colspan="7">거래소 정보를 불러오는 중...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -89,6 +80,6 @@
 
     <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/auth.js"></script>
-    <script type="module" src="assets/js/price.js"></script>
+    <script type="module" src="assets/js/exchange-info.js"></script>
 </body>
 </html> 
