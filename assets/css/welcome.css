@@ -57,7 +57,8 @@ section.section-visible {
     background: linear-gradient(rgba(26, 26, 46, 0.8), rgba(0, 0, 0, 0.8)), url('../images/crypto_bg.jpg') no-repeat center center/cover;
     filter: blur(3px);
     z-index: 1;
-    animation: backgroundZoom 10s infinite alternate;
+    animation: backgroundPan 20s infinite alternate linear; /* 더 부드럽고 긴 애니메이션 */
+    background-size: 110% 110%; /* 초기 크기 확대 */
 }
 
 .hero-content {
@@ -120,20 +121,41 @@ section.section-visible {
 }
 
 .feature-content {
+    display: flex;
+    flex-direction: column; /* 기본은 세로 배열 */
+    align-items: center;
+    gap: 30px; /* 텍스트와 이미지 사이 간격 */
     max-width: 800px;
     margin: 0 auto;
 }
 
-.feature-content h2 {
-    font-size: 2.5rem;
-    color: #f0b90b;
-    margin-bottom: 20px;
+/* 데스크톱에서 가로 배열 */
+@media (min-width: 768px) {
+    .feature-content {
+        flex-direction: row;
+        text-align: left;
+    }
+    .feature-content.right-align-text { /* 텍스트를 오른쪽으로 정렬하는 경우 */
+        flex-direction: row-reverse;
+    }
+    .feature-content h2, .feature-content p {
+        text-align: left; /* 가로 배열 시 텍스트 왼쪽 정렬 */
+    }
+    .feature-text-block {
+        flex: 1;
+        padding-right: 30px; /* 이미지와의 간격 */
+    }
+    .feature-image-block {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
-.feature-content p {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    margin-bottom: 30px;
+/* 텍스트와 이미지 위치 반전을 위한 클래스 */
+.feature-section.alt-layout .feature-content {
+    flex-direction: row-reverse; /* 텍스트와 이미지 위치 반전 */
 }
 
 .feature-image {
@@ -197,6 +219,17 @@ section.section-visible {
     }
     100% {
         transform: scale(1.05);
+    }
+}
+
+@keyframes backgroundPan {
+    0% {
+        transform: scale(1) translateX(0) translateY(0);
+        background-position: 0% 0%;
+    }
+    100% {
+        transform: scale(1.1) translateX(5%) translateY(5%);
+        background-position: 100% 100%;
     }
 }
 
