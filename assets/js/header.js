@@ -45,35 +45,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // 뉴스 헤드라인 순환 표시
-    const newsHeadline = document.getElementById('news-headline');
-    let currentIndex = 0;
-    let articles = [];
-
-    try {
-        articles = await fetchCryptoNews('인삼차');
-    } catch (error) {
-        console.error('뉴스를 불러오는데 실패했습니다:', error);
-        return;
-    }
-
-    function showNextHeadline() {
-        if (articles.length === 0) return;
+    // 페이지 제목 설정
+    const pageTitleElement = document.getElementById('page-title');
+    if (pageTitleElement) {
+        // 페이지별 제목 매핑
+        const pageTitles = {
+            'longshort.html': '롱/숏 포지션 비율',
+            'index.html': '홈',
+            'login.html': '로그인',
+            'welcome.html': '환영합니다',
+            'price.html': '암호화계 실시간 가격'
+            // 필요에 따라 더 추가 가능
+        };
         
-        newsHeadline.style.opacity = '0';
+        // 현재 페이지 파일명 가져오기
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         
-        setTimeout(() => {
-            const article = articles[currentIndex];
-            newsHeadline.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-            newsHeadline.style.opacity = '1';
-            
-            currentIndex = (currentIndex + 1) % articles.length;
-        }, 500);
+        // 페이지 제목 설정 (매핑된 제목이 있으면 사용, 없으면 document.title 사용)
+        const pageTitle = pageTitles[currentPage] || document.title || '인삼차';
+        pageTitleElement.textContent = pageTitle;
     }
-
-    // 초기 헤드라인 표시
-    showNextHeadline();
-    
-    // 5초마다 다음 헤드라인 표시
-    setInterval(showNextHeadline, 5000);
 }); 

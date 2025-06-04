@@ -232,33 +232,25 @@
     left: 10px;
 }
 
-.news-headline-container {
+/* Page Title Styles */
+.page-title-container {
     flex: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 0 20px;
     height: 40px;
     overflow: hidden;
 }
 
-.news-headline-wrapper {
-    width: 100%;
-    overflow: hidden;
-}
-
-.news-headline {
-    font-size: 16px;
-    transition: opacity 0.5s ease;
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.news-headline a {
-    color: #333;
-    text-decoration: none;
-}
-
-.news-headline a:hover {
-    color: #007bff;
+    text-align: center;
+    transition: color 0.3s ease;
 }
