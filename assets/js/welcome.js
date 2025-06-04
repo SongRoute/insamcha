@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('section-visible');
             } else {
-                entry.target.classList.remove('section-visible'); // Optional: remove when out of view
+                // entry.target.classList.remove('section-visible'); // Optional: remove when out of view
             }
         });
     }, observerOptions);
@@ -20,4 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(section => {
         observer.observe(section);
     });
+
+    // Hero section 텍스트에 애니메이션 클래스 추가 (초기 로드 시)
+    const heroTitle = document.querySelector('.hero-section h1');
+    const heroParagraph = document.querySelector('.hero-section p');
+    const heroButton = document.querySelector('.hero-section .welcome-button');
+
+    if (heroTitle) {
+        heroTitle.style.animation = 'slideInFromTop 1s ease-out forwards';
+    }
+    if (heroParagraph) {
+        heroParagraph.style.animation = 'slideInFromBottom 1s ease-out forwards 0.5s'; // 0.5초 지연
+    }
+    if (heroButton) {
+        heroButton.style.animation = 'fadeInUp 1s ease-out forwards 1s'; // 1초 지연
+    }
 });
