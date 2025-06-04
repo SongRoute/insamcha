@@ -1,12 +1,28 @@
 <main id="main">
-    <div class="main-panel exchange-panel">
-      <h2>⭐ 즐겨찾기 거래소</h2>
-      <div class="exchange-search">
-        <input type="text" id="exchange-search-input"
-        placeholder="즐겨찾기 거래소 검색 (예: Binance)"/>
-      </div>
-      <div id="exchange-container">
+    <div class="main-panel favorites-panel">
+      <!-- 즐겨찾기 암호화폐 섹션 -->
+      <div class="favorites-section crypto-favorites">
+        <h2>⭐ 즐겨찾기 암호화폐</h2>
+        <div class="crypto-search">
+          <input type="text" id="crypto-search-input"
+          placeholder="즐겨찾기 암호화폐 검색 (예: Bitcoin, BTC)"/>
         </div>
+        <div id="crypto-favorites-container">
+          <!-- 즐겨찾기한 암호화폐 목록이 여기에 표시됩니다 -->
+        </div>
+      </div>
+
+      <!-- 즐겨찾기 거래소 섹션 -->
+      <div class="favorites-section exchange-favorites">
+        <h2>⭐ 즐겨찾기 거래소</h2>
+        <div class="exchange-search">
+          <input type="text" id="exchange-search-input"
+          placeholder="즐겨찾기 거래소 검색 (예: Binance)"/>
+        </div>
+        <div id="exchange-container">
+          <!-- 즐겨찾기한 거래소 목록이 여기에 표시됩니다 -->
+        </div>
+      </div>
     </div>
     <div class="main-panel center-panel">
       <div id="price-chart" class="center-panel-section chart-section">

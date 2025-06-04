@@ -12,17 +12,231 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.exchange-panel {
-    flex-basis: 250px;
+/* 즐겨찾기 패널 (암호화폐 + 거래소) */
+.favorites-panel {
+    flex-basis: 500px; /* exchange-panel보다 높이 증가 */
     flex-shrink: 0;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 두 섹션 사이 간격 */
 }
 
-.exchange-panel h2 {
+.favorites-section {
+    flex: 1; /* 두 섹션이 동일한 높이를 가지도록 */
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.favorites-section h2 {
     color: #f0b90b;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin: 0 0 15px 0;
     text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 암호화폐 즐겨찾기 섹션 */
+.crypto-favorites {
+    border-left: 3px solid #f7931a; /* 비트코인 오렌지 색상 */
+}
+
+.crypto-favorites h2 {
+    color: #f7931a;
+}
+
+/* 거래소 즐겨찾기 섹션 */
+.exchange-favorites {
+    border-left: 3px solid #f0b90b; /* 바이낸스 옐로우 색상 */
+}
+
+.exchange-favorites h2 {
+    color: #f0b90b;
+}
+
+/* 검색 입력 스타일 */
+.crypto-search,
+.exchange-search {
+    margin-bottom: 15px;
+}
+
+.crypto-search input,
+.exchange-search input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+}
+
+.crypto-search input:focus,
+.exchange-search input:focus {
+    border-color: #f0b90b;
+    outline: none;
+}
+
+/* 컨테이너 스타일 */
+#crypto-favorites-container,
+#exchange-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px; /* 스크롤바를 위한 여백 */
+}
+
+/* 즐겨찾기 리스트 스타일 */
+.favorites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.favorite-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.favorite-item:hover {
+    background-color: var(--bg-secondary);
+    border-color: #f0b90b;
+    transform: translateY(-1px);
+}
+
+/* 암호화폐 아이템 스타일 */
+.crypto-item {
+    border-left: 3px solid #f7931a;
+}
+
+.crypto-item:hover {
+    border-left-color: #f7931a;
+    box-shadow: 0 2px 8px rgba(247, 147, 26, 0.2);
+}
+
+.crypto-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.crypto-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #f7931a, #ff6b35);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.crypto-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.crypto-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.crypto-symbol {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.crypto-actions,
+.exchange-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.view-btn,
+.favorite-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.view-btn:hover {
+    background-color: #f0b90b;
+    border-color: #f0b90b;
+    color: #000;
+}
+
+.favorite-btn:hover {
+    background-color: #ff6b35;
+    border-color: #ff6b35;
+    color: white;
+}
+
+.favorite-btn.favorited {
+    background-color: #f0b90b;
+    border-color: #f0b90b;
+    color: #000;
+}
+
+/* 상태 메시지 스타일 */
+.no-data,
+.error-message {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.error-message {
+    color: var(--danger);
+    background-color: rgba(255, 0, 0, 0.1);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.no-data {
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    border: 1px dashed var(--border-color);
+}
+
+/* 거래소 아이템 특별 스타일 (exchange-info.js에서 렌더링되는 항목들과 구분) */
+.favorite-item.exchange-item {
+    border-left: 3px solid #f0b90b;
+}
+
+.favorite-item.exchange-item:hover {
+    border-left-color: #f0b90b;
+    box-shadow: 0 2px 8px rgba(240, 185, 11, 0.2);
+}
+
+/* 기존 exchange-panel 스타일 (하위 호환성을 위해 유지하되 숨김 처리) */
+.exchange-panel {
+    display: none; /* 새로운 구조로 대체되었으므로 숨김 */
 }
 
 .center-panel {
