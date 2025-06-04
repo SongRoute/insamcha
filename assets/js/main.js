@@ -8,6 +8,7 @@ import { authManager } from './auth.js';
 import './nav.js';
 
 let allExchanges = [];
+let allCryptoData = [];
 
 async function loadHTMLComponent(url, placeholderId) {
   try {
@@ -62,13 +63,14 @@ function initializeHeader() {
   if (pageTitleElement) {
     // 페이지별 제목 매핑
     const pageTitles = {
-      'longshort.html': '📊 롱/숏 포지션 비율',
-      'price.html': '💰 암호화폐 실시간 시세',
-      'index.html': '🏠 홈',
-      'login.html': '🔐 로그인',
+      'longshort.html': 'Position Information',
+      'price.html': 'Crypto Price',
+      'index.html': 'Insamcha',
+      'login.html': 'login',
       'welcome.html': '👋 환영합니다',
       'favorite.html': '⭐ 즐겨찾기',
       'signup.html': '📝 회원가입',
+      'ex.html': 'Exchange Information',
       // 필요에 따라 더 추가 가능
     };
     
@@ -81,29 +83,246 @@ function initializeHeader() {
   }
 }
 
-// ✅ 검색 & 즐겨찾기 통합 필터 함수
-export async function applyFilters() {
-  const searchInput = document.getElementById('exchange-search-input');
-  const favOnlyCheckbox = document.getElementById('show-favorites-only');
+// 즐겨찾기 암호화폐 렌더링 함수
+async function renderFavoriteCryptos() {
+  const container = document.getElementById('crypto-favorites-container');
+  if (!container) return;
 
-  let filtered = allExchanges;
-  const query = searchInput?.value.trim().toLowerCase() || '';
-
-  if (query) {
-    filtered = filtered.filter(ex => ex.name.toLowerCase().includes(query));
-  }
-
-  if (favOnlyCheckbox?.checked) {
+  try {
+    // 인증 상태 확인
     if (!authManager.isAuthenticated) {
-      alert('즐겨찾기는 로그인 후 이용 가능합니다.');
-      favOnlyCheckbox.checked = false;
-      return renderExchanges(allExchanges);
+      container.innerHTML = '<tr><td colspan="3" class="no-data">로그인 후 즐겨찾기를 확인할 수 있습니다.</td></tr>';
+      return;
     }
-    const favorites = await fetchFavorites();
-    filtered = filtered.filter(ex => favorites.includes(ex.id));
-  }
 
-  await renderExchanges(filtered);
+    // 즐겨찾기 목록 가져오기
+    const favorites = await fetchFavorites();
+    const cryptoFavorites = favorites.filter(fav => 
+      // 암호화폐 심볼은 보통 3-5자리 영문 대문자이고 거래소 ID가 아닌 것들
+      /^[A-Z]{2,8}$/.test(fav) && !fav.includes('-') && fav.length <= 10
+    );
+
+    if (cryptoFavorites.length === 0) {
+      container.innerHTML = `
+        <tr>
+          <td colspan="3">
+            <div class="no-favorites-message">
+              <p>아직 즐겨찾기에 추가된 암호화폐가 없습니다.</p>
+              <p>시세 정보 페이지에서 관심있는 암호화폐를 즐겨찾기에 추가해보세요.</p>
+              <button onclick="window.location.href='/price.html'" class="go-to-price-btn">시세 정보 보기</button>
+            </div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    // 실제 암호화폐 가격 데이터 가져오기
+    const cryptoData = await fetchCryptoDataForFavorites();
+    
+    if (!cryptoData || !Array.isArray(cryptoData)) {
+      container.innerHTML = '<tr><td colspan="3" class="error-message">암호화폐 가격 정보를 불러올 수 없습니다.</td></tr>';
+      return;
+    }
+
+    // 즐겨찾기한 암호화폐만 필터링
+    const favoritedCryptos = cryptoData.filter(crypto => 
+      cryptoFavorites.includes(crypto.symbol)
+    );
+
+    // 테이블 행으로 렌더링
+    container.innerHTML = '';
+    
+    favoritedCryptos.slice(0, 8).forEach(crypto => {
+      const { name, symbol, quote } = crypto;
+      const krwQuote = quote.KRW;
+      
+      const row = document.createElement('tr');
+      const changeClass = krwQuote.percent_change_24h > 0 ? 'positive' : 
+                         krwQuote.percent_change_24h < 0 ? 'negative' : 'neutral';
+
+      row.innerHTML = `
+        <td class="name">
+          <div class="crypto-info">
+            <div class="crypto-icon">${symbol.substring(0, 2)}</div>
+            <div class="crypto-name-wrapper">
+              <div class="crypto-name">${name}</div>
+              <div class="crypto-symbol">${symbol}</div>
+            </div>
+          </div>
+        </td>
+        <td class="price">${formatPrice(krwQuote.price)}</td>
+        <td class="change change-24h ${changeClass}">${formatPercentage(krwQuote.percent_change_24h)}</td>
+      `;
+
+      container.appendChild(row);
+    });
+    
+    if (favoritedCryptos.length > 8) {
+      const moreRow = document.createElement('tr');
+      moreRow.innerHTML = `
+        <td colspan="3">
+          <div class="more-items">
+            <p>외 ${favoritedCryptos.length - 8}개 더...</p>
+            <button onclick="window.location.href='price.html'" class="view-all-btn">전체 보기</button>
+          </div>
+        </td>
+      `;
+      container.appendChild(moreRow);
+    }
+
+  } catch (error) {
+    console.error('즐겨찾기 암호화폐 로딩 실패:', error);
+    container.innerHTML = '<tr><td colspan="3" class="error-message">즐겨찾기 암호화폐를 불러올 수 없습니다.</td></tr>';
+  }
+}
+
+// 암호화폐 가격 데이터 가져오기 함수
+async function fetchCryptoDataForFavorites() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:3000/api/crypto/prices', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.data || !Array.isArray(data.data)) {
+      throw new Error('Invalid data format');
+    }
+    
+    return data.data;
+  } catch (error) {
+    console.error('암호화폐 데이터 로딩 실패:', error);
+    return null;
+  }
+}
+
+// 가격 포맷팅 함수
+function formatPrice(price) {
+  if (price === null || price === undefined) return '₩0';
+  
+  let decimals = 0;
+  if (price < 1) decimals = 4;
+  else if (price < 10) decimals = 2;
+  else if (price < 1000) decimals = 1;
+  
+  return `₩${new Intl.NumberFormat('ko-KR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  }).format(price)}`;
+}
+
+// 퍼센트 포맷팅 함수
+function formatPercentage(percent) {
+  if (percent === null || percent === undefined) return '0.00%';
+  const sign = percent > 0 ? '+' : '';
+  return `${sign}${percent.toFixed(2)}%`;
+}
+
+// 즐겨찾기 거래소 렌더링 함수 (기존 로직 활용)
+async function renderFavoriteExchanges() {
+  const container = document.getElementById('exchange-container');
+  if (!container) return;
+
+  try {
+    // 인증 상태 확인
+    if (!authManager.isAuthenticated) {
+      container.innerHTML = '<p class="no-data">로그인 후 즐겨찾기를 확인할 수 있습니다.</p>';
+      return;
+    }
+
+    // exchanges.js의 renderExchanges 함수를 직접 호출
+    // 이 함수는 이미 즐겨찾기 필터링과 렌더링을 모두 처리합니다
+    await renderExchanges(allExchanges);
+
+  } catch (error) {
+    console.error('즐겨찾기 거래소 로딩 실패:', error);
+    container.innerHTML = '<p class="error-message">즐겨찾기 거래소를 불러올 수 없습니다.</p>';
+  }
+}
+
+// 검색 필터 함수들
+async function applyCryptoFilters() {
+  const searchInput = document.getElementById('crypto-search-input');
+  if (!searchInput) return;
+
+  const query = searchInput.value.trim().toLowerCase();
+  
+  // 검색어가 있으면 필터링, 없으면 전체 즐겨찾기 표시
+  await renderFavoriteCryptos();
+}
+
+async function applyExchangeFilters() {
+  const searchInput = document.getElementById('exchange-search-input');
+  if (!searchInput) return;
+
+  const query = searchInput.value.trim().toLowerCase();
+  
+  try {
+    if (!authManager.isAuthenticated) return;
+
+    const favorites = await fetchFavorites();
+
+    let filteredExchanges = allExchanges.filter(exchange => 
+      favorites.includes(exchange.id)
+    );
+
+    if (query) {
+      filteredExchanges = filteredExchanges.filter(exchange =>
+        exchange.name.toLowerCase().includes(query)
+      );
+    }
+
+    // exchanges.js의 renderExchanges는 자체적으로 즐겨찾기 필터링을 하므로
+    // 검색이 있을 때만 필터된 데이터를 사용하고, 없으면 전체 데이터를 넘김
+    if (query) {
+      // 검색이 있을 때는 수동으로 렌더링
+      const container = document.getElementById('exchange-container');
+      if (container) {
+        container.innerHTML = '';
+        
+        if (filteredExchanges.length === 0) {
+          container.innerHTML = '<tr><td colspan="2" class="no-data">검색 결과가 없습니다.</td></tr>';
+          return;
+        }
+
+        filteredExchanges.forEach(ex => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td class="name">
+              <div class="exchange-info">
+                <img src="${ex.image}" alt="${ex.name}" class="exchange-logo" />
+                <div class="exchange-name">${ex.name}</div>
+              </div>
+            </td>
+            <td class="volume">${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</td>
+          `;
+
+          // 클릭 이벤트 추가
+          row.addEventListener('click', () => {
+            window.open(ex.url, '_blank');
+          });
+
+          row.style.cursor = 'pointer';
+          container.appendChild(row);
+        });
+      }
+    } else {
+      // 검색이 없으면 기본 renderExchanges 함수 사용
+      await renderExchanges(allExchanges);
+    }
+
+  } catch (error) {
+    console.error('거래소 필터링 실패:', error);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -162,28 +381,47 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   });
 
-  // 거래소 로딩 및 이벤트 연결
+  // 거래소 데이터 로딩
   try {
     allExchanges = await fetchExchanges();
-    await renderExchanges(allExchanges);
+    
+    // 즐겨찾기 섹션들 초기화
+    await renderFavoriteCryptos();
+    await renderFavoriteExchanges();
 
-    const searchInput = document.getElementById('exchange-search-input');
-    const favOnlyCheckbox = document.getElementById('show-favorites-only');
+    // 검색 이벤트 연결
+    const cryptoSearchInput = document.getElementById('crypto-search-input');
+    const exchangeSearchInput = document.getElementById('exchange-search-input');
 
-    searchInput?.addEventListener('input', applyFilters);
-    favOnlyCheckbox?.addEventListener('change', applyFilters);
+    cryptoSearchInput?.addEventListener('input', applyCryptoFilters);
+    exchangeSearchInput?.addEventListener('input', applyExchangeFilters);
 
   } catch (err) {
-    console.error(err);
-    const exchContainer = document.getElementById('exchange-container');
-    if (exchContainer) {
-      exchContainer.textContent = '거래소 정보를 불러오는 중 오류가 발생했습니다.';
+    console.error('초기화 중 오류 발생:', err);
+    
+    // 각 컨테이너에 오류 메시지 표시
+    const cryptoContainer = document.getElementById('crypto-favorites-container');
+    const exchangeContainer = document.getElementById('exchange-container');
+    
+    if (cryptoContainer) {
+      cryptoContainer.innerHTML = '<p class="error-message">암호화폐 정보를 불러오는 중 오류가 발생했습니다.</p>';
+    }
+    
+    if (exchangeContainer) {
+      exchangeContainer.innerHTML = '<p class="error-message">거래소 정보를 불러오는 중 오류가 발생했습니다.</p>';
     }
   }
 
   // 수익 계산기 초기화
   initializeProfitCalculator();
+
+  // 인증 상태 변경 시 즐겨찾기 다시 로드
+  document.addEventListener('authStateChanged', async () => {
+    await renderFavoriteCryptos();
+    await renderFavoriteExchanges();
+  });
 });
 
-// applyFilters 함수를 전역으로 노출
-window.applyFilters = applyFilters;
+// 함수들을 전역으로 노출 (필요시)
+window.applyCryptoFilters = applyCryptoFilters;
+window.applyExchangeFilters = applyExchangeFilters;

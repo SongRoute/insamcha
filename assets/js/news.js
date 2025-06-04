@@ -20,7 +20,7 @@ export async function fetchCryptoNews(q = 'cryptocurrency') {
 }
 
 /**
- * 뉴스 렌더링: query 키워드를 받아서 제목만 출력
+ * 뉴스 렌더링: query 키워드를 받아서 테이블 형식으로 출력
  * @param {string} query 검색 키워드
  */
 export async function renderNews(query = 'bitcoin') {
@@ -33,25 +33,38 @@ export async function renderNews(query = 'bitcoin') {
   try {
     articles = await fetchCryptoNews(query);
   } catch (e) {
-    container.textContent = '❌ 뉴스를 불러오는 중 오류가 발생했습니다.';
+    container.innerHTML = '<tr><td class="error-message">❌ 뉴스를 불러오는 중 오류가 발생했습니다.</td></tr>';
     console.error(e);
     return;
   }
 
   if (!articles || articles.length === 0) {
-    container.textContent = '🔍 관련 뉴스가 없습니다.';
+    container.innerHTML = '<tr><td class="no-data">🔍 관련 뉴스가 없습니다.</td></tr>';
     return;
   }
 
-  articles.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'news-card';
-    card.innerHTML = `
-      <div class="news-content">
-        <a href="${a.url}" target="_blank">
-          <h3>${a.title}</h3>
+  // 최대 15개 뉴스로 제한
+  const limitedArticles = articles.slice(0, 15);
+
+  limitedArticles.forEach(article => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td class="news-title">
+        <a href="${article.url}" target="_blank" class="news-link">
+          ${article.title}
         </a>
-      </div>`;
-    container.appendChild(card);
+      </td>
+    `;
+    
+    // 호버 효과
+    row.addEventListener('mouseenter', () => {
+      row.style.backgroundColor = 'var(--bg-tertiary)';
+    });
+    
+    row.addEventListener('mouseleave', () => {
+      row.style.backgroundColor = '';
+    });
+
+    container.appendChild(row);
   });
 }

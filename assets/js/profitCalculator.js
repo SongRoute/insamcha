@@ -102,6 +102,19 @@ async function calculateProfitLoss() {
         startPriceElem.textContent = `$${startPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         endPriceElem.textContent = `$${endPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
+        // 손익에 따른 색상 변경
+        const profitLossElements = document.querySelectorAll('.profit-loss-value');
+        profitLossElements.forEach(elem => {
+            elem.classList.remove('profit', 'loss', 'neutral');
+            if (profitLoss > 0) {
+                elem.classList.add('profit');
+            } else if (profitLoss < 0) {
+                elem.classList.add('loss');
+            } else {
+                elem.classList.add('neutral');
+            }
+        });
+
         if (profitLoss > 0) {
             profitStatusElem.textContent = '🎉 이익이 발생했습니다!';
             profitStatusElem.classList.add('profit');

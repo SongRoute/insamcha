@@ -142,6 +142,15 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: color 0.3s ease;
+    filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+[data-theme="light"] .header-icon {
+    filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+}
+
+[data-theme="dark"] .header-icon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }
 
 /* Notification Pop-up Styles */
@@ -206,12 +215,12 @@
     font-size: 14px;
     font-weight: 500;
     margin-left: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .login-button {
     background-color: var(--button-bg);
-    color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--button-text);
 }
 
 .login-button:hover {
@@ -219,13 +228,12 @@
 }
 
 .signup-button {
-    background-color: #f0b90b;
-    color: #121212;
-    transition: background-color 0.3s ease;
+    background-color: var(--button-bg);
+    color: var(--button-text);
 }
 
 .signup-button:hover {
-    background-color: #ffd700;
+    background-color: var(--button-hover);
 }
 
 .search-icon-img {
@@ -236,21 +244,21 @@
 .page-title-container {
     flex: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 20px;
+    align-items:left;
+    justify-content: left;
+    padding: 10px 1px;
     height: 40px;
     overflow: hidden;
 }
 
 .page-title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center;
+    text-align: left;
     transition: color 0.3s ease;
 }

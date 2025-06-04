@@ -30,6 +30,55 @@
     margin: 0;
 }
 
+/* 검색창 래퍼 스타일 */
+.exchange-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.exchange-filter {
+    flex-shrink: 0;
+}
+
+.exchange-filter label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+}
+
+.exchange-filter input[type="checkbox"] {
+    margin: 0;
+}
+
+.exchange-search-wrapper #crypto-search-input {
+    flex: 1;
+    max-width: 300px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
+}
+
+.exchange-search-wrapper #crypto-search-input:focus {
+    border-color: #f0b90b;
+    box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
+}
+
+.exchange-search-wrapper #crypto-search-input::placeholder {
+    color: var(--text-tertiary);
+}
+
 .price-table-wrapper {
     background: var(--bg-secondary);
     border-radius: 8px;
@@ -298,4 +347,50 @@
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+.price-table .favorite-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: #ccc;
+    transition: color 0.2s;
+    outline: none;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.price-table .favorite-btn:not(.favorited):hover {
+    color: #f5c518;
+}
+
+.price-table .favorite-btn.favorited {
+    color: #f5c518;
+}
+
+.price-table .favorite-btn.favorited:hover {
+    color: #e0a800;
+}
+
+.price-table .favorite-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Success message styles */
+.temp-message {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    backdrop-filter: blur(10px);
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
 } 

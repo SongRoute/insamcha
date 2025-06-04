@@ -3,327 +3,1049 @@
     width: 100%;
     background-color: var(--bg-secondary);
     border-radius: 8px;
-    padding: 15px;
+    padding: 1px;
     box-shadow: 0 2px 4px var(--shadow);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* 개별 패널의 오버플로우는 숨김 */
+    overflow: hidden;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    min-height: 0;
 }
 
-.exchange-panel {
-    flex-basis: 250px;
-    flex-shrink: 0;
-    padding: 10px;
-}
-
-.exchange-panel h2 {
-    color: #f0b90b;
-    font-size: 1.3rem;
-    margin: 0 0 15px 0;
-    text-align: center;
+/* 패널 비율 조정: 3:4:3 */
+.favorites-panel {
+    flex: 3;
+    min-width: 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    height: 100%;
+    padding: 0px;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .center-panel {
-    flex-grow: 1; /* 가용 세로 공간을 차지 */
+    flex: 4;
+    min-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    /* overflow: hidden; /* 기존: center-panel 자체 스크롤 방지 */
-    overflow-y: auto; /* 변경: 세로 스크롤 가능하게 함 */
-    overflow-x: hidden; /* 가로 스크롤은 여전히 금지 */
+    gap: 8px;
+    height: 100%;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: px;
+    box-shadow: 0 2px 4px var(--shadow);
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 0;
+    border: 1px solid var(--border-color);
 }
 
+.news-panel {
+    flex: 3;
+    min-width: 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* 섹션 제목 스타일 - price.css 테이블 헤더 참고 */
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+    padding: 8px 12px;
+    background-color: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 6px 6px 0 0;
+}
+
+/* 통일된 제목 스타일 - price.css 스타일 적용 */
+.panel-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 6px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+/* 각 패널별 제목 색상 - 단순화 */
+.crypto-title,
+.exchange-title {
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+}
+
+.chart-title,
+.position-title,
+.profit-title {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.news-title {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+/* 섹션 컨테이너 스타일 통일 */
+.favorites-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    border: 1px solid var(--border-color);
+    min-height: 0;
+}
+
+.center-panel-section,
+.news-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+/* 검색 입력 스타일 */
+.crypto-search,
+.exchange-search,
+.news-search {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+}
+
+.crypto-search input,
+.exchange-search input,
+.news-search input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.crypto-search input:focus,
+.exchange-search input:focus,
+.news-search input:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* 컨테이너 스타일 - 테이블 형식으로 변경 */
+.favorites-table-wrapper {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    overflow: auto;
+    box-shadow: 0 1px 3px var(--shadow);
+    border: 1px solid var(--border-color);
+    flex: 1;
+    min-height: 0;
+}
+
+.favorites-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background-color: var(--bg-primary);
+}
+
+.favorites-table thead {
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.favorites-table th {
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.favorites-table th:last-child {
+}
+
+.favorites-table th.price,
+.favorites-table th.change-24h,
+.favorites-table th.volume,
+.favorites-table th.score {
+    text-align: right;
+}
+
+.favorites-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.favorites-table tbody tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.favorites-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.favorites-table td {
+    padding: 10px;
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.favorites-table td:last-child {
+}
+
+/* 거래소 테이블의 거래량 우측 정렬 */
+.exchange-table td.volume {
+    text-align: right;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+}
+
+.favorites-table .crypto-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.favorites-table .crypto-icon {
+    width: 24px;
+    height: 24px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 9px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-color);
+}
+
+.favorites-table .crypto-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.favorites-table .crypto-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.favorites-table .crypto-symbol {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+}
+
+.favorites-table .exchange-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.favorites-table .exchange-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.favorites-table .exchange-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.favorites-table td.price {
+    text-align: right;
+    font-weight: 500;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+}
+
+.favorites-table .change {
+    text-align: right;
+    font-weight: 500;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+}
+
+.favorites-table .change.positive {
+    color: #16c784;
+}
+
+.favorites-table .change.negative {
+    color: #ea3943;
+}
+
+.favorites-table .change.neutral {
+    color: var(--text-secondary);
+}
+
+.favorites-table td.volume,
+.favorites-table td.score {
+    text-align: right;
+    color: var(--text-secondary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+}
+
+/* 테이블 스크롤바 스타일 */
+.favorites-table-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.favorites-table-wrapper::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+.favorites-table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.favorites-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* 상태 메시지 스타일 - 테이블용으로 수정 */
+.no-data,
+.error-message {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 13px;
+}
+
+.error-message {
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    border: 1px solid rgba(234, 57, 67, 0.3);
+}
+
+.no-data {
+    background-color: var(--bg-tertiary);
+    border: 1px dashed var(--border-color);
+}
+
+/* 즐겨찾기 없음 메시지 - 테이블용 수정 */
+.no-favorites-message {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+    border: 1px dashed var(--border-color);
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.no-favorites-message p {
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+.no-favorites-message p:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+/* 액션 버튼들 스타일 */
+.go-to-price-btn,
+.go-to-exchanges-btn,
+.login-prompt-btn,
+.view-all-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.go-to-price-btn:hover,
+.go-to-exchanges-btn:hover,
+.login-prompt-btn:hover,
+.view-all-btn:hover {
+    background-color: #357ABD;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+/* 더 보기 항목 스타일 */
+.more-items {
+    text-align: center;
+    padding: 12px;
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+    border: 1px dashed var(--border-color);
+    margin: 8px 0;
+}
+
+.more-items p {
+    margin: 0 0 8px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 12px;
+}
+
+.more-items .view-all-btn {
+    margin-top: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+}
+
+/* 중앙 패널 섹션 스타일 */
 .center-panel-section {
     background-color: var(--bg-secondary);
-    border-radius: 6px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 0;
     box-sizing: border-box;
-    /* overflow: hidden; is covered by .center-panel-section */
-    /* 개별 섹션 내부에 스크롤이 필요한 경우 여기에 overflow-y: auto를 추가할 수 있습니다. */
-    /* 현재는 center-panel 전체가 스크롤되므로 여기서는 필요 없을 가능성이 높습니다. */
     display: flex;
     flex-direction: column;
     transition: background-color 0.3s ease;
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.center-panel-section:last-child {
+    margin-bottom: 0;
 }
 
 .chart-section {
     flex-grow: 6;
     flex-basis: 0;
-    /* overflow: hidden; - 이 부분은 .center-panel-section에서 상속됨 */
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chart-section .panel-title {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chart-section > div:not(.panel-title) {
+    flex: 1;
+    overflow: hidden;
 }
 
 .position-section {
     flex-grow: 2;
     flex-basis: 0;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .profit-section {
     flex-grow: 2;
     flex-basis: 0;
+    min-height: 300px;
 }
 
-.news-panel {
-    flex-basis: 280px;
-    padding: 10px;
-    flex-shrink: 0;
-    background-color: var(--bg-secondary);
+/* 포지션 섹션 스타일 */
+.position-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
     overflow-y: auto;
-    overflow-x: hidden;
-    transition: background-color 0.3s ease;
+    min-height: 0;
 }
 
-.news-panel h2 {
-    color: #f0b90b;
-    font-size: 1.3rem;
-    margin: 0 0 15px 0;
-    text-align: center;
+/* 기존 binance-chart-container-wrapper h1 스타일 제거 */
+.binance-chart-container-wrapper h1 {
+    display: none;
 }
 
-/* ... (나머지 CSS는 그대로 유지) ... */
 /* 손익 계산기 관련 스타일 개선 */
-.profit-section {
-    flex-grow: 2;
-    flex-basis: 0;
-    padding: 20px; /* 전체 패널 패딩 증가 */
+.profit-wrapper {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px var(--shadow);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
-.profit-section h2 {
-    color: #f0b90b; /* 바이낸스 강조색 유지 */
-    font-size: 1.5rem; /* 제목 크기 키우기 */
-    margin-bottom: 25px; /* 제목과 컨트롤 사이 간격 증가 */
-    text-align: center;
-    border-bottom: 2px solid var(--border-color); /* 제목 아래 구분선 추가 */
-    padding-bottom: 15px; /* 구분선과 제목 사이 패딩 */
+.profit-calculator-container {
+    display: flex;
+    gap: 0.5rem;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .profit-calculator-controls {
-    display: grid; /* Flexbox 대신 Grid 사용 */
-    grid-template-columns: 1fr 1fr; /* 두 개의 컬럼으로 나눔 */
-    gap: 15px 20px; /* 행과 열 간격 조정 */
-    margin-bottom: 20px; /* 컨트롤과 결과 사이 간격 증가 */
-    padding: 20px; /* 컨트롤 그룹 패딩 증가 */
-    border: 1px solid var(--border-color);
-    border-radius: 10px; /* 모서리 둥글게 */
-    background-color: var(--bg-tertiary); /* 배경색 유지 */
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.1); /* 내부 그림자 추가 */
-}
-
-.profit-calculator-controls .input-group {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    /* grid-column: span 2; /* 특정 input-group을 두 컬럼 차지하게 할 경우 */
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    min-height: 0;
+    max-width: 50%;
 }
 
-.profit-calculator-controls label {
-    font-size: 0.95rem; /* 라벨 폰트 크기 미세 조정 */
-    color: var(--text-secondary);
-    margin-bottom: 7px; /* 라벨과 입력 필드 사이 간격 */
-    font-weight: 500; /* 라벨 굵기 추가 */
+.profit-result {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    min-height: 0;
+    max-width: 50%;
 }
 
+/* Ensure all child elements respect container boundaries */
+.profit-calculator-controls *,
+.profit-result * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Make inputs and selects more compact */
 .profit-calculator-controls select,
 .profit-calculator-controls input[type="datetime-local"],
 .profit-calculator-controls input[type="number"] {
+    padding: 6px 8px;
+    height: 28px;
     width: 100%;
-    padding: 10px 12px; /* 패딩 증가 */
-    border: 1px solid var(--input-border);
-    border-radius: 5px; /* 모서리 둥글게 */
+    max-width: 100%;
     background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
     color: var(--text-primary);
-    font-size: 1rem; /* 폰트 크기 키우기 */
-    box-sizing: border-box;
-    transition: border-color 0.2s, background-color 0.3s, color 0.3s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .profit-calculator-controls select:focus,
 .profit-calculator-controls input[type="datetime-local"]:focus,
 .profit-calculator-controls input[type="number"]:focus {
-    border-color: #f0b90b;
+    border-color: var(--button-bg);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.3); /* 포커스 시 그림자 강조 */
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-/* datetime-local input의 달력 아이콘 및 글자색 조정 */
-.profit-calculator-controls input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(var(--theme-invert-filter, 0)); /* 테마에 따라 아이콘 색상 반전 */
-    cursor: pointer;
-}
-[data-theme="dark"] .profit-calculator-controls input[type="datetime-local"] {
-    color-scheme: dark; /* 다크 모드일 때 달력/시계 UI도 다크 모드로 */
-}
-
-
+/* Ensure radio groups don't overflow */
 .profit-calculator-controls .position-radio-group {
     display: flex;
-    gap: 25px; /* 라디오 버튼 간격 증가 */
-    align-items: center;
-    justify-content: center; /* 중앙 정렬 */
-    margin-top: 10px; /* 위쪽 간격 증가 */
-    grid-column: span 2; /* 두 컬럼 모두 차지 */
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
 }
 
-.profit-calculator-controls .position-radio-group input[type="radio"] {
-    appearance: none; /* 기본 라디오 버튼 스타일 제거 */
-    width: 20px; /* 크기 키우기 */
-    height: 20px;
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    background-color: var(--input-bg);
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+/* Make result items more compact */
+.result-item {
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
 }
 
-.profit-calculator-controls .position-radio-group input[type="radio"]:checked {
-    border-color: #f0b90b; /* 체크 시 바이낸스 강조색 테두리 */
-    background-color: #f0b90b; /* 체크 시 배경색 */
+.result-item.highlight {
+    background: var(--bg-tertiary);
 }
 
-.profit-calculator-controls .position-radio-group input[type="radio"]:checked::before {
-    content: '';
-    display: block;
-    width: 10px; /* 내부 점 크기 */
-    height: 10px;
-    background-color: var(--text-primary); /* 내부 점 색상 */
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.result-item.profit {
+    border-left: 4px solid #16c784;
 }
 
-.profit-calculator-controls .position-radio-group label {
-    font-size: 1rem;
-    color: var(--text-primary); /* 텍스트 색상 강조 */
-    cursor: pointer;
-    margin-bottom: 0; /* 기본 마진 제거 */
-    font-weight: normal; /* 라벨 굵기 일반으로 */
+.result-item.loss {
+    border-left: 4px solid #ea3943;
+}
+
+.price-value {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+}
+
+.price-value.profit {
+    color: #16c784;
+}
+
+.price-value.loss {
+    color: #ea3943;
 }
 
 #calculate-profit-btn {
-    grid-column: span 2; /* 버튼이 두 컬럼 모두 차지 */
-    padding: 12px 15px; /* 패딩 증가 */
-    background-color: #f0b90b;
-    color: #121212;
+    padding: 6px 12px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 1.1rem; /* 폰트 크기 키우기 */
-    font-weight: bold;
-    transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* 버튼 그림자 추가 */
+    transition: all 0.2s ease;
+    margin-left: auto;
 }
 
 #calculate-profit-btn:hover {
-    background-color: #ffd700;
-    transform: translateY(-2px); /* 호버 시 약간 위로 뜨는 효과 */
+    background-color: var(--button-hover);
+    transform: translateY(-1px);
 }
 
-.profit-result {
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    background-color: var(--bg-tertiary);
+#profit-status {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
     text-align: center;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.1); /* 내부 그림자 추가 */
+    font-weight: 500;
+    border: 1px solid var(--border-color);
 }
 
-.profit-result h3 {
-    font-size: 1.2rem;
+#profit-status.profit {
+    background-color: rgba(22, 199, 132, 0.1);
+    color: #16c784;
+    border-color: rgba(22, 199, 132, 0.3);
+}
+
+#profit-status.loss {
+    background-color: rgba(234, 57, 67, 0.1);
+    color: #ea3943;
+    border-color: rgba(234, 57, 67, 0.3);
+}
+
+/* 수익률 표시 스타일 */
+.profit-rate {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.profit-rate.positive {
+    color: #16c784;
+    background-color: rgba(22, 199, 132, 0.1);
+    border: 1px solid rgba(22, 199, 132, 0.3);
+}
+
+.profit-rate.negative {
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    border: 1px solid rgba(234, 57, 67, 0.3);
+}
+
+/* 다크 모드 특화 필터 변수 */
+:root {
+    --theme-invert-filter: 0;
+}
+
+[data-theme="dark"] {
+    --theme-invert-filter: 1;
+}
+
+/* datetime-local 스타일 */
+.profit-calculator-controls input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(var(--theme-invert-filter, 0));
+    cursor: pointer;
+}
+
+[data-theme="dark"] .profit-calculator-controls input[type="datetime-local"] {
+    color-scheme: dark;
+}
+
+/* 임시 메시지 애니메이션 */
+.temp-message {
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .main-panel,
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 0;
+        min-height: 0;
+    }
+    
+    .main-panel {
+        padding: 16px;
+    }
+    
+    .favorites-panel,
+    .news-panel {
+        min-width: 280px;
+    }
+    
+    .center-panel {
+        min-width: 350px;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-panel,
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 0;
+        min-height: 0;
+    }
+    
+    .main-panel {
+        padding: 12px;
+    }
+    
+    .panel-title {
+        font-size: 16px;
+    }
+    
+    .chart-section {
+        min-height: 300px;
+    }
+    
+    .position-section,
+    .profit-section {
+        min-height: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-panel,
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 0;
+        min-height: 0;
+    }
+    
+    .main-panel {
+        padding: 8px;
+    }
+    
+    .favorites-panel,
+    .center-panel,
+    .news-panel {
+        min-width: 250px;
+    }
+    
+    .crypto-search input,
+    .exchange-search input,
+    .news-search input {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .favorite-item {
+        padding: 12px;
+    }
+    
+    .crypto-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+    }
+    
+    .crypto-name {
+        font-size: 13px;
+    }
+    
+    .crypto-symbol {
+        font-size: 11px;
+    }
+}
+
+/* 뉴스 컨테이너 스타일 */
+#news-container {
+    /* 테이블 tbody로 사용되므로 스타일 제거 */
+}
+
+/* 기존 카드 스타일 제거 */
+.exchange-card {
+    display: none;
+}
+
+/* 컨테이너 스타일 업데이트 */
+#crypto-favorites-container,
+#exchange-container {
+    /* 테이블 tbody로 사용되므로 추가 스타일 제거 */
+}
+
+/* 뉴스 섹션 스타일 통일 */
+.news-table {
+    /* 기본 테이블 스타일 상속 */
+}
+
+.news-table td.news-title {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.news-table .news-link {
     color: var(--text-primary);
-    margin-top: 0;
-    margin-bottom: 15px;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 1.4;
+    display: block;
+    transition: color 0.2s ease;
 }
 
-.profit-result p {
-    margin: 8px 0; /* 간격 증가 */
-    font-size: 1.05rem; /* 폰트 크기 미세 조정 */
-    color: var(--text-secondary); /* 기본 텍스트 색상 */
+.news-table .news-link:hover {
+    color: #4a90e2;
+    text-decoration: underline;
+}
+
+.news-table .news-link:visited {
+    color: var(--text-secondary);
+}
+
+/* 뉴스 테이블 특별 스타일 */
+.news-table tbody tr {
+    cursor: pointer;
+}
+
+/* 손익 계산기 제목 영역 스타일 */
+.profit-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.profit-result span {
-    font-weight: bold;
-    font-size: 1.5rem; /* 결과 값 폰트 크기 키우기 */
-    color: var(--text-primary); /* 기본 텍스트 색상 */
+#calculate-profit-btn {
+    padding: 6px 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
 }
 
-/* 시작 가격과 종료 가격에 특별한 스타일 추가 */
-#start-price {
-    color: #3498db; /* 파란색 - 시작을 의미 */
-    background-color: rgba(52, 152, 219, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(52, 152, 219, 0.3);
+#calculate-profit-btn:hover {
+    background-color: #357ABD;
+    transform: translateY(-1px);
 }
 
-#end-price {
-    color: #e74c3c; /* 빨간색 - 종료를 의미 */
-    background-color: rgba(231, 76, 60, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(231, 76, 60, 0.3);
+/* 결과 표시 영역 스타일 */
+.result-item {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: var(--bg-secondary);
 }
 
-/* 총 손익과 수익률도 스타일 개선 */
-#total-profit-loss {
-    background-color: rgba(240, 185, 11, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(240, 185, 11, 0.3);
+.result-item.highlight {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
 }
 
-#profit-loss-percentage {
-    background-color: rgba(240, 185, 11, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid rgba(240, 185, 11, 0.3);
+.price-value {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
 }
 
-.status-message {
-    margin-top: 15px; /* 위쪽 간격 증가 */
-    padding: 10px; /* 패딩 증가 */
-    border-radius: 6px; /* 모서리 둥글게 */
-    font-size: 1rem; /* 폰트 크기 미세 조정 */
-    font-weight: bold;
+.price-value.profit {
+    color: #16c784;
+    background-color: rgba(22, 199, 132, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(22, 199, 132, 0.3);
+}
+
+.price-value.loss {
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(234, 57, 67, 0.3);
+}
+
+#profit-status {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
     text-align: center;
-    opacity: 0.9; /* 약간 투명하게 */
+    font-weight: 500;
 }
 
-.status-message.error {
-    background-color: rgba(255, 71, 87, 0.25);
-    color: #ff4757;
-    border: 1px solid #ff4757;
+#profit-status.profit {
+    background-color: rgba(22, 199, 132, 0.1);
+    color: #16c784;
+    border: 1px solid rgba(22, 199, 132, 0.3);
 }
 
-.status-message.info {
-    background-color: rgba(0, 123, 255, 0.25);
-    color: #007bff;
-    border: 1px solid #007bff;
+#profit-status.loss {
+    background-color: rgba(234, 57, 67, 0.1);
+    color: #ea3943;
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
-.status-message.profit {
-    background-color: rgba(0, 255, 136, 0.25);
-    color: #00ff88;
-    border: 1px solid #00ff88;
+.chart-favorites, .position-favorites {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    min-height: 0;
 }
 
-.status-message.loss {
-    background-color: rgba(255, 71, 87, 0.25);
-    color: #ff4757;
-    border: 1px solid #ff4757;
+.chart-section, .position-section {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    overflow: auto;
+    box-shadow: 0 1px 3px var(--shadow);
+    border: 1px solid var(--border-color);
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-/* 다크 모드 특화 필터 변수 */
-:root {
-    --theme-invert-filter: 0; /* Light theme: no invert */
+.position-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    min-height: 0;
 }
 
-[data-theme="dark"] {
-    --theme-invert-filter: 1; /* Dark theme: invert */
+/* 내부 flex/grid 컨테이너의 오버플로우 방지 */
+.binance-chart-container-wrapper,
+.price-info,
+.price-card,
+.favorites-table-wrapper,
+.chart-section,
+.position-section,
+.profit-wrapper,
+.profit-calculator-container,
+.profit-calculator-controls,
+.profit-result,
+.position-content {
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.section-title.chart-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.section-title.chart-title .controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+.section-title.chart-title .controls select,
+.section-title.chart-title .controls button {
+    font-size: 0.95em;
+    padding: 4px 10px;
+    height: 32px;
+}
+
+#main {
+    flex-grow: 1;
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    background-color: var(--bg-primary);
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    padding-bottom: 30px;
+}
+
+.profit-loss-value.profit {
+    color: #00c853;
+    font-weight: bold;
+}
+
+.profit-loss-value.loss {
+    color: #ff3d00;
+    font-weight: bold;
+}
+
+.profit-loss-value.neutral {
+    color: #757575;
+    font-weight: bold;
 }
