@@ -61,47 +61,53 @@
             <div id="header-placeholder"></div>
             <main id="longshort-content">
                 <div class="longshort-container">
-                    <div class="longshort-header">
-                        <h1>📊 롱/숏 포지션 비율</h1>
-                        <p class="longshort-subtitle">Bybit Futures 계정 비율 데이터 (최근 10개 데이터)</p>
+                    <div class="longshort-layout">
+                        <div class="longshort-controls">
+                            <div class="longshort-header">
+                                <h1>📊 롱/숏 포지션 비율</h1>
+                                <p class="longshort-subtitle">Bybit Futures 계정 비율 데이터 (최근 10개 데이터)</p>
+                                
+                                <div class="controls">
+                                    <select id="symbol-select" class="symbol-selector">
+                                        <option value="BTCUSDT">BTC/USDT</option>
+                                        <option value="ETHUSDT">ETH/USDT</option>
+                                        <option value="SOLUSDT">SOL/USDT</option>
+                                        <option value="ADAUSDT">ADA/USDT</option>
+                                        <option value="DOGEUSDT">DOGE/USDT</option>
+                                        <option value="XRPUSDT">XRP/USDT</option>
+                                        <option value="AVAXUSDT">AVAX/USDT</option>
+                                        <option value="DOTUSDT">DOT/USDT</option>
+                                    </select>
+                                    <button id="refresh-btn" class="refresh-button">🔄 실시간 데이터</button>
+                                    <button id="demo-btn" class="demo-button">📋 샘플 데이터</button>
+                                </div>
+                            </div>
+
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <span class="legend-color long"></span>
+                                    <span>롱 포지션 (Long)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color short"></span>
+                                    <span>숏 포지션 (Short)</span>
+                                </div>
+                            </div>
+
+                            <div class="info-notice">
+                                <p>💡 <strong>실시간 데이터</strong>: 백엔드 프록시 서버를 통해 Bybit API에서 실제 데이터를 가져옵니다.</p>
+                                <p>📋 <strong>샘플 데이터</strong>: 시연용 가상 데이터를 사용합니다.</p>
+                                <p>🚀 백엔드 서버가 실행 중이어야 실시간 데이터를 사용할 수 있습니다.</p>
+                            </div>
+                        </div>
                         
-                        <div class="controls">
-                            <select id="symbol-select" class="symbol-selector">
-                                <option value="BTCUSDT">BTC/USDT</option>
-                                <option value="ETHUSDT">ETH/USDT</option>
-                                <option value="SOLUSDT">SOL/USDT</option>
-                                <option value="ADAUSDT">ADA/USDT</option>
-                                <option value="DOGEUSDT">DOGE/USDT</option>
-                                <option value="XRPUSDT">XRP/USDT</option>
-                                <option value="AVAXUSDT">AVAX/USDT</option>
-                                <option value="DOTUSDT">DOT/USDT</option>
-                            </select>
-                            <button id="refresh-btn" class="refresh-button">🔄 실시간 데이터</button>
-                            <button id="demo-btn" class="demo-button">📋 샘플 데이터</button>
+                        <div class="chart-section">
+                            <div class="chart-wrapper">
+                                <div id="loading" class="loading-indicator">데이터를 불러오는 중...</div>
+                                <div id="error" class="error-message" style="display: none;"></div>
+                                <canvas id="longShortChart"></canvas>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="chart-wrapper">
-                        <div id="loading" class="loading-indicator">데이터를 불러오는 중...</div>
-                        <div id="error" class="error-message" style="display: none;"></div>
-                        <canvas id="longShortChart" width="400" height="200"></canvas>
-                    </div>
-                    
-                    <div class="legend">
-                        <div class="legend-item">
-                            <span class="legend-color long"></span>
-                            <span>롱 포지션 (Long)</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color short"></span>
-                            <span>숏 포지션 (Short)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="info-notice">
-                        <p>💡 <strong>실시간 데이터</strong>: 백엔드 프록시 서버를 통해 Bybit API에서 실제 데이터를 가져옵니다.</p>
-                        <p>📋 <strong>샘플 데이터</strong>: 시연용 가상 데이터를 사용합니다.</p>
-                        <p>🚀 백엔드 서버가 실행 중이어야 실시간 데이터를 사용할 수 있습니다.</p>
                     </div>
                 </div>
             </main>
@@ -270,37 +276,77 @@
                             font: {
                                 size: 16,
                                 weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
                             }
                         },
                         legend: {
                             display: true,
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
                         }
                     },
                     scales: {
                         x: {
                             title: {
                                 display: true,
-                                text: '시간'
+                                text: '시간',
+                                padding: {
+                                    top: 10
+                                }
+                            },
+                            grid: {
+                                display: true,
+                                drawBorder: true,
+                                drawOnChartArea: true,
+                                drawTicks: true
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: '비율 (%)'
+                                text: '비율 (%)',
+                                padding: {
+                                    bottom: 10
+                                }
                             },
                             beginAtZero: true,
                             max: 100,
                             ticks: {
                                 callback: function(value) {
                                     return value + '%';
-                                }
+                                },
+                                stepSize: 20
+                            },
+                            grid: {
+                                display: true,
+                                drawBorder: true,
+                                drawOnChartArea: true,
+                                drawTicks: true
                             }
                         }
                     },
                     interaction: {
                         intersect: false,
                         mode: 'index'
+                    },
+                    animation: {
+                        duration: 750,
+                        easing: 'easeInOutQuart'
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 20,
+                            top: 0,
+                            bottom: 10
+                        }
                     }
                 }
             });

@@ -231,3 +231,34 @@
 .search-icon-img {
     left: 10px;
 }
+
+.news-headline-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.news-headline-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.news-headline {
+    font-size: 16px;
+    transition: opacity 0.5s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.news-headline a {
+    color: #333;
+    text-decoration: none;
+}
+
+.news-headline a:hover {
+    color: #007bff;
+}
