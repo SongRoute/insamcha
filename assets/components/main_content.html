@@ -74,20 +74,19 @@
         </div>
       </div>
       
-      <h2 class="panel-title position-title">📊 포지션 관리</h2>
-      <div class="center-panel-section position-section">
-        <div class="position-content">
-          <p class="no-data">포지션 데이터가 없습니다.</p>
-        </div>
-      </div>
     </div>
     
     <div class="main-panel news-panel">
       <!-- 수익률 계산기 섹션 (중앙패널에서 이동) -->
       <div class="favorites-section profit-favorites">
-        <h2 class="section-title profit-title">💰 손익 계산기</h2>
+        <h2 class="section-title profit-title">
+          💰 손익 계산기
+          <button id="calculate-profit-btn">손익 계산</button>
+        </h2>
         <div class="favorites-table-wrapper profit-wrapper">
-          <div class="profit-calculator-controls">
+          <div class="profit-calculator-container">
+            <!-- 좌측: 입력 섹션 -->
+            <div class="profit-calculator-controls">
               <div class="input-group">
                   <label for="profit-symbol-select">코인 종류:</label>
                   <select id="profit-symbol-select">
@@ -123,17 +122,29 @@
                       <label for="position-short">숏</label>
                   </div>
               </div>
+            </div>
 
-              <button id="calculate-profit-btn">손익 계산</button>
-          </div>
-
-          <div class="profit-result">
-              <h3>계산 결과:</h3>
-              <p>시작 가격: <span id="start-price">-</span></p>
-              <p>종료 가격: <span id="end-price">-</span></p>
-              <p>총 손익: <span id="total-profit-loss">-</span></p>
-              <p>수익률: <span id="profit-loss-percentage">-</span></p>
+            <!-- 우측: 결과 섹션 -->
+            <div class="profit-result">
+              <h3>계산 결과</h3>
+              <div class="result-item">
+                <label>시작 가격:</label>
+                <span id="start-price" class="price-value">-</span>
+              </div>
+              <div class="result-item">
+                <label>종료 가격:</label>
+                <span id="end-price" class="price-value">-</span>
+              </div>
+              <div class="result-item highlight">
+                <label>총 손익:</label>
+                <span id="total-profit-loss" class="price-value">-</span>
+              </div>
+              <div class="result-item highlight">
+                <label>수익률:</label>
+                <span id="profit-loss-percentage" class="price-value">-</span>
+              </div>
               <p id="profit-status" class="status-message"></p>
+            </div>
           </div>
         </div>
       </div>

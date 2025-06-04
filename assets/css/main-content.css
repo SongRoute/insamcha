@@ -10,6 +10,7 @@
     flex-direction: column;
     overflow: hidden;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    min-height: 0;
 }
 
 /* 패널 비율 조정: 3:4:3 */
@@ -22,6 +23,8 @@
     gap: 8px;
     height: 100%;
     padding: 8px;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .center-panel {
@@ -32,6 +35,7 @@
     gap: 15px;
     height: 100%;
     overflow: hidden;
+    min-height: 0;
 }
 
 .news-panel {
@@ -42,6 +46,7 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+    min-height: 0;
 }
 
 /* 섹션 제목 스타일 - price.css 테이블 헤더 참고 */
@@ -91,7 +96,7 @@
     background-color: var(--bg-tertiary);
 }
 
-/* 섹션 컨테이너 스타일 통일 - 최소 패딩 적용 */
+/* 섹션 컨테이너 스타일 통일 */
 .favorites-section {
     flex: 1;
     display: flex;
@@ -104,6 +109,7 @@
     overflow: hidden;
     transition: background-color 0.3s ease;
     border: 1px solid var(--border-color);
+    min-height: 0;
 }
 
 .center-panel-section,
@@ -155,11 +161,11 @@
 .favorites-table-wrapper {
     background: var(--bg-secondary);
     border-radius: 6px;
-    overflow: hidden;
+    overflow: auto;
     box-shadow: 0 1px 3px var(--shadow);
     border: 1px solid var(--border-color);
-    max-height: 300px;
-    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .favorites-table {
@@ -444,6 +450,7 @@
     border: 1px solid var(--border-color);
     margin-bottom: 15px;
     overflow: hidden;
+    min-height: 0;
 }
 
 .center-panel-section:last-child {
@@ -454,6 +461,9 @@
     flex-grow: 6;
     flex-basis: 0;
     min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .chart-section .panel-title {
@@ -470,6 +480,9 @@
     flex-grow: 2;
     flex-basis: 0;
     min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .profit-section {
@@ -482,9 +495,10 @@
 .position-content {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
     padding: 16px;
     overflow-y: auto;
+    min-height: 0;
 }
 
 /* 기존 binance-chart-container-wrapper h1 스타일 제거 */
@@ -496,34 +510,57 @@
 .profit-wrapper {
     background: var(--bg-secondary);
     border-radius: 6px;
-    overflow: visible;
     box-shadow: 0 1px 3px var(--shadow);
     border: 1px solid var(--border-color);
-    max-height: none;
-    overflow-y: visible;
-    padding: 12px;
+    padding: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.profit-calculator-container {
+    display: flex;
+    gap: 0.5rem;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .profit-calculator-controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-    background-color: transparent;
-}
-
-.profit-calculator-controls .input-group {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.profit-result {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.input-group {
+    margin-bottom: 4px;
 }
 
 .profit-calculator-controls label {
     font-size: 11px;
     color: var(--text-secondary);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -532,185 +569,81 @@
 .profit-calculator-controls select,
 .profit-calculator-controls input[type="datetime-local"],
 .profit-calculator-controls input[type="number"] {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-size: 12px;
-    box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.profit-calculator-controls select:focus,
-.profit-calculator-controls input[type="datetime-local"]:focus,
-.profit-calculator-controls input[type="number"]:focus {
-    border-color: #4a90e2;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    padding: 6px 8px;
+    height: 28px;
 }
 
 .profit-calculator-controls .position-radio-group {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 8px;
-    grid-column: span 2;
+    margin-top: 4px;
+    gap: 12px;
 }
 
-.profit-calculator-controls .position-radio-group input[type="radio"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    background-color: var(--bg-primary);
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.result-item {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: var(--bg-secondary);
 }
 
-.profit-calculator-controls .position-radio-group input[type="radio"]:checked {
-    border-color: #4a90e2;
-    background-color: #4a90e2;
+.result-item.highlight {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
 }
 
-.profit-calculator-controls .position-radio-group input[type="radio"]:checked::before {
-    content: '';
-    display: block;
-    width: 6px;
-    height: 6px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.price-value {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
 }
 
-.profit-calculator-controls .position-radio-group label {
-    font-size: 12px;
-    color: var(--text-primary);
-    cursor: pointer;
-    margin-bottom: 0;
-    font-weight: 500;
-    text-transform: none;
-    letter-spacing: normal;
+.price-value.profit {
+    color: #16c784;
+    background-color: rgba(22, 199, 132, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(22, 199, 132, 0.3);
+}
+
+.price-value.loss {
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
 #calculate-profit-btn {
-    grid-column: span 2;
-    padding: 8px 12px;
+    padding: 6px 12px;
     background-color: #4a90e2;
     color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
+    cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 3px var(--shadow);
+    margin-left: auto;
 }
 
 #calculate-profit-btn:hover {
     background-color: #357ABD;
     transform: translateY(-1px);
-    box-shadow: 0 2px 6px var(--shadow);
 }
 
-.profit-result {
-    padding: 12px;
-    border: 1px solid var(--border-color);
+#profit-status {
+    margin-top: 1rem;
+    padding: 0.75rem;
     border-radius: 4px;
-    background-color: var(--bg-tertiary);
-    font-size: 12px;
-}
-
-.profit-result h3 {
-    font-size: 13px;
-    color: var(--text-primary);
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.profit-result p {
-    margin: 8px 0;
-    font-size: 11px;
-    color: var(--text-secondary);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.profit-result span {
-    font-weight: 600;
-    font-size: 11px;
-    color: var(--text-primary);
-    font-family: 'Roboto Mono', monospace;
-}
-
-#start-price {
-    color: #16c784;
-    background-color: rgba(22, 199, 132, 0.1);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid rgba(22, 199, 132, 0.3);
-}
-
-#end-price {
-    color: #ea3943;
-    background-color: rgba(234, 57, 67, 0.1);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid rgba(234, 57, 67, 0.3);
-}
-
-#total-profit-loss {
-    background-color: var(--bg-primary);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid var(--border-color);
-}
-
-#profit-loss-percentage {
-    background-color: var(--bg-primary);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid var(--border-color);
-}
-
-.status-message {
-    margin-top: 8px;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 500;
     text-align: center;
+    font-weight: 500;
 }
 
-.status-message.error {
-    background-color: rgba(234, 57, 67, 0.1);
-    color: #ea3943;
-    border: 1px solid rgba(234, 57, 67, 0.3);
-}
-
-.status-message.info {
-    background-color: rgba(74, 144, 226, 0.1);
-    color: #4a90e2;
-    border: 1px solid rgba(74, 144, 226, 0.3);
-}
-
-.status-message.profit {
+#profit-status.profit {
     background-color: rgba(22, 199, 132, 0.1);
     color: #16c784;
     border: 1px solid rgba(22, 199, 132, 0.3);
 }
 
-.status-message.loss {
+#profit-status.loss {
     background-color: rgba(234, 57, 67, 0.1);
     color: #ea3943;
     border: 1px solid rgba(234, 57, 67, 0.3);
@@ -870,4 +803,83 @@
 /* 뉴스 테이블 특별 스타일 */
 .news-table tbody tr {
     cursor: pointer;
+}
+
+/* 손익 계산기 제목 영역 스타일 */
+.profit-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#calculate-profit-btn {
+    padding: 6px 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
+}
+
+#calculate-profit-btn:hover {
+    background-color: #357ABD;
+    transform: translateY(-1px);
+}
+
+/* 결과 표시 영역 스타일 */
+.result-item {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+}
+
+.result-item.highlight {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+}
+
+.price-value {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+}
+
+.price-value.profit {
+    color: #16c784;
+    background-color: rgba(22, 199, 132, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(22, 199, 132, 0.3);
+}
+
+.price-value.loss {
+    color: #ea3943;
+    background-color: rgba(234, 57, 67, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(234, 57, 67, 0.3);
+}
+
+#profit-status {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 500;
+}
+
+#profit-status.profit {
+    background-color: rgba(22, 199, 132, 0.1);
+    color: #16c784;
+    border: 1px solid rgba(22, 199, 132, 0.3);
+}
+
+#profit-status.loss {
+    background-color: rgba(234, 57, 67, 0.1);
+    color: #ea3943;
+    border: 1px solid rgba(234, 57, 67, 0.3);
 }
