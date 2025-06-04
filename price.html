@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/footer.css">
     <link rel="stylesheet" href="assets/css/price.css">
+    <link rel="stylesheet" href="assets/css/exchanges.css">
     
     <script>
         // Apply saved theme on page load (backup for DOMContentLoaded)
@@ -57,7 +58,18 @@
         <div class="content-wrapper">
             <div id="header-placeholder"></div>
             <main id="price-content">
-                <div class="price-container">                    
+                <div class="price-container">
+                    
+                    <div class="exchange-search-wrapper">
+                        <div class="exchange-filter">
+                            <label>
+                                <input type="checkbox" id="show-favorites-only" />
+                                ⭐ 즐겨찾기만 보기
+                            </label>
+                        </div>
+                        <input type="text" id="crypto-search-input" placeholder="암호화폐 검색 (예: Bitcoin, BTC)"/>
+                    </div>
+                    
                     <div class="price-table-wrapper">
                         <table class="price-table">
                             <thead>
@@ -70,13 +82,14 @@
                                     <th class="change-30d">30일</th>
                                     <th class="volume-24h">24시간 거래량</th>
                                     <th class="market-cap">시가총액</th>
-                                    <th class="actions">차트</th>
+                                    <th class="actions">즐겨찾기</th>
+                                    <th class="chart">차트</th>
                                 </tr>
                             </thead>
                             <tbody id="crypto-tbody">
                                 <!-- 데이터는 JavaScript로 동적으로 추가됩니다 -->
                                 <tr class="loading">
-                                    <td colspan="9">데이터를 불러오는 중...</td>
+                                    <td colspan="10">데이터를 불러오는 중...</td>
                                 </tr>
                             </tbody>
                         </table>
