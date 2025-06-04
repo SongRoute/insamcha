@@ -67,6 +67,13 @@ async function displayExchangesTable(exchanges) {
         
         return `
             <tr>
+                <td class="actions">
+                    <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" 
+                            data-exchange-id="${exchange.id}"
+                            onclick="handleFavoriteToggle('${exchange.id}', this)">
+                        ${isFavorited ? '★' : '☆'}
+                    </button>
+                </td>
                 <td class="rank">${exchange.trust_score_rank || index + 1}</td>
                 <td class="name">
                     <div class="crypto-info">
@@ -89,13 +96,6 @@ async function displayExchangesTable(exchanges) {
                 </td>
                 <td class="country">${exchange.country || '-'}</td>
                 <td class="year">${exchange.year_established || '-'}</td>
-                <td class="actions">
-                    <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" 
-                            data-exchange-id="${exchange.id}"
-                            onclick="handleFavoriteToggle('${exchange.id}', this)">
-                        ${isFavorited ? '★' : '☆'}
-                    </button>
-                </td>
             </tr>
         `;
     }).join('');
@@ -189,7 +189,7 @@ function showTemporaryMessage(message) {
     messageElement.textContent = message;
     messageElement.style.cssText = `
         position: fixed;
-        top: 20px;
+        bottom: 80px;
         right: 20px;
         background: var(--success);
         color: white;

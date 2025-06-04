@@ -3,7 +3,7 @@
     width: 100%;
     background-color: var(--bg-secondary);
     border-radius: 8px;
-    padding: 20px;
+    padding: 12px;
     box-shadow: 0 2px 4px var(--shadow);
     box-sizing: border-box;
     display: flex;
@@ -19,8 +19,9 @@
     max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 8px;
     height: 100%;
+    padding: 8px;
 }
 
 .center-panel {
@@ -43,6 +44,20 @@
     overflow: hidden;
 }
 
+/* 섹션 제목 스타일 - price.css 테이블 헤더 참고 */
+.section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+    padding: 8px 12px;
+    background-color: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 6px 6px 0 0;
+}
+
 /* 통일된 제목 스타일 - price.css 스타일 적용 */
 .panel-title {
     font-size: 18px;
@@ -60,7 +75,7 @@
 /* 각 패널별 제목 색상 - 단순화 */
 .crypto-title,
 .exchange-title {
-    color: var(--text-primary);
+    color: var(--text-secondary);
     background-color: var(--bg-tertiary);
 }
 
@@ -76,8 +91,21 @@
     background-color: var(--bg-tertiary);
 }
 
-/* 섹션 컨테이너 스타일 통일 */
-.favorites-section,
+/* 섹션 컨테이너 스타일 통일 - 최소 패딩 적용 */
+.favorites-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
 .center-panel-section,
 .news-section {
     flex: 1;
@@ -123,79 +151,87 @@
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-/* 컨테이너 스타일 - 스크롤 가능하도록 수정 */
-#crypto-favorites-container,
-#exchange-container,
-#news-container {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 16px;
-    background-color: var(--bg-secondary);
-}
-
-/* 스크롤바 스타일 */
-#crypto-favorites-container::-webkit-scrollbar,
-#exchange-container::-webkit-scrollbar,
-#news-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-#crypto-favorites-container::-webkit-scrollbar-track,
-#exchange-container::-webkit-scrollbar-track,
-#news-container::-webkit-scrollbar-track {
-    background: var(--bg-tertiary);
-    border-radius: 3px;
-}
-
-#crypto-favorites-container::-webkit-scrollbar-thumb,
-#exchange-container::-webkit-scrollbar-thumb,
-#news-container::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 3px;
-}
-
-#crypto-favorites-container::-webkit-scrollbar-thumb:hover,
-#exchange-container::-webkit-scrollbar-thumb:hover,
-#news-container::-webkit-scrollbar-thumb:hover {
-    background: var(--text-secondary);
-}
-
-/* 즐겨찾기 리스트 스타일 */
-.favorites-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.favorite-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    background-color: var(--bg-primary);
-    border-radius: 8px;
+/* 컨테이너 스타일 - 테이블 형식으로 변경 */
+.favorites-table-wrapper {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px var(--shadow);
     border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.favorite-item:hover {
+.favorites-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background-color: var(--bg-primary);
+}
+
+.favorites-table thead {
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.favorites-table th {
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.favorites-table th:last-child {
+}
+
+.favorites-table th.price,
+.favorites-table th.change-24h,
+.favorites-table th.volume,
+.favorites-table th.score {
+    text-align: right;
+}
+
+.favorites-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.favorites-table tbody tr:hover {
     background-color: var(--bg-tertiary);
-    border-color: #4a90e2;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px var(--shadow);
 }
 
-/* 암호화폐 아이템 스타일 */
-.crypto-info {
+.favorites-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.favorites-table td {
+    padding: 10px;
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.favorites-table td:last-child {
+}
+
+/* 거래소 테이블의 거래량 우측 정렬 */
+.exchange-table td.volume {
+    text-align: right;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+}
+
+.favorites-table .crypto-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
-.crypto-icon {
-    width: 36px;
-    height: 36px;
+.favorites-table .crypto-icon {
+    width: 24px;
+    height: 24px;
     background-color: var(--bg-tertiary);
     color: var(--text-secondary);
     border-radius: 50%;
@@ -203,73 +239,114 @@
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 9px;
     flex-shrink: 0;
     border: 1px solid var(--border-color);
 }
 
-.crypto-details {
+.favorites-table .crypto-name-wrapper {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
-.crypto-name {
+.favorites-table .crypto-name {
     font-weight: 600;
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.2;
+    margin: 0;
 }
 
-.crypto-symbol {
-    font-size: 12px;
+.favorites-table .crypto-symbol {
+    font-size: 10px;
     color: var(--text-secondary);
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
-.crypto-actions,
-.exchange-actions {
+.favorites-table .exchange-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.favorites-table .exchange-info {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
-.view-btn,
-.favorite-btn {
-    padding: 8px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background-color: var(--bg-tertiary);
+.favorites-table .exchange-name {
+    font-weight: 600;
     color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.favorites-table td.price {
+    text-align: right;
+    font-weight: 500;
+    font-family: 'Roboto Mono', monospace;
     font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.view-btn:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
-    color: white;
+.favorites-table .change {
+    text-align: right;
+    font-weight: 500;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
 }
 
-.favorite-btn:hover {
-    background-color: #ff6b35;
-    border-color: #ff6b35;
-    color: white;
+.favorites-table .change.positive {
+    color: #16c784;
 }
 
-.favorite-btn.favorited {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
-    color: white;
+.favorites-table .change.negative {
+    color: #ea3943;
 }
 
-/* 상태 메시지 스타일 */
+.favorites-table .change.neutral {
+    color: var(--text-secondary);
+}
+
+.favorites-table td.volume,
+.favorites-table td.score {
+    text-align: right;
+    color: var(--text-secondary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+}
+
+/* 테이블 스크롤바 스타일 */
+.favorites-table-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.favorites-table-wrapper::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+.favorites-table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.favorites-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* 상태 메시지 스타일 - 테이블용으로 수정 */
 .no-data,
 .error-message {
     text-align: center;
-    padding: 24px;
+    padding: 20px;
     color: var(--text-secondary);
     font-style: italic;
-    border-radius: 8px;
+    font-size: 13px;
 }
 
 .error-message {
@@ -283,14 +360,76 @@
     border: 1px dashed var(--border-color);
 }
 
-/* 거래소 아이템 특별 스타일 */
-.favorite-item.exchange-item:hover {
-    box-shadow: 0 2px 8px var(--shadow);
+/* 즐겨찾기 없음 메시지 - 테이블용 수정 */
+.no-favorites-message {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+    border: 1px dashed var(--border-color);
+    font-size: 12px;
+    color: var(--text-secondary);
 }
 
-/* 기존 exchange-panel 스타일 제거 */
-.exchange-panel {
-    display: none;
+.no-favorites-message p {
+    margin: 6px 0;
+    line-height: 1.4;
+}
+
+.no-favorites-message p:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+/* 액션 버튼들 스타일 */
+.go-to-price-btn,
+.go-to-exchanges-btn,
+.login-prompt-btn,
+.view-all-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.go-to-price-btn:hover,
+.go-to-exchanges-btn:hover,
+.login-prompt-btn:hover,
+.view-all-btn:hover {
+    background-color: #357ABD;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+/* 더 보기 항목 스타일 */
+.more-items {
+    text-align: center;
+    padding: 12px;
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+    border: 1px dashed var(--border-color);
+    margin: 8px 0;
+}
+
+.more-items p {
+    margin: 0 0 8px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 12px;
+}
+
+.more-items .view-all-btn {
+    margin-top: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
 }
 
 /* 중앙 패널 섹션 스타일 */
@@ -353,16 +492,27 @@
     display: none;
 }
 
-/* 손익 계산기 관련 스타일 개선 */
+/* 손익 계산기 관련 스타일 개선 - 즐겨찾기 스타일에 맞게 조정 */
+.profit-wrapper {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    overflow: visible;
+    box-shadow: 0 1px 3px var(--shadow);
+    border: 1px solid var(--border-color);
+    max-height: none;
+    overflow-y: visible;
+    padding: 12px;
+}
+
 .profit-calculator-controls {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-tertiary);
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
 }
 
 .profit-calculator-controls .input-group {
@@ -371,22 +521,24 @@
 }
 
 .profit-calculator-controls label {
-    font-size: 14px;
+    font-size: 11px;
     color: var(--text-secondary);
-    margin-bottom: 8px;
-    font-weight: 500;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .profit-calculator-controls select,
 .profit-calculator-controls input[type="datetime-local"],
 .profit-calculator-controls input[type="number"] {
     width: 100%;
-    padding: 12px 16px;
+    padding: 8px 10px;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 4px;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: 12px;
     box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -399,28 +551,19 @@
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-.profit-calculator-controls input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(var(--theme-invert-filter, 0));
-    cursor: pointer;
-}
-
-[data-theme="dark"] .profit-calculator-controls input[type="datetime-local"] {
-    color-scheme: dark;
-}
-
 .profit-calculator-controls .position-radio-group {
     display: flex;
-    gap: 24px;
+    gap: 16px;
     align-items: center;
-    justify-content: center;
-    margin-top: 12px;
+    justify-content: flex-start;
+    margin-top: 8px;
     grid-column: span 2;
 }
 
 .profit-calculator-controls .position-radio-group input[type="radio"] {
     appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border: 2px solid var(--border-color);
     border-radius: 50%;
     background-color: var(--bg-primary);
@@ -438,8 +581,8 @@
 .profit-calculator-controls .position-radio-group input[type="radio"]:checked::before {
     content: '';
     display: block;
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background-color: white;
     border-radius: 50%;
     position: absolute;
@@ -449,52 +592,54 @@
 }
 
 .profit-calculator-controls .position-radio-group label {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-primary);
     cursor: pointer;
     margin-bottom: 0;
     font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 #calculate-profit-btn {
     grid-column: span 2;
-    padding: 12px 16px;
+    padding: 8px 12px;
     background-color: #4a90e2;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px var(--shadow);
+    box-shadow: 0 1px 3px var(--shadow);
 }
 
 #calculate-profit-btn:hover {
     background-color: #357ABD;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px var(--shadow);
+    box-shadow: 0 2px 6px var(--shadow);
 }
 
 .profit-result {
-    padding: 20px;
+    padding: 12px;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 4px;
     background-color: var(--bg-tertiary);
-    text-align: center;
+    font-size: 12px;
 }
 
 .profit-result h3 {
-    font-size: 16px;
+    font-size: 13px;
     color: var(--text-primary);
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     font-weight: 600;
 }
 
 .profit-result p {
-    margin: 12px 0;
-    font-size: 14px;
+    margin: 8px 0;
+    font-size: 11px;
     color: var(--text-secondary);
     display: flex;
     justify-content: space-between;
@@ -503,7 +648,7 @@
 
 .profit-result span {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 11px;
     color: var(--text-primary);
     font-family: 'Roboto Mono', monospace;
 }
@@ -511,38 +656,38 @@
 #start-price {
     color: #16c784;
     background-color: rgba(22, 199, 132, 0.1);
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
     border: 1px solid rgba(22, 199, 132, 0.3);
 }
 
 #end-price {
     color: #ea3943;
     background-color: rgba(234, 57, 67, 0.1);
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
     border: 1px solid rgba(234, 57, 67, 0.3);
 }
 
 #total-profit-loss {
     background-color: var(--bg-primary);
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
     border: 1px solid var(--border-color);
 }
 
 #profit-loss-percentage {
     background-color: var(--bg-primary);
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
     border: 1px solid var(--border-color);
 }
 
 .status-message {
-    margin-top: 16px;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 11px;
     font-weight: 500;
     text-align: center;
 }
@@ -580,153 +725,14 @@
     --theme-invert-filter: 1;
 }
 
-/* 즐겨찾기 없음 메시지 스타일 */
-.no-favorites-message {
-    text-align: center;
-    padding: 32px 20px;
-    background-color: var(--bg-tertiary);
-    border-radius: 8px;
-    border: 1px dashed var(--border-color);
-}
-
-.no-favorites-message p {
-    margin: 8px 0;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    font-size: 14px;
-}
-
-.no-favorites-message p:first-child {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 16px;
-}
-
-/* 액션 버튼들 스타일 */
-.go-to-price-btn,
-.go-to-exchanges-btn,
-.login-prompt-btn,
-.view-all-btn {
-    margin-top: 16px;
-    padding: 12px 20px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
+/* datetime-local 스타일 */
+.profit-calculator-controls input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(var(--theme-invert-filter, 0));
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px var(--shadow);
 }
 
-.go-to-price-btn:hover,
-.go-to-exchanges-btn:hover,
-.login-prompt-btn:hover,
-.view-all-btn:hover {
-    background-color: #357ABD;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px var(--shadow);
-}
-
-/* 제거 버튼 스타일 */
-.remove-btn {
-    padding: 8px 12px;
-    border: 1px solid #ea3943;
-    border-radius: 4px;
-    background-color: transparent;
-    color: #ea3943;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.remove-btn:hover {
-    background-color: #ea3943;
-    color: white;
-    transform: scale(1.05);
-}
-
-/* 더 보기 항목 스타일 */
-.more-items {
-    text-align: center;
-    padding: 20px;
-    background-color: var(--bg-tertiary);
-    border-radius: 8px;
-    border: 1px dashed var(--border-color);
-}
-
-.more-items p {
-    margin: 0 0 12px 0;
-    color: var(--text-secondary);
-    font-style: italic;
-    font-size: 14px;
-}
-
-.more-items .view-all-btn {
-    margin-top: 8px;
-    padding: 10px 16px;
-    font-size: 12px;
-}
-
-/* Exchange card 스타일 */
-.exchange-card {
-    margin-bottom: 12px;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all 0.2s ease;
-    border: 1px solid var(--border-color);
-}
-
-.exchange-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px var(--shadow);
-}
-
-.exchange-link {
-    display: flex;
-    align-items: center;
-    padding: 16px;
-    text-decoration: none;
-    color: inherit;
-    background-color: var(--bg-primary);
-    transition: background-color 0.2s ease;
-}
-
-.exchange-link:hover {
-    background-color: var(--bg-tertiary);
-}
-
-.exchange-logo-wrapper {
-    flex-shrink: 0;
-    margin-right: 12px;
-}
-
-.exchange-logo {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--border-color);
-}
-
-.exchange-text {
-    flex: 1;
-}
-
-.exchange-name {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-    line-height: 1.2;
-}
-
-.exchange-volume,
-.exchange-score {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 2px;
+[data-theme="dark"] .profit-calculator-controls input[type="datetime-local"] {
+    color-scheme: dark;
 }
 
 /* 임시 메시지 애니메이션 */
@@ -743,11 +749,6 @@
         transform: translateX(0);
         opacity: 1;
     }
-}
-
-/* 기존 favorites-title 클래스 제거 */
-.favorites-title {
-    display: none;
 }
 
 /* 반응형 디자인 */
@@ -820,4 +821,53 @@
     .crypto-symbol {
         font-size: 11px;
     }
+}
+
+/* 뉴스 컨테이너 스타일 */
+#news-container {
+    /* 테이블 tbody로 사용되므로 스타일 제거 */
+}
+
+/* 기존 카드 스타일 제거 */
+.exchange-card {
+    display: none;
+}
+
+/* 컨테이너 스타일 업데이트 */
+#crypto-favorites-container,
+#exchange-container {
+    /* 테이블 tbody로 사용되므로 추가 스타일 제거 */
+}
+
+/* 뉴스 섹션 스타일 통일 */
+.news-table {
+    /* 기본 테이블 스타일 상속 */
+}
+
+.news-table td.news-title {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.news-table .news-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 1.4;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.news-table .news-link:hover {
+    color: #4a90e2;
+    text-decoration: underline;
+}
+
+.news-table .news-link:visited {
+    color: var(--text-secondary);
+}
+
+/* 뉴스 테이블 특별 스타일 */
+.news-table tbody tr {
+    cursor: pointer;
 }

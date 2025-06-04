@@ -357,6 +357,17 @@
 .temp-message {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     backdrop-filter: blur(10px);
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
 }
 
 /* Improved filter section styling */

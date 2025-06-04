@@ -125,7 +125,7 @@ export async function fetchExchanges() {
 }
 
 /**
- * 거래소 정보를 카드 형태로 렌더링 (즐겨찾기만 표시)
+ * 거래소 정보를 테이블 형태로 렌더링 (즐겨찾기만 표시)
  * @param {Array} exchanges CoinGecko에서 받아온 거래소 배열
  */
 export async function renderExchanges(exchanges) {
@@ -137,10 +137,14 @@ export async function renderExchanges(exchanges) {
   // 로그인하지 않은 경우 안내 메시지 표시
   if (!token) {
     container.innerHTML = `
-      <div class="no-favorites-message">
-        <p>즐겨찾기 거래소를 보려면 로그인이 필요합니다.</p>
-        <button onclick="window.location.href='/login.html'" class="login-prompt-btn">로그인하기</button>
-      </div>
+      <tr>
+        <td colspan="2">
+          <div class="no-favorites-message">
+            <p>즐겨찾기 거래소를 보려면 로그인이 필요합니다.</p>
+            <button onclick="window.location.href='/login.html'" class="login-prompt-btn">로그인하기</button>
+          </div>
+        </td>
+      </tr>
     `;
     return;
   }
@@ -155,32 +159,38 @@ export async function renderExchanges(exchanges) {
   // 즐겨찾기가 없는 경우
   if (favoritedExchanges.length === 0) {
     container.innerHTML = `
-      <div class="no-favorites-message">
-        <p>아직 즐겨찾기에 추가된 거래소가 없습니다.</p>
-        <p>거래소 정보 페이지에서 관심있는 거래소를 즐겨찾기에 추가해보세요.</p>
-        <button onclick="window.location.href='/ex.html'" class="go-to-exchanges-btn">거래소 정보 보기</button>
-      </div>
+      <tr>
+        <td colspan="2">
+          <div class="no-favorites-message">
+            <p>아직 즐겨찾기에 추가된 거래소가 없습니다.</p>
+            <p>거래소 정보 페이지에서 관심있는 거래소를 즐겨찾기에 추가해보세요.</p>
+            <button onclick="window.location.href='/ex.html'" class="go-to-exchanges-btn">거래소 정보 보기</button>
+          </div>
+        </td>
+      </tr>
     `;
     return;
   }
 
   favoritedExchanges.forEach(ex => {
-    const card = document.createElement('div');
-    card.className = 'exchange-card';
+    const row = document.createElement('tr');
 
-    card.innerHTML = `
-      <a href="${ex.url}" target="_blank" class="exchange-link">
-        <div class="exchange-logo-wrapper">
+    row.innerHTML = `
+      <td class="name">
+        <div class="exchange-info">
           <img src="${ex.image}" alt="${ex.name}" class="exchange-logo" />
-        </div>
-        <div class="exchange-text">
           <div class="exchange-name">${ex.name}</div>
-          <div class="exchange-volume">24h 거래량: ${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</div>
-          <div class="exchange-score">신뢰 점수: ${ex.trust_score_rank}위</div>
         </div>
-      </a>
+      </td>
+      <td class="volume">${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</td>
     `;
 
-    container.appendChild(card);
+    // 클릭 이벤트 추가
+    row.addEventListener('click', () => {
+      window.open(ex.url, '_blank');
+    });
+
+    row.style.cursor = 'pointer';
+    container.appendChild(row);
   });
 }

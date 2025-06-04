@@ -69,6 +69,13 @@ const createCryptoRow = async (crypto, favorites = []) => {
     
     const row = document.createElement('tr');
     row.innerHTML = `
+        <td class="actions">
+            <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" 
+                    data-crypto-symbol="${symbol}"
+                    onclick="handleCryptoFavoriteToggle('${symbol}', this)">
+                ${isFavorited ? '★' : '☆'}
+            </button>
+        </td>
         <td class="rank">${cmc_rank}</td>
         <td class="name">
             <div class="crypto-info">
@@ -93,13 +100,6 @@ const createCryptoRow = async (crypto, favorites = []) => {
         </td>
         <td class="volume">${formatLargeNumber(krwQuote.volume_24h)}</td>
         <td class="market-cap">${formatLargeNumber(krwQuote.market_cap)}</td>
-        <td class="actions">
-            <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" 
-                    data-crypto-symbol="${symbol}"
-                    onclick="handleCryptoFavoriteToggle('${symbol}', this)">
-                ${isFavorited ? '★' : '☆'}
-            </button>
-        </td>
         <td class="chart">
             <a href="#" class="chart-link" title="차트 보기">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -418,7 +418,7 @@ function showTemporaryMessage(message) {
     messageElement.textContent = message;
     messageElement.style.cssText = `
         position: fixed;
-        top: 20px;
+        bottom: 80px;
         right: 20px;
         background: var(--success);
         color: white;

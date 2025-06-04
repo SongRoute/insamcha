@@ -1,18 +1,26 @@
 <main id="main">
     <div class="main-panel favorites-panel">
       <!-- 즐겨찾기 암호화폐 섹션 -->
-      <h2 class="panel-title crypto-title">My Crypto</h2>
       <div class="favorites-section crypto-favorites">
-        <div id="crypto-favorites-container">
-          <!-- 즐겨찾기한 암호화폐 목록이 여기에 표시됩니다 -->
+        <h2 class="section-title crypto-title">My Crypto</h2>
+        <div class="favorites-table-wrapper">
+          <table class="favorites-table crypto-table">
+            <tbody id="crypto-favorites-container">
+              <!-- 즐겨찾기한 암호화폐 목록이 여기에 표시됩니다 -->
+            </tbody>
+          </table>
         </div>
       </div>
 
       <!-- 즐겨찾기 거래소 섹션 -->
-      <h2 class="panel-title exchange-title">My Exchanges</h2>
       <div class="favorites-section exchange-favorites">
-        <div id="exchange-container">
-          <!-- 즐겨찾기한 거래소 목록이 여기에 표시됩니다 -->
+        <h2 class="section-title exchange-title">My Exchanges</h2>
+        <div class="favorites-table-wrapper">
+          <table class="favorites-table exchange-table">
+            <tbody id="exchange-container">
+              <!-- 즐겨찾기한 거래소 목록이 여기에 표시됩니다 -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -72,64 +80,73 @@
           <p class="no-data">포지션 데이터가 없습니다.</p>
         </div>
       </div>
-      
-      <h2 class="panel-title profit-title">💰 손익 계산기</h2>
-      <div class="center-panel-section profit-section">
-        <div class="profit-calculator-controls">
-            <div class="input-group">
-                <label for="profit-symbol-select">코인 종류:</label>
-                <select id="profit-symbol-select">
-                    <option value="BTCUSDT">BTC/USDT</option>
-                    <option value="ETHUSDT">ETH/USDT</option>
-                    <option value="ADAUSDT">ADA/USDT</option>
-                    <option value="DOGEUSDT">DOGE/USDT</option>
-                    <option value="SOLUSDT">SOL/USDT</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="start-date-input">시작 기간:</label>
-                <input type="datetime-local" id="start-date-input" value="2024-01-01T00:00">
-            </div>
-
-            <div class="input-group">
-                <label for="end-date-input">종료 기간:</label>
-                <input type="datetime-local" id="end-date-input" value="2024-01-02T00:00">
-            </div>
-
-            <div class="input-group">
-                <label for="coin-amount-input">코인 개수:</label>
-                <input type="number" id="coin-amount-input" value="1" min="0.00000001" step="any">
-            </div>
-
-            <div class="input-group">
-                <label>포지션:</label>
-                <div class="position-radio-group">
-                    <input type="radio" id="position-long" name="position" value="long" checked>
-                    <label for="position-long">롱</label>
-                    <input type="radio" id="position-short" name="position" value="short">
-                    <label for="position-short">숏</label>
-                </div>
-            </div>
-
-            <button id="calculate-profit-btn">손익 계산</button>
-        </div>
-
-        <div class="profit-result">
-            <h3>계산 결과:</h3>
-            <p>시작 가격: <span id="start-price">-</span></p>
-            <p>종료 가격: <span id="end-price">-</span></p>
-            <p>총 손익: <span id="total-profit-loss">-</span></p>
-            <p>수익률: <span id="profit-loss-percentage">-</span></p>
-            <p id="profit-status" class="status-message"></p>
-        </div>
-      </div>
     </div>
     
     <div class="main-panel news-panel">
-      <h2 class="panel-title news-title">📰 최신 코인 뉴스</h2>
-      <div class="news-section">
-        <div id="news-container">
+      <!-- 수익률 계산기 섹션 (중앙패널에서 이동) -->
+      <div class="favorites-section profit-favorites">
+        <h2 class="section-title profit-title">💰 손익 계산기</h2>
+        <div class="favorites-table-wrapper profit-wrapper">
+          <div class="profit-calculator-controls">
+              <div class="input-group">
+                  <label for="profit-symbol-select">코인 종류:</label>
+                  <select id="profit-symbol-select">
+                      <option value="BTCUSDT">BTC/USDT</option>
+                      <option value="ETHUSDT">ETH/USDT</option>
+                      <option value="ADAUSDT">ADA/USDT</option>
+                      <option value="DOGEUSDT">DOGE/USDT</option>
+                      <option value="SOLUSDT">SOL/USDT</option>
+                  </select>
+              </div>
+
+              <div class="input-group">
+                  <label for="start-date-input">시작 기간:</label>
+                  <input type="datetime-local" id="start-date-input" value="2024-01-01T00:00">
+              </div>
+
+              <div class="input-group">
+                  <label for="end-date-input">종료 기간:</label>
+                  <input type="datetime-local" id="end-date-input" value="2024-01-02T00:00">
+              </div>
+
+              <div class="input-group">
+                  <label for="coin-amount-input">코인 개수:</label>
+                  <input type="number" id="coin-amount-input" value="1" min="0.00000001" step="any">
+              </div>
+
+              <div class="input-group">
+                  <label>포지션:</label>
+                  <div class="position-radio-group">
+                      <input type="radio" id="position-long" name="position" value="long" checked>
+                      <label for="position-long">롱</label>
+                      <input type="radio" id="position-short" name="position" value="short">
+                      <label for="position-short">숏</label>
+                  </div>
+              </div>
+
+              <button id="calculate-profit-btn">손익 계산</button>
+          </div>
+
+          <div class="profit-result">
+              <h3>계산 결과:</h3>
+              <p>시작 가격: <span id="start-price">-</span></p>
+              <p>종료 가격: <span id="end-price">-</span></p>
+              <p>총 손익: <span id="total-profit-loss">-</span></p>
+              <p>수익률: <span id="profit-loss-percentage">-</span></p>
+              <p id="profit-status" class="status-message"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 뉴스 섹션 -->
+      <div class="favorites-section news-favorites">
+        <h2 class="section-title news-title">📰 최신 코인 뉴스</h2>
+        <div class="favorites-table-wrapper">
+          <table class="favorites-table news-table">
+            <tbody id="news-container">
+              <!-- 뉴스 목록이 여기에 표시됩니다 -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

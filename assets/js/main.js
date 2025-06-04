@@ -91,7 +91,7 @@ async function renderFavoriteCryptos() {
   try {
     // 인증 상태 확인
     if (!authManager.isAuthenticated) {
-      container.innerHTML = '<p class="no-data">로그인 후 즐겨찾기를 확인할 수 있습니다.</p>';
+      container.innerHTML = '<tr><td colspan="3" class="no-data">로그인 후 즐겨찾기를 확인할 수 있습니다.</td></tr>';
       return;
     }
 
@@ -104,56 +104,126 @@ async function renderFavoriteCryptos() {
 
     if (cryptoFavorites.length === 0) {
       container.innerHTML = `
-        <div class="no-favorites-message">
-          <p>아직 즐겨찾기에 추가된 암호화폐가 없습니다.</p>
-          <p>시세 정보 페이지에서 관심있는 암호화폐를 즐겨찾기에 추가해보세요.</p>
-          <button onclick="window.location.href='/price.html'" class="go-to-price-btn">시세 정보 보기</button>
-        </div>
+        <tr>
+          <td colspan="3">
+            <div class="no-favorites-message">
+              <p>아직 즐겨찾기에 추가된 암호화폐가 없습니다.</p>
+              <p>시세 정보 페이지에서 관심있는 암호화폐를 즐겨찾기에 추가해보세요.</p>
+              <button onclick="window.location.href='/price.html'" class="go-to-price-btn">시세 정보 보기</button>
+            </div>
+          </td>
+        </tr>
       `;
       return;
     }
 
-    // 즐겨찾기한 암호화폐 데이터 표시
-    let cryptoHTML = '<div class="favorites-list">';
+    // 실제 암호화폐 가격 데이터 가져오기
+    const cryptoData = await fetchCryptoDataForFavorites();
     
-    for (const symbol of cryptoFavorites.slice(0, 8)) { // 최대 8개만 표시
-      cryptoHTML += `
-        <div class="favorite-item crypto-item">
+    if (!cryptoData || !Array.isArray(cryptoData)) {
+      container.innerHTML = '<tr><td colspan="3" class="error-message">암호화폐 가격 정보를 불러올 수 없습니다.</td></tr>';
+      return;
+    }
+
+    // 즐겨찾기한 암호화폐만 필터링
+    const favoritedCryptos = cryptoData.filter(crypto => 
+      cryptoFavorites.includes(crypto.symbol)
+    );
+
+    // 테이블 행으로 렌더링
+    container.innerHTML = '';
+    
+    favoritedCryptos.slice(0, 8).forEach(crypto => {
+      const { name, symbol, quote } = crypto;
+      const krwQuote = quote.KRW;
+      
+      const row = document.createElement('tr');
+      const changeClass = krwQuote.percent_change_24h > 0 ? 'positive' : 
+                         krwQuote.percent_change_24h < 0 ? 'negative' : 'neutral';
+
+      row.innerHTML = `
+        <td class="name">
           <div class="crypto-info">
             <div class="crypto-icon">${symbol.substring(0, 2)}</div>
-            <div class="crypto-details">
-              <div class="crypto-name">${symbol}</div>
+            <div class="crypto-name-wrapper">
+              <div class="crypto-name">${name}</div>
               <div class="crypto-symbol">${symbol}</div>
             </div>
           </div>
-          <div class="crypto-actions">
-            <button class="view-btn" onclick="window.location.href='price.html'">
-              시세보기
-            </button>
-            <button class="remove-btn" onclick="removeCryptoFromFavorites('${symbol}')">
-              제거
-            </button>
+        </td>
+        <td class="price">${formatPrice(krwQuote.price)}</td>
+        <td class="change change-24h ${changeClass}">${formatPercentage(krwQuote.percent_change_24h)}</td>
+      `;
+
+      container.appendChild(row);
+    });
+    
+    if (favoritedCryptos.length > 8) {
+      const moreRow = document.createElement('tr');
+      moreRow.innerHTML = `
+        <td colspan="3">
+          <div class="more-items">
+            <p>외 ${favoritedCryptos.length - 8}개 더...</p>
+            <button onclick="window.location.href='price.html'" class="view-all-btn">전체 보기</button>
           </div>
-        </div>
+        </td>
       `;
+      container.appendChild(moreRow);
     }
-    
-    if (cryptoFavorites.length > 8) {
-      cryptoHTML += `
-        <div class="more-items">
-          <p>외 ${cryptoFavorites.length - 8}개 더...</p>
-          <button onclick="window.location.href='price.html'" class="view-all-btn">전체 보기</button>
-        </div>
-      `;
-    }
-    
-    cryptoHTML += '</div>';
-    container.innerHTML = cryptoHTML;
 
   } catch (error) {
     console.error('즐겨찾기 암호화폐 로딩 실패:', error);
-    container.innerHTML = '<p class="error-message">즐겨찾기 암호화폐를 불러올 수 없습니다.</p>';
+    container.innerHTML = '<tr><td colspan="3" class="error-message">즐겨찾기 암호화폐를 불러올 수 없습니다.</td></tr>';
   }
+}
+
+// 암호화폐 가격 데이터 가져오기 함수
+async function fetchCryptoDataForFavorites() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:3000/api/crypto/prices', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.data || !Array.isArray(data.data)) {
+      throw new Error('Invalid data format');
+    }
+    
+    return data.data;
+  } catch (error) {
+    console.error('암호화폐 데이터 로딩 실패:', error);
+    return null;
+  }
+}
+
+// 가격 포맷팅 함수
+function formatPrice(price) {
+  if (price === null || price === undefined) return '₩0';
+  
+  let decimals = 0;
+  if (price < 1) decimals = 4;
+  else if (price < 10) decimals = 2;
+  else if (price < 1000) decimals = 1;
+  
+  return `₩${new Intl.NumberFormat('ko-KR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  }).format(price)}`;
+}
+
+// 퍼센트 포맷팅 함수
+function formatPercentage(percent) {
+  if (percent === null || percent === undefined) return '0.00%';
+  const sign = percent > 0 ? '+' : '';
+  return `${sign}${percent.toFixed(2)}%`;
 }
 
 // 즐겨찾기 거래소 렌더링 함수 (기존 로직 활용)
@@ -219,28 +289,30 @@ async function applyExchangeFilters() {
         container.innerHTML = '';
         
         if (filteredExchanges.length === 0) {
-          container.innerHTML = '<p class="no-data">검색 결과가 없습니다.</p>';
+          container.innerHTML = '<tr><td colspan="2" class="no-data">검색 결과가 없습니다.</td></tr>';
           return;
         }
 
         filteredExchanges.forEach(ex => {
-          const card = document.createElement('div');
-          card.className = 'exchange-card';
+          const row = document.createElement('tr');
 
-          card.innerHTML = `
-            <a href="${ex.url}" target="_blank" class="exchange-link">
-              <div class="exchange-logo-wrapper">
+          row.innerHTML = `
+            <td class="name">
+              <div class="exchange-info">
                 <img src="${ex.image}" alt="${ex.name}" class="exchange-logo" />
-              </div>
-              <div class="exchange-text">
                 <div class="exchange-name">${ex.name}</div>
-                <div class="exchange-volume">24h 거래량: ${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</div>
-                <div class="exchange-score">신뢰 점수: ${ex.trust_score_rank}위</div>
               </div>
-            </a>
+            </td>
+            <td class="volume">${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</td>
           `;
 
-          container.appendChild(card);
+          // 클릭 이벤트 추가
+          row.addEventListener('click', () => {
+            window.open(ex.url, '_blank');
+          });
+
+          row.style.cursor = 'pointer';
+          container.appendChild(row);
         });
       }
     } else {
@@ -353,55 +425,3 @@ document.addEventListener('DOMContentLoaded', async function () {
 // 함수들을 전역으로 노출 (필요시)
 window.applyCryptoFilters = applyCryptoFilters;
 window.applyExchangeFilters = applyExchangeFilters;
-
-// 암호화폐 즐겨찾기 제거 함수
-window.removeCryptoFromFavorites = async function(symbol) {
-  try {
-    const success = await removeFavorite(symbol);
-    if (success) {
-      await renderFavoriteCryptos(); // 다시 렌더링
-      showTemporaryMessage(`${symbol}이(가) 즐겨찾기에서 제거되었습니다.`);
-    } else {
-      alert('즐겨찾기 제거에 실패했습니다.');
-    }
-  } catch (error) {
-    console.error('즐겨찾기 제거 실패:', error);
-    alert('즐겨찾기 제거 중 오류가 발생했습니다.');
-  }
-};
-
-// 임시 메시지 표시 함수
-function showTemporaryMessage(message) {
-  const existingMessage = document.querySelector('.temp-message');
-  if (existingMessage) {
-    existingMessage.remove();
-  }
-  
-  const messageElement = document.createElement('div');
-  messageElement.className = 'temp-message';
-  messageElement.textContent = message;
-  messageElement.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--success);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    z-index: 1000;
-    font-size: 14px;
-    transition: opacity 0.3s ease;
-  `;
-  
-  document.body.appendChild(messageElement);
-  
-  setTimeout(() => {
-    messageElement.style.opacity = '0';
-    setTimeout(() => {
-      if (messageElement.parentNode) {
-        messageElement.parentNode.removeChild(messageElement);
-      }
-    }, 300);
-  }, 3000);
-}
