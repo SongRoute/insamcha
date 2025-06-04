@@ -98,19 +98,25 @@ async function renderFavoriteCryptos() {
     // 즐겨찾기 목록 가져오기
     const favorites = await fetchFavorites();
     const cryptoFavorites = favorites.filter(fav => 
-      // 암호화폐 심볼은 보통 3-5자리 영문 대문자
-      /^[A-Z]{3,5}$/.test(fav)
+      // 암호화폐 심볼은 보통 3-5자리 영문 대문자이고 거래소 ID가 아닌 것들
+      /^[A-Z]{2,8}$/.test(fav) && !fav.includes('-') && fav.length <= 10
     );
 
     if (cryptoFavorites.length === 0) {
-      container.innerHTML = '<p class="no-data">즐겨찾기한 암호화폐가 없습니다.</p>';
+      container.innerHTML = `
+        <div class="no-favorites-message">
+          <p>아직 즐겨찾기에 추가된 암호화폐가 없습니다.</p>
+          <p>시세 정보 페이지에서 관심있는 암호화폐를 즐겨찾기에 추가해보세요.</p>
+          <button onclick="window.location.href='/price.html'" class="go-to-price-btn">시세 정보 보기</button>
+        </div>
+      `;
       return;
     }
 
-    // 암호화폐 데이터 가져오기 (간단한 표시용)
+    // 즐겨찾기한 암호화폐 데이터 표시
     let cryptoHTML = '<div class="favorites-list">';
     
-    for (const symbol of cryptoFavorites.slice(0, 10)) { // 최대 10개만 표시
+    for (const symbol of cryptoFavorites.slice(0, 8)) { // 최대 8개만 표시
       cryptoHTML += `
         <div class="favorite-item crypto-item">
           <div class="crypto-info">
@@ -122,9 +128,21 @@ async function renderFavoriteCryptos() {
           </div>
           <div class="crypto-actions">
             <button class="view-btn" onclick="window.location.href='price.html'">
-              보기
+              시세보기
+            </button>
+            <button class="remove-btn" onclick="removeCryptoFromFavorites('${symbol}')">
+              제거
             </button>
           </div>
+        </div>
+      `;
+    }
+    
+    if (cryptoFavorites.length > 8) {
+      cryptoHTML += `
+        <div class="more-items">
+          <p>외 ${cryptoFavorites.length - 8}개 더...</p>
+          <button onclick="window.location.href='price.html'" class="view-all-btn">전체 보기</button>
         </div>
       `;
     }
@@ -150,24 +168,9 @@ async function renderFavoriteExchanges() {
       return;
     }
 
-    // 즐겨찾기 목록 가져오기
-    const favorites = await fetchFavorites();
-    const exchangeFavorites = favorites.filter(fav => 
-      // 거래소 ID는 보통 하이픈이나 긴 문자열
-      fav.includes('-') || fav.length > 10
-    );
-
-    if (exchangeFavorites.length === 0) {
-      container.innerHTML = '<p class="no-data">즐겨찾기한 거래소가 없습니다.</p>';
-      return;
-    }
-
-    // 전체 거래소 목록에서 즐겨찾기한 거래소만 필터링
-    const favoriteExchangeData = allExchanges.filter(exchange => 
-      exchangeFavorites.includes(exchange.id)
-    );
-
-    await renderExchanges(favoriteExchangeData, 'exchange-container');
+    // exchanges.js의 renderExchanges 함수를 직접 호출
+    // 이 함수는 이미 즐겨찾기 필터링과 렌더링을 모두 처리합니다
+    await renderExchanges(allExchanges);
 
   } catch (error) {
     console.error('즐겨찾기 거래소 로딩 실패:', error);
@@ -196,12 +199,9 @@ async function applyExchangeFilters() {
     if (!authManager.isAuthenticated) return;
 
     const favorites = await fetchFavorites();
-    const exchangeFavorites = favorites.filter(fav => 
-      fav.includes('-') || fav.length > 10
-    );
 
     let filteredExchanges = allExchanges.filter(exchange => 
-      exchangeFavorites.includes(exchange.id)
+      favorites.includes(exchange.id)
     );
 
     if (query) {
@@ -210,7 +210,43 @@ async function applyExchangeFilters() {
       );
     }
 
-    await renderExchanges(filteredExchanges, 'exchange-container');
+    // exchanges.js의 renderExchanges는 자체적으로 즐겨찾기 필터링을 하므로
+    // 검색이 있을 때만 필터된 데이터를 사용하고, 없으면 전체 데이터를 넘김
+    if (query) {
+      // 검색이 있을 때는 수동으로 렌더링
+      const container = document.getElementById('exchange-container');
+      if (container) {
+        container.innerHTML = '';
+        
+        if (filteredExchanges.length === 0) {
+          container.innerHTML = '<p class="no-data">검색 결과가 없습니다.</p>';
+          return;
+        }
+
+        filteredExchanges.forEach(ex => {
+          const card = document.createElement('div');
+          card.className = 'exchange-card';
+
+          card.innerHTML = `
+            <a href="${ex.url}" target="_blank" class="exchange-link">
+              <div class="exchange-logo-wrapper">
+                <img src="${ex.image}" alt="${ex.name}" class="exchange-logo" />
+              </div>
+              <div class="exchange-text">
+                <div class="exchange-name">${ex.name}</div>
+                <div class="exchange-volume">24h 거래량: ${Number(ex.trade_volume_24h_btc).toLocaleString()} BTC</div>
+                <div class="exchange-score">신뢰 점수: ${ex.trust_score_rank}위</div>
+              </div>
+            </a>
+          `;
+
+          container.appendChild(card);
+        });
+      }
+    } else {
+      // 검색이 없으면 기본 renderExchanges 함수 사용
+      await renderExchanges(allExchanges);
+    }
 
   } catch (error) {
     console.error('거래소 필터링 실패:', error);
@@ -317,3 +353,55 @@ document.addEventListener('DOMContentLoaded', async function () {
 // 함수들을 전역으로 노출 (필요시)
 window.applyCryptoFilters = applyCryptoFilters;
 window.applyExchangeFilters = applyExchangeFilters;
+
+// 암호화폐 즐겨찾기 제거 함수
+window.removeCryptoFromFavorites = async function(symbol) {
+  try {
+    const success = await removeFavorite(symbol);
+    if (success) {
+      await renderFavoriteCryptos(); // 다시 렌더링
+      showTemporaryMessage(`${symbol}이(가) 즐겨찾기에서 제거되었습니다.`);
+    } else {
+      alert('즐겨찾기 제거에 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('즐겨찾기 제거 실패:', error);
+    alert('즐겨찾기 제거 중 오류가 발생했습니다.');
+  }
+};
+
+// 임시 메시지 표시 함수
+function showTemporaryMessage(message) {
+  const existingMessage = document.querySelector('.temp-message');
+  if (existingMessage) {
+    existingMessage.remove();
+  }
+  
+  const messageElement = document.createElement('div');
+  messageElement.className = 'temp-message';
+  messageElement.textContent = message;
+  messageElement.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+  `;
+  
+  document.body.appendChild(messageElement);
+  
+  setTimeout(() => {
+    messageElement.style.opacity = '0';
+    setTimeout(() => {
+      if (messageElement.parentNode) {
+        messageElement.parentNode.removeChild(messageElement);
+      }
+    }, 300);
+  }, 3000);
+}
