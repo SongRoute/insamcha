@@ -1,8 +1,8 @@
 <main id="main">
     <div class="main-panel favorites-panel">
       <!-- 즐겨찾기 암호화폐 섹션 -->
+      <h2 class="panel-title crypto-title">My Crypto</h2>
       <div class="favorites-section crypto-favorites">
-        <h2>⭐ 즐겨찾기 암호화폐</h2>
         <div class="crypto-search">
           <input type="text" id="crypto-search-input"
           placeholder="즐겨찾기 암호화폐 검색 (예: Bitcoin, BTC)"/>
@@ -13,8 +13,8 @@
       </div>
 
       <!-- 즐겨찾기 거래소 섹션 -->
+      <h2 class="panel-title exchange-title">My Exchanges</h2>
       <div class="favorites-section exchange-favorites">
-        <h2>⭐ 즐겨찾기 거래소</h2>
         <div class="exchange-search">
           <input type="text" id="exchange-search-input"
           placeholder="즐겨찾기 거래소 검색 (예: Binance)"/>
@@ -24,11 +24,11 @@
         </div>
       </div>
     </div>
+    
     <div class="main-panel center-panel">
+      <h2 class="panel-title chart-title">바이낸스 실시간 차트</h2>
       <div id="price-chart" class="center-panel-section chart-section">
         <div class="binance-chart-container-wrapper">
-          <h1>🚀 바이낸스 실시간 차트</h1>
-
           <div class="controls">
               <select id="symbolSelect">
                   <option value="btcusdt">BTC/USDT</option>
@@ -73,11 +73,16 @@
           </div>
         </div>
       </div>
+      
+      <h2 class="panel-title position-title">📊 포지션 관리</h2>
       <div class="center-panel-section position-section">
-        포지션
+        <div class="position-content">
+          <p class="no-data">포지션 데이터가 없습니다.</p>
+        </div>
       </div>
+      
+      <h2 class="panel-title profit-title">💰 손익 계산기</h2>
       <div class="center-panel-section profit-section">
-        <h2>💰 손익 계산기</h2>
         <div class="profit-calculator-controls">
             <div class="input-group">
                 <label for="profit-symbol-select">코인 종류:</label>
@@ -128,13 +133,16 @@
         </div>
       </div>
     </div>
+    
     <div class="main-panel news-panel">
-      <h2>📰 최신 코인 뉴스</h2>
-      <div class="news-search">
-        <input type="text" id="news-search-input"
-              placeholder="키워드 입력 (예: ethereum)" />
-      </div>
-      <div id="news-container">
+      <h2 class="panel-title news-title">📰 최신 코인 뉴스</h2>
+      <div class="news-section">
+        <div class="news-search">
+          <input type="text" id="news-search-input"
+                placeholder="키워드 입력 (예: ethereum)" />
         </div>
+        <div id="news-container">
+        </div>
+      </div>
     </div>
 </main>
