@@ -7,36 +7,97 @@ export async function fetchFavorites() {
   const token = localStorage.getItem('token');
   if (!token) return [];
 
-  const res = await fetch('/api/favorites', {
-    headers: {
-      Authorization: `Bearer ${token}`
+  try {
+    const res = await fetch('/api/favorites', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    
+    if (res.status === 403 || res.status === 401) {
+      // 토큰이 만료되었거나 유효하지 않은 경우
+      localStorage.removeItem('token');
+      if (window.authManager) {
+        window.authManager.setUser(null);
+      }
+      return [];
     }
-  });
-
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.favorites;
+    
+    if (res.ok) {
+      const data = await res.json();
+      return data.favorites || [];
+    }
+    return [];
+  } catch (error) {
+    console.error('즐겨찾기 조회 실패:', error);
+    return [];
+  }
 }
 
-async function toggleFavorite(exchangeId, isFavorited) {
+export async function addFavorite(exchangeId) {
   const token = localStorage.getItem('token');
   if (!token) {
-    alert('즐겨찾기는 로그인 후 이용 가능합니다.');
-    window.location.href = '/login.html';
+    alert('로그인이 필요합니다.');
     return false;
   }
 
-  const method = isFavorited ? 'DELETE' : 'POST';
-  const res = await fetch('/api/favorites', {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({ exchangeId })
-  });
+  try {
+    const res = await fetch('/api/favorites', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ exchangeId })
+    });
 
-  return res.ok;
+    if (res.status === 403 || res.status === 401) {
+      // 토큰이 만료되었거나 유효하지 않은 경우
+      localStorage.removeItem('token');
+      if (window.authManager) {
+        window.authManager.setUser(null);
+      }
+      alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+      return false;
+    }
+
+    return res.ok;
+  } catch (error) {
+    console.error('즐겨찾기 추가 실패:', error);
+    return false;
+  }
+}
+
+export async function removeFavorite(exchangeId) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('로그인이 필요합니다.');
+    return false;
+  }
+
+  try {
+    const res = await fetch('/api/favorites', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ exchangeId })
+    });
+
+    if (res.status === 403 || res.status === 401) {
+      // 토큰이 만료되었거나 유효하지 않은 경우
+      localStorage.removeItem('token');
+      if (window.authManager) {
+        window.authManager.setUser(null);
+      }
+      alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+      return false;
+    }
+
+    return res.ok;
+  } catch (error) {
+    console.error('즐겨찾기 제거 실패:', error);
+    return false;
+  }
 }
 
 /**
@@ -119,25 +180,33 @@ export async function renderExchanges(exchanges) {
     const exchangeId = btn.dataset.id;
     const isNowFavorited = btn.classList.contains('favorited');
 
-    // ⭐ 클릭 즉시 UI 반영
-  if (isNowFavorited) {
-    btn.classList.remove('favorited');
-    btn.textContent = '☆';
-  } else {
-    btn.classList.add('favorited');
-    btn.textContent = '★';
-  }
-  
-    const success = await toggleFavorite(exchangeId, isNowFavorited);
+    let success;
+    if (isNowFavorited) {
+      success = await removeFavorite(exchangeId);
+      if (success) {
+        btn.classList.remove('favorited');
+        btn.textContent = '☆';
+      }
+    } else {
+      success = await addFavorite(exchangeId);
+      if (success) {
+        btn.classList.add('favorited');
+        btn.textContent = '★';
+      }
+    }
+
     if (!success) return;
 
     // ✅ 필터 체크 여부를 기준으로 목록 다시 표시
     const favOnly = document.getElementById('show-favorites-only')?.checked;
-    const allExchanges = await fetchExchanges();
-
+    
     if (favOnly) {
-      await applyFilters(); 
+      // main.js의 applyFilters 함수 호출
+      if (window.applyFilters) {
+        await window.applyFilters(); 
+      }
     } else {
+      const allExchanges = await fetchExchanges();
       await renderExchanges(allExchanges);
     }
   });

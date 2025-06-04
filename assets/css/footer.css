@@ -9,7 +9,7 @@
 .footer-item-group {
     display: flex;
     align-items: center; /* Vertically align label and value */
-    gap: 8px; /* Space between label and value */
+    gap: 8px; /* Space between label, price, and change */
     padding: 0 15px; /* Horizontal padding for each item group */
     white-space: nowrap; /* Prevent text wrapping within an item */
     color: var(--text-primary); /* Default light gray text color */
@@ -24,19 +24,32 @@
 
 .footer-coin-value {
     font-size: 14px;
-    /* color set by JS based on change (red/blue/white) */
+    /* color inherited */
 }
 
+.footer-coin-change {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.footer-coin-change.positive,
 .coin-value-red {
-    color: #FF4D4F; /* Red for decrease */
+    color: #FF4D4F; /* Red for increase */
+    background-color: rgba(255, 77, 79, 0.1);
 }
 
+.footer-coin-change.negative,
 .coin-value-blue {
-    color: #26A69A; /* Green for increase (as in image) */
+    color: #26A69A; /* Green for decrease */
+    background-color: rgba(38, 166, 154, 0.1);
 }
 
+.footer-coin-change.neutral,
 .coin-value-black { /* As in original, though white was used for no change */
     color: var(--text-primary); /* Light gray for no change */
+    background-color: rgba(128, 128, 128, 0.1);
     transition: color 0.3s ease;
 }
 

@@ -1,14 +1,14 @@
 // assets/js/profitCalculator.js
 
 /**
- * Binance Klines 데이터를 백엔드 프록시를 통해 가져오는 함수
+ * Bybit Klines 데이터를 백엔드 프록시를 통해 가져오는 함수
  * @param {string} symbol 코인 심볼 (예: BTCUSDT)
  * @param {string} interval 캔들스틱 간격 (예: 1d, 1h)
  * @param {number} startTime 시작 시간 (Unix timestamp in milliseconds)
  * @param {number} endTime 종료 시간 (Unix timestamp in milliseconds)
  * @returns {Promise<Array>} Klines 데이터 배열
  */
-async function fetchBinanceKlines(symbol, interval, startTime, endTime) {
+async function fetchBybitKlines(symbol, interval, startTime, endTime) {
     const url = `/api/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`;
     try {
         const response = await fetch(url);
@@ -19,7 +19,7 @@ async function fetchBinanceKlines(symbol, interval, startTime, endTime) {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error fetching Binance Klines:', error);
+        console.error('Error fetching Bybit Klines:', error);
         throw error;
     }
 }
@@ -37,10 +37,14 @@ async function calculateProfitLoss() {
     const totalProfitLossElem = document.getElementById('total-profit-loss');
     const profitLossPercentageElem = document.getElementById('profit-loss-percentage');
     const profitStatusElem = document.getElementById('profit-status');
+    const startPriceElem = document.getElementById('start-price');
+    const endPriceElem = document.getElementById('end-price');
 
     // 결과 초기화
     totalProfitLossElem.textContent = '-';
     profitLossPercentageElem.textContent = '-';
+    startPriceElem.textContent = '-';
+    endPriceElem.textContent = '-';
     profitStatusElem.textContent = '';
     profitStatusElem.className = 'status-message'; // 클래스 초기화
 
@@ -60,8 +64,8 @@ async function calculateProfitLoss() {
     }
 
     try {
-        // Binance Klines API는 UTC 시간을 사용하므로, 로컬 시간을 UTC로 변환하여 전달
-        const klines = await fetchBinanceKlines(symbol, '1m', startTime, endTime); // 1분봉 데이터 요청
+        // Bybit Klines API는 UTC 시간을 사용하므로, 로컬 시간을 UTC로 변환하여 전달
+        const klines = await fetchBybitKlines(symbol, '1m', startTime, endTime); // 1분봉 데이터 요청
 
         if (klines.length === 0) {
             profitStatusElem.textContent = '해당 기간의 가격 데이터를 찾을 수 없습니다.';
@@ -70,7 +74,7 @@ async function calculateProfitLoss() {
         }
 
         // Klines 데이터에서 Open time (인덱스 0)과 Close price (인덱스 4) 추출
-        // 바이낸스 Klines는 [open_time, open_price, high_price, low_price, close_price, ...]
+        // Bybit->Binance 변환된 형식: [open_time, open_price, high_price, low_price, close_price, ...]
         const startPriceData = klines[0]; // 첫 번째 캔들의 시가 또는 종가
         const endPriceData = klines[klines.length - 1]; // 마지막 캔들의 시가 또는 종가
 
@@ -95,6 +99,8 @@ async function calculateProfitLoss() {
 
         totalProfitLossElem.textContent = `$${profitLoss.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         profitLossPercentageElem.textContent = `${percentage.toFixed(2)}%`;
+        startPriceElem.textContent = `$${startPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        endPriceElem.textContent = `$${endPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
         if (profitLoss > 0) {
             profitStatusElem.textContent = '🎉 이익이 발생했습니다!';

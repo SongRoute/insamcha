@@ -242,12 +242,47 @@
     margin: 8px 0; /* 간격 증가 */
     font-size: 1.05rem; /* 폰트 크기 미세 조정 */
     color: var(--text-secondary); /* 기본 텍스트 색상 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .profit-result span {
     font-weight: bold;
     font-size: 1.5rem; /* 결과 값 폰트 크기 키우기 */
     color: var(--text-primary); /* 기본 텍스트 색상 */
+}
+
+/* 시작 가격과 종료 가격에 특별한 스타일 추가 */
+#start-price {
+    color: #3498db; /* 파란색 - 시작을 의미 */
+    background-color: rgba(52, 152, 219, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+#end-price {
+    color: #e74c3c; /* 빨간색 - 종료를 의미 */
+    background-color: rgba(231, 76, 60, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* 총 손익과 수익률도 스타일 개선 */
+#total-profit-loss {
+    background-color: rgba(240, 185, 11, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(240, 185, 11, 0.3);
+}
+
+#profit-loss-percentage {
+    background-color: rgba(240, 185, 11, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(240, 185, 11, 0.3);
 }
 
 .status-message {

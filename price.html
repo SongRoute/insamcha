@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>암호화폐 실시간 시세 - Mablewide Clone</title>
+    
+    <!-- Prevent FOUC (Flash of Unstyled Content) for dark mode -->
+    <script>
+        (function() {
+            // Check for saved theme preference or default to system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    
+    <!-- 로그인 가드 -->
+    <script>
+        // 토큰 검증 로직을 auth.js에서 처리하도록 단순화
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // 토큰 없으면 웰컴 페이지로
+            window.location.href = '/welcome.html';
+        }
+    </script>
+    
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="assets/css/price.css">
+    
+    <script>
+        // Apply saved theme on page load (backup for DOMContentLoaded)
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (currentTheme === 'dark' || (!currentTheme && systemPrefersDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+            } else if (currentTheme === 'light') {
+                document.body.setAttribute('data-theme', 'light');
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="nav-placeholder"></div>
+        <div class="content-wrapper">
+            <div id="header-placeholder"></div>
+            <main id="price-content">
+                <div class="price-container">
+                    <div class="price-header">
+                        <h1>암호화폐 실시간 시세</h1>
+                        <p class="price-subtitle">상위 20개 암호화폐의 실시간 가격 정보</p>
+                    </div>
+                    
+                    <div class="price-table-wrapper">
+                        <table class="price-table">
+                            <thead>
+                                <tr>
+                                    <th class="rank">#</th>
+                                    <th class="name">이름</th>
+                                    <th class="price">가격</th>
+                                    <th class="change-24h">24시간</th>
+                                    <th class="change-7d">7일</th>
+                                    <th class="change-30d">30일</th>
+                                    <th class="volume-24h">24시간 거래량</th>
+                                    <th class="market-cap">시가총액</th>
+                                    <th class="actions">차트</th>
+                                </tr>
+                            </thead>
+                            <tbody id="crypto-tbody">
+                                <!-- 데이터는 JavaScript로 동적으로 추가됩니다 -->
+                                <tr class="loading">
+                                    <td colspan="9">데이터를 불러오는 중...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+            <div id="footer-placeholder"></div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module" src="assets/js/price.js"></script>
+</body>
+</html> 

@@ -4,6 +4,7 @@ import BinanceChart from './binanceChart.js';
 import { renderNews, fetchCryptoNews } from './news.js';
 import { renderExchanges, fetchExchanges, fetchFavorites } from './exchanges.js';
 import { initializeProfitCalculator } from './profitCalculator.js';
+import { authManager } from './auth.js';
 import './nav.js';
 
 let allExchanges = [];
@@ -33,8 +34,7 @@ export async function applyFilters() {
   }
 
   if (favOnlyCheckbox?.checked) {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    if (!authManager.isAuthenticated) {
       alert('즐겨찾기는 로그인 후 이용 가능합니다.');
       favOnlyCheckbox.checked = false;
       return renderExchanges(allExchanges);
@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   await loadHTMLComponent('assets/components/footer.html', 'footer-placeholder');
 
   document.dispatchEvent(new Event('navLoaded'));
+
+  // 인증 상태 확인 (컴포넌트 로드 후)
+  await authManager.checkAuth();
 
   const loginButton = document.querySelector('.login-btn');
   if (loginButton) {
@@ -117,3 +120,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   initializeProfitCalculator();
 });
+
+// applyFilters 함수를 전역으로 노출
+window.applyFilters = applyFilters;
