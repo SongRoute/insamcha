@@ -21,6 +21,66 @@ async function loadHTMLComponent(url, placeholderId) {
   }
 }
 
+// Header initialization function
+function initializeHeader() {
+  // Bell icon notification functionality
+  const bellIconContainer = document.getElementById('bell-icon-container');
+  const notificationsPopup = document.querySelector('.notifications-dropdown');
+  const notificationOverlay = document.querySelector('.notification-overlay');
+
+  if (bellIconContainer && notificationsPopup && notificationOverlay) {
+    bellIconContainer.addEventListener('click', function(event) {
+      event.stopPropagation();
+      
+      // 팝업 위치를 bell 아이콘 근처로 설정
+      const rect = bellIconContainer.getBoundingClientRect();
+      notificationsPopup.style.position = 'fixed';
+      notificationsPopup.style.top = (rect.bottom + 10) + 'px';
+      notificationsPopup.style.left = (rect.left - 200) + 'px';
+      notificationsPopup.style.transform = 'none';
+
+      notificationsPopup.classList.toggle('active');
+      notificationOverlay.classList.toggle('active');
+    });
+
+    notificationOverlay.addEventListener('click', function() {
+      notificationsPopup.classList.remove('active');
+      notificationOverlay.classList.remove('active');
+    });
+
+    // ESC 키로 팝업 닫기
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        notificationsPopup.classList.remove('active');
+        notificationOverlay.classList.remove('active');
+      }
+    });
+  }
+
+  // Page title setting
+  const pageTitleElement = document.getElementById('page-title');
+  if (pageTitleElement) {
+    // 페이지별 제목 매핑
+    const pageTitles = {
+      'longshort.html': '📊 롱/숏 포지션 비율',
+      'price.html': '💰 암호화폐 실시간 시세',
+      'index.html': '🏠 홈',
+      'login.html': '🔐 로그인',
+      'welcome.html': '👋 환영합니다',
+      'favorite.html': '⭐ 즐겨찾기',
+      'signup.html': '📝 회원가입',
+      // 필요에 따라 더 추가 가능
+    };
+    
+    // 현재 페이지 파일명 가져오기
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    // 페이지 제목 설정 (매핑된 제목이 있으면 사용, 없으면 document.title 사용)
+    const pageTitle = pageTitles[currentPage] || document.title || '인삼차';
+    pageTitleElement.textContent = pageTitle;
+  }
+}
+
 // ✅ 검색 & 즐겨찾기 통합 필터 함수
 export async function applyFilters() {
   const searchInput = document.getElementById('exchange-search-input');
@@ -52,6 +112,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   await loadHTMLComponent('assets/components/header.html', 'header-placeholder');
   await loadHTMLComponent('assets/components/main_content.html', 'main-content-placeholder');
   await loadHTMLComponent('assets/components/footer.html', 'footer-placeholder');
+
+  // 헤더 초기화 (헤더 컴포넌트 로드 후)
+  initializeHeader();
 
   document.dispatchEvent(new Event('navLoaded'));
 
@@ -118,6 +181,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   }
 
+  // 수익 계산기 초기화
   initializeProfitCalculator();
 });
 
