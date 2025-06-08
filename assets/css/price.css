@@ -190,15 +190,15 @@
     font-family: 'Roboto Mono', monospace;
 }
 
-.change.positive {
-    color: #16c784;
+.price-table .change.positive {
+    color: #ff4757;
 }
 
-.change.negative {
-    color: #ea3943;
+.price-table .change.negative {
+    color: #00ff88;
 }
 
-.change.neutral {
+.price-table .change.neutral {
     color: var(--text-secondary);
 }
 

@@ -314,11 +314,11 @@
 }
 
 .favorites-table .change.positive {
-    color: #16c784;
+    color: #ff4757;
 }
 
 .favorites-table .change.negative {
-    color: #ea3943;
+    color: #00ff88;
 }
 
 .favorites-table .change.neutral {
@@ -613,11 +613,11 @@
 }
 
 .result-item.profit {
-    border-left: 4px solid #16c784;
+    border-left: 4px solid #ff4757;
 }
 
 .result-item.loss {
-    border-left: 4px solid #ea3943;
+    border-left: 4px solid #00ff88;
 }
 
 .price-value {
@@ -626,11 +626,19 @@
 }
 
 .price-value.profit {
-    color: #16c784;
+    color: #ff4757;
+    background-color: rgba(255, 71, 87, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 71, 87, 0.3);
 }
 
 .price-value.loss {
-    color: #ea3943;
+    color: #00ff88;
+    background-color: rgba(0, 255, 136, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 255, 136, 0.3);
 }
 
 #calculate-profit-btn {
@@ -661,15 +669,15 @@
 }
 
 #profit-status.profit {
-    background-color: rgba(22, 199, 132, 0.1);
-    color: #16c784;
-    border-color: rgba(22, 199, 132, 0.3);
+    background-color: rgba(255, 71, 87, 0.1);
+    color: #ff4757;
+    border-color: rgba(255, 71, 87, 0.3);
 }
 
 #profit-status.loss {
-    background-color: rgba(234, 57, 67, 0.1);
-    color: #ea3943;
-    border-color: rgba(234, 57, 67, 0.3);
+    background-color: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    border-color: rgba(0, 255, 136, 0.3);
 }
 
 /* 수익률 표시 스타일 */
@@ -681,15 +689,15 @@
 }
 
 .profit-rate.positive {
-    color: #16c784;
-    background-color: rgba(22, 199, 132, 0.1);
-    border: 1px solid rgba(22, 199, 132, 0.3);
+    color: #ff4757;
+    background-color: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
 }
 
 .profit-rate.negative {
-    color: #ea3943;
-    background-color: rgba(234, 57, 67, 0.1);
-    border: 1px solid rgba(234, 57, 67, 0.3);
+    color: #00ff88;
+    background-color: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
 }
 
 /* 다크 모드 특화 필터 변수 */
@@ -916,19 +924,19 @@
 }
 
 .price-value.profit {
-    color: #16c784;
-    background-color: rgba(22, 199, 132, 0.1);
+    color: #ff4757;
+    background-color: rgba(255, 71, 87, 0.1);
     padding: 2px 6px;
     border-radius: 3px;
-    border: 1px solid rgba(22, 199, 132, 0.3);
+    border: 1px solid rgba(255, 71, 87, 0.3);
 }
 
 .price-value.loss {
-    color: #ea3943;
-    background-color: rgba(234, 57, 67, 0.1);
+    color: #00ff88;
+    background-color: rgba(0, 255, 136, 0.1);
     padding: 2px 6px;
     border-radius: 3px;
-    border: 1px solid rgba(234, 57, 67, 0.3);
+    border: 1px solid rgba(0, 255, 136, 0.3);
 }
 
 #profit-status {
@@ -940,15 +948,15 @@
 }
 
 #profit-status.profit {
-    background-color: rgba(22, 199, 132, 0.1);
-    color: #16c784;
-    border: 1px solid rgba(22, 199, 132, 0.3);
+    background-color: rgba(255, 71, 87, 0.1);
+    color: #ff4757;
+    border-color: rgba(255, 71, 87, 0.3);
 }
 
 #profit-status.loss {
-    background-color: rgba(234, 57, 67, 0.1);
-    color: #ea3943;
-    border: 1px solid rgba(234, 57, 67, 0.3);
+    background-color: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    border-color: rgba(0, 255, 136, 0.3);
 }
 
 .chart-favorites, .position-favorites {
@@ -1036,12 +1044,12 @@
 }
 
 .profit-loss-value.profit {
-    color: #00c853;
+    color: #ff4757;
     font-weight: bold;
 }
 
 .profit-loss-value.loss {
-    color: #ff3d00;
+    color: #00ff88;
     font-weight: bold;
 }
 

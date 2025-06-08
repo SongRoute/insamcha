@@ -55,7 +55,7 @@ class BinanceChart {
                             }
                         }
                     },
-                    tooltip: { // 툴팁 스타일 개선
+                    tooltip: { // 툴크 스타일 개선
                         backgroundColor: '#333333', // 어두운 배경
                         titleColor: '#f0b90b', // 제목 색상 강조
                         bodyColor: '#e0e0e0', // 본문 색상 밝게
@@ -224,7 +224,7 @@ class BinanceChart {
 
         // 가격 추세에 따라 선 색상 변경
         if (this.lastPrice > 0) {
-            const color = price >= this.lastPrice ? '#00ff88' : '#ff4757'; // 녹색 또는 빨간색
+            const color = price >= this.lastPrice ? '#ff4757' : '#00ff88'; // 빨간색 또는 초록색
             this.chart.data.datasets[0].borderColor = color;
             this.chart.data.datasets[0].pointBackgroundColor = color;
         }

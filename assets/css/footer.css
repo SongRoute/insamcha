@@ -36,14 +36,14 @@
 
 .footer-coin-change.positive,
 .coin-value-red {
-    color: #FF4D4F; /* Red for increase */
-    background-color: rgba(255, 77, 79, 0.1);
+    color: #ff4757; /* 빨간색으로 통일 */
+    background-color: rgba(255, 71, 87, 0.1);
 }
 
 .footer-coin-change.negative,
 .coin-value-blue {
-    color: #26A69A; /* Green for decrease */
-    background-color: rgba(38, 166, 154, 0.1);
+    color: #00ff88; /* 초록색으로 통일 */
+    background-color: rgba(0, 255, 136, 0.1);
 }
 
 .footer-coin-change.neutral,
